@@ -9,7 +9,16 @@
         "accessory": "MusicCastTV",
         "name": "Living Room Radio",
         "ip": "192.168.178.2",
-        "inputs":{}
+        "maxVol": 60,
+        "volume": 50,
+        "inputs":{
+            "airplay": "AirPlay", 
+            "am": "AM", 
+            "fm": "FM", 
+            "line_cd": "CD", 
+            "server": "Homeserver", 
+            "net_radio": "Online radio"
+            }
     }]
 ```
 
@@ -24,7 +33,7 @@ sudo npm install -g homebridge-musiccast-tv
 ### Configure Homebridge
 
 You can get information about your MusicCast device by visiting 
-http://<ip>/YamahaExtendedControl/v1/system/getFeatures".
+"http://<ip>/YamahaExtendedControl/v1/system/getFeatures".
 
 
 config arguments: 
@@ -63,8 +72,8 @@ Currently supported and planned inputs:
 | server |  | yes |
 | optical1 |  | yes |
 | optical2 |  | yes |
-| coaxial1 |  |  |
-| coaxial2 |  |  |
+| coaxial1 |  | yes |
+| coaxial2 |  | yes |
 | hdmi1 |  |  |
 | av1 |  |  |
 | analog |  |  |
@@ -88,5 +97,5 @@ If your MusicCast device has additional inputs, please file an issue.
 ## TODO
  - [ ] prepare one InputService for each possible input
  - [x] remove eval
- - [ ] create npm package
+ - [x] create npm package
 

@@ -27,23 +27,25 @@ function MusicCastTV(log, config) {
 		"line_cd": {"Identifier": 2, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "line_cd"}, 
 		"fm": {"Identifier": 3, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "fm"}, 
 		"am": {"Identifier": 4, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "am"}, 
-		"server": {"Identifier": 5, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "server"}, 
-		"Phono": {"Identifier": 6, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "phono"}, 
-		"usb": {"Identifier": 7, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "usb"}, 
-		"bluetooth": {"Identifier": 8, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "bluetooth"}, 
-		"net_radio": {"Identifier": 9, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "net_radio"}, 
-		"line1": {"Identifier": 10, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "line1"}, 
-		"line2": {"Identifier": 11, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "line2"}, 
-		"line3": {"Identifier": 12, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "line3"}, 
-		"dab": {"Identifier": 13, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"dab": {"Identifier": 5, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"server": {"Identifier": 6, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "server"}, 
+		"Phono": {"Identifier": 7, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "phono"}, 
+		"usb": {"Identifier": 8, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "usb"}, 
+		"bluetooth": {"Identifier": 9, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "bluetooth"}, 
+		"net_radio": {"Identifier": 10, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "net_radio"}, 
+		"line1": {"Identifier": 11, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "line1"}, 
+		"line2": {"Identifier": 12, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "line2"}, 
+		"line3": {"Identifier": 13, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "line3"}, 
 		"optical1": {"Identifier": 14, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "optical1"}, 
 		"optical2": {"Identifier": 15, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "optical2"}, 
-		"spotify": {"Identifier": 16, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "spotify"}, 
-		"deezer": {"Identifier": 17, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "deezer"}, 
-		"napster": {"Identifier": 18, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"qobuz": {"Identifier": 19, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"juke": {"Identifier": 20, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"tidal": {"Identifier": 21, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"coaxial1": {"Identifier": 16, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "coaxial1"}, 
+		"coaxial2": {"Identifier": 17, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "coaxial2"}, 
+		"spotify": {"Identifier": 18, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "spotify"}, 
+		"deezer": {"Identifier": 19, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "deezer"}, 
+		"napster": {"Identifier": 20, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"qobuz": {"Identifier": 21, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"juke": {"Identifier": 22, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"tidal": {"Identifier": 23, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"c": {"Identifier": 30, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}};
 	this.modell = config["modell"] || "MusicCast TV";
 	this.log.debug(config);
@@ -106,6 +108,14 @@ function MusicCastTV(log, config) {
 			case "Optical2":
 				this.info["optical2"]["ConfiguredName"]=this.inputs[key];
 				break;
+			case "coaxial1":
+			case "Coaxial1":
+				this.info["coaxial1"]["ConfiguredName"]=this.inputs[key];
+				break;
+			case "coaxial2":
+			case "Coaxial2":
+				this.info["coaxial2"]["ConfiguredName"]=this.inputs[key];
+				break;
 			case "spotify":
 			case "Spotify":
 				this.info["spotify"]["ConfiguredName"]=this.inputs[key];
@@ -131,7 +141,7 @@ function MusicCastTV(log, config) {
 				this.info["tidal"]["ConfiguredName"]=this.inputs[key];
 				break;
 			default:
-				this.log("input " + key + " not found");
+				this.log("input " + key + ": " + this.inputs[key] + " not found");
 		}
 	}
 	this.log("Initialized '" + this.name + "'");
@@ -633,6 +643,48 @@ MusicCastTV.prototype = {
 		});
 		this.optical2Service = optical2Service;
 		
+		var coaxial1Service = new Service.InputSource("coaxial1", "coaxial1");
+		coaxial1Service.setCharacteristic(Characteristic.Identifier, this.info["coaxial1"]["Identifier"]);
+		coaxial1Service.setCharacteristic(Characteristic.ConfiguredName, this.info["coaxial1"]["ConfiguredName"]);
+		coaxial1Service.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
+		coaxial1Service.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
+		coaxial1Service.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
+			this.log.debug('get CurrentVisibilityState of coaxial1' + this.info["coaxial1"]['CurrentVisibilityState']);
+			callback(null, this.info["coaxial1"]['CurrentVisibilityState']);
+		}); //0=SHOWN;1=HIDDEN
+		coaxial1Service.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
+			this.log.debug('get TargetVisibilityState of ' + this.info["coaxial1"]['TargetVisibilityState']);
+			callback(null, this.info["coaxial1"]['TargetVisibilityState']);
+		});
+		coaxial1Service.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
+			this.info["coaxial1"]['TargetVisibilityState'] = value;
+			this.log('Target Visibility State to ' + value + " " + this.info["coaxial1"]['ConfiguredName']);
+			this.info["coaxial1"]['CurrentVisibilityState'] = value;
+			callback();
+		});
+		this.coaxial1Service = coaxial1Service;
+		
+		var coaxial2Service = new Service.InputSource("coaxial2", "coaxial2");
+		coaxial2Service.setCharacteristic(Characteristic.Identifier, this.info["coaxial2"]["Identifier"]);
+		coaxial2Service.setCharacteristic(Characteristic.ConfiguredName, this.info["coaxial2"]["ConfiguredName"]);
+		coaxial2Service.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
+		coaxial2Service.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
+		coaxial2Service.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
+			this.log.debug('get CurrentVisibilityState of coaxial2' + this.info["coaxial2"]['CurrentVisibilityState']);
+			callback(null, this.info["coaxial2"]['CurrentVisibilityState']);
+		}); //0=SHOWN;1=HIDDEN
+		coaxial2Service.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
+			this.log.debug('get TargetVisibilityState of ' + this.info["coaxial2"]['TargetVisibilityState']);
+			callback(null, this.info["coaxial2"]['TargetVisibilityState']);
+		});
+		coaxial2Service.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
+			this.info["coaxial2"]['TargetVisibilityState'] = value;
+			this.log('Target Visibility State to ' + value + " " + this.info["coaxial2"]['ConfiguredName']);
+			this.info["coaxial2"]['CurrentVisibilityState'] = value;
+			callback();
+		});
+		this.coaxial2Service = coaxial2Service;
+		
 		var spotifyService = new Service.InputSource("spotify", "spotify");
 		spotifyService.setCharacteristic(Characteristic.Identifier, this.info["spotify"]["Identifier"]);
 		spotifyService.setCharacteristic(Characteristic.ConfiguredName, this.info["spotify"]["ConfiguredName"]);
@@ -827,6 +879,16 @@ MusicCastTV.prototype = {
 				case "Optical2":
 					TelevisionService.addLinkedService(this.optical2Service);
 					ServiceList.push(this.optical2Service);
+					break;
+				case "coaxial1":
+				case "Coaxial1":
+					TelevisionService.addLinkedService(this.coaxial1Service);
+					ServiceList.push(this.coaxial1Service);
+					break;
+				case "coaxial2":
+				case "Coaxial2":
+					TelevisionService.addLinkedService(this.coaxial2Service);
+					ServiceList.push(this.coaxial2Service);
 					break;
 				case "spotify":
 				case "Spotify":
