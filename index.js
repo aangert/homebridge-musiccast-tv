@@ -13,6 +13,7 @@ function MusicCastTV(log, config) {
 	this.name = config["name"];
 	this.ip = config["ip"];
 	this.zone = config["zone"] || "main";
+	this.modell = config["modell"] || "MusicCast TV";
 	this.maxVol = config["maxVol"] || 160;
 	this.inputs =  config["inputs"] || {"AirPlay": "1. 'inputs' missing", "bluetooth": "2. in config.json", "spotify": "3. please modify"};
 	this.active = config["active"] || config["power"] || 0;
@@ -47,7 +48,6 @@ function MusicCastTV(log, config) {
 		"juke": {"Identifier": 22, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "juke"}, 
 		"tidal": {"Identifier": 23, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "tidal"}, 
 		"c": {"Identifier": 30, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}};
-	this.modell = config["modell"] || "MusicCast TV";
 	this.log.debug(config);
 	for(var key in this.inputs) {
 		this.log.debug("updating name for " + key);

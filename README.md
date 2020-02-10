@@ -4,7 +4,7 @@
 
 ## Configuration
 
-```
+```json
     "accessories": [{
         "accessory": "MusicCastTV",
         "name": "Living Room Radio",
@@ -26,14 +26,14 @@
 
 ### Install [Homebridge](https://github.com/nfarina/homebridge)
 
-```
+```shell
 sudo npm install -g homebridge
 sudo npm install -g homebridge-musiccast-tv
 ```
 ### Configure Homebridge
 
 You can get information about your MusicCast device by visiting 
-"http://<ip>/YamahaExtendedControl/v1/system/getFeatures".
+"http://\<ip\>/YamahaExtendedControl/v1/system/getFeatures".
 
 
 config arguments: 
@@ -78,8 +78,7 @@ Currently supported and planned inputs:
 | av1 |  |  |
 | analog |  |  |
 |  |  |  |
-|  |  |  |
-| -- streaming services -- |
+| **streaming services** |
 | spotify |  | yes |
 | deezer |  | yes |
 | napster |  | yes |
