@@ -1,12 +1,16 @@
 {
   "name": "homebridge-musiccast-tv",
-  "version": "0.5",
-  "description": "homebridge plugin for Yamaha MusicCast devices",
+  "version": "1.0.0",
+  "description": "Homebridge plugin for Yamaha MusicCast devices",
   "main": "index.js",
   "engines": {
     "node": ">=10.16.0",
     "homebridge": ">=0.4.49"
   },
+  "dependencies": {
+    "request": "^2.0"
+  },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,15 +20,13 @@
   },
   "keywords": [
     "homebridge-plugin",
-    "yamaha",
+    "homebridge",
     "MusicCast",
+    "tv",
     "homekit"
   ],
-  "author": "",
+  "author": "Doctor NSA",
   "license": "SEE LICENSE IN LICENSE",
-  "dependencies": {
-    "request": "^2.0"
-  },
   "bugs": {
     "url": "https://github.com/DoctorNSA/homebridge-musiccast-tv/issues"
   },
