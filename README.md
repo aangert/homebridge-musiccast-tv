@@ -81,11 +81,11 @@ Currently supported and planned inputs:
 |  |  |  |
 | -- streaming services -- |
 | spotify |  | yes |
-| napster |  |  |
-| qobuz |  |  |
-| juke |  |  |
-| tidal |  |  |
 | deezer |  | yes |
+| napster |  | yes |
+| qobuz |  | yes |
+| juke |  | yes |
+| tidal |  | yes |
 
 If your MusicCast device has additional inputs, please file an issue. 
 

@@ -21,7 +21,7 @@ function MusicCastTV(log, config) {
 	//this.brightness = config["brightness"] || 100;
 	this.volume = config["volume"] || 100;
 	//this.updateInterval = 1000;
-	this.version = 0.4;
+	this.version = require("./package.json").version;
 	this.features = {};
 	this.info = {"AirPlay": {"Identifier": 1, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "airplay"}, 
 		"line_cd": {"Identifier": 2, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "line_cd"}, 
@@ -42,10 +42,10 @@ function MusicCastTV(log, config) {
 		"coaxial2": {"Identifier": 17, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "coaxial2"}, 
 		"spotify": {"Identifier": 18, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "spotify"}, 
 		"deezer": {"Identifier": 19, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "deezer"}, 
-		"napster": {"Identifier": 20, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"qobuz": {"Identifier": 21, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"juke": {"Identifier": 22, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"tidal": {"Identifier": 23, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"napster": {"Identifier": 20, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "napster"}, 
+		"qobuz": {"Identifier": 21, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "qobuz"}, 
+		"juke": {"Identifier": 22, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "juke"}, 
+		"tidal": {"Identifier": 23, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "tidal"}, 
 		"c": {"Identifier": 30, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}};
 	this.modell = config["modell"] || "MusicCast TV";
 	this.log.debug(config);
@@ -727,9 +727,93 @@ MusicCastTV.prototype = {
 		});
 		this.deezerService = deezerService;
 		
+		var napsterService = new Service.InputSource("napster", "napster");
+		napsterService.setCharacteristic(Characteristic.Identifier, this.info["napster"]["Identifier"]);
+		napsterService.setCharacteristic(Characteristic.ConfiguredName, this.info["napster"]["ConfiguredName"]);
+		napsterService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
+		napsterService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
+		napsterService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
+			this.log.debug('get CurrentVisibilityState of napster' + this.info["napster"]['CurrentVisibilityState']);
+			callback(null, this.info["napster"]['CurrentVisibilityState']);
+		}); //0=SHOWN;1=HIDDEN
+		napsterService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
+			this.log.debug('get TargetVisibilityState of ' + this.info["napster"]['TargetVisibilityState']);
+			callback(null, this.info["napster"]['TargetVisibilityState']);
+		});
+		napsterService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
+			this.info["napster"]['TargetVisibilityState'] = value;
+			this.log('Target Visibility State to ' + value + " " + this.info["napster"]['ConfiguredName']);
+			this.info["napster"]['CurrentVisibilityState'] = value;
+			callback();
+		});
+		this.napsterService = napsterService;
+		
+		var qobuzService = new Service.InputSource("qobuz", "qobuz");
+		qobuzService.setCharacteristic(Characteristic.Identifier, this.info["qobuz"]["Identifier"]);
+		qobuzService.setCharacteristic(Characteristic.ConfiguredName, this.info["qobuz"]["ConfiguredName"]);
+		qobuzService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
+		qobuzService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
+		qobuzService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
+			this.log.debug('get CurrentVisibilityState of qobuz' + this.info["qobuz"]['CurrentVisibilityState']);
+			callback(null, this.info["qobuz"]['CurrentVisibilityState']);
+		}); //0=SHOWN;1=HIDDEN
+		qobuzService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
+			this.log.debug('get TargetVisibilityState of ' + this.info["qobuz"]['TargetVisibilityState']);
+			callback(null, this.info["qobuz"]['TargetVisibilityState']);
+		});
+		qobuzService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
+			this.info["qobuz"]['TargetVisibilityState'] = value;
+			this.log('Target Visibility State to ' + value + " " + this.info["qobuz"]['ConfiguredName']);
+			this.info["qobuz"]['CurrentVisibilityState'] = value;
+			callback();
+		});
+		this.qobuzService = qobuzService;
+		
+		var jukeService = new Service.InputSource("juke", "juke");
+		jukeService.setCharacteristic(Characteristic.Identifier, this.info["juke"]["Identifier"]);
+		jukeService.setCharacteristic(Characteristic.ConfiguredName, this.info["juke"]["ConfiguredName"]);
+		jukeService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
+		jukeService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
+		jukeService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
+			this.log.debug('get CurrentVisibilityState of juke' + this.info["juke"]['CurrentVisibilityState']);
+			callback(null, this.info["juke"]['CurrentVisibilityState']);
+		}); //0=SHOWN;1=HIDDEN
+		jukeService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
+			this.log.debug('get TargetVisibilityState of ' + this.info["juke"]['TargetVisibilityState']);
+			callback(null, this.info["juke"]['TargetVisibilityState']);
+		});
+		jukeService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
+			this.info["juke"]['TargetVisibilityState'] = value;
+			this.log('Target Visibility State to ' + value + " " + this.info["juke"]['ConfiguredName']);
+			this.info["juke"]['CurrentVisibilityState'] = value;
+			callback();
+		});
+		this.jukeService = jukeService;
+		
+		var tidalService = new Service.InputSource("tidal", "tidal");
+		tidalService.setCharacteristic(Characteristic.Identifier, this.info["tidal"]["Identifier"]);
+		tidalService.setCharacteristic(Characteristic.ConfiguredName, this.info["tidal"]["ConfiguredName"]);
+		tidalService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
+		tidalService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
+		tidalService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
+			this.log.debug('get CurrentVisibilityState of tidal' + this.info["tidal"]['CurrentVisibilityState']);
+			callback(null, this.info["tidal"]['CurrentVisibilityState']);
+		}); //0=SHOWN;1=HIDDEN
+		tidalService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
+			this.log.debug('get TargetVisibilityState of ' + this.info["tidal"]['TargetVisibilityState']);
+			callback(null, this.info["tidal"]['TargetVisibilityState']);
+		});
+		tidalService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
+			this.info["tidal"]['TargetVisibilityState'] = value;
+			this.log('Target Visibility State to ' + value + " " + this.info["tidal"]['ConfiguredName']);
+			this.info["tidal"]['CurrentVisibilityState'] = value;
+			callback();
+		});
+		this.tidalService = tidalService;
+		
 		let informationService = new Service.AccessoryInformation();
 		informationService
-			.setCharacteristic(Characteristic.Manufacturer, "DoctorNSA")
+			.setCharacteristic(Characteristic.Manufacturer, "homebridge-musiccast-tv")
 			.setCharacteristic(Characteristic.Model, this.modell)
 			.setCharacteristic(Characteristic.SerialNumber, "123-456-789")
 			.setCharacteristic(Characteristic.FirmwareRevision, this.version);
@@ -899,6 +983,26 @@ MusicCastTV.prototype = {
 				case "Deezer":
 					TelevisionService.addLinkedService(this.deezerService);
 					ServiceList.push(this.deezerService);
+					break;
+				case "napster":
+				case "Napster":
+					TelevisionService.addLinkedService(this.napsterService);
+					ServiceList.push(this.napsterService);
+					break;
+				case "qobuz":
+				case "Qobuz":
+					TelevisionService.addLinkedService(this.qobuzService);
+					ServiceList.push(this.qobuzService);
+					break;
+				case "juke":
+				case "Juke":
+					TelevisionService.addLinkedService(this.jukeService);
+					ServiceList.push(this.jukeService);
+					break;
+				case "tidal":
+				case "Tidal":
+					TelevisionService.addLinkedService(this.tidalService);
+					ServiceList.push(this.tidalService);
 					break;
 				default:
 					this.log("input " + key + " not found");
