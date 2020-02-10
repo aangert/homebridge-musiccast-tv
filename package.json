@@ -1,6 +1,6 @@
 {
   "name": "homebridge-musiccast-tv",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Homebridge plugin for Yamaha MusicCast devices",
   "main": "index.js",
   "engines": {
@@ -12,7 +12,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\""
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
     "homebridge-plugin",
     "homebridge",
     "MusicCast",
+    "yamaha",
     "tv",
     "homekit"
   ],
