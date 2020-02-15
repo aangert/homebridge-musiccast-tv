@@ -41,13 +41,23 @@ function MusicCastTV(log, config) {
 		"optical2": {"Identifier": 15, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "optical2"}, 
 		"coaxial1": {"Identifier": 16, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "coaxial1"}, 
 		"coaxial2": {"Identifier": 17, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "coaxial2"}, 
-		"spotify": {"Identifier": 18, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "spotify"}, 
-		"deezer": {"Identifier": 19, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "deezer"}, 
-		"napster": {"Identifier": 20, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "napster"}, 
-		"qobuz": {"Identifier": 21, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "qobuz"}, 
-		"juke": {"Identifier": 22, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "juke"}, 
-		"tidal": {"Identifier": 23, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "tidal"}, 
-		"c": {"Identifier": 30, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}};
+		"hdmi1": {"Identifier": 18, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"hdmi2": {"Identifier": 19, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"hdmi3": {"Identifier": 20, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"hdmi4": {"Identifier": 21, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"hdmi5": {"Identifier": 22, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"hdmi6": {"Identifier": 23, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"hdmi7": {"Identifier": 24, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"hdmi8": {"Identifier": 25, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"aux1": {"Identifier": 26, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"aux2": {"Identifier": 27, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"spotify": {"Identifier": 28, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "spotify"}, 
+		"deezer": {"Identifier": 29, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "deezer"}, 
+		"napster": {"Identifier": 30, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "napster"}, 
+		"qobuz": {"Identifier": 31, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "qobuz"}, 
+		"juke": {"Identifier": 32, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "juke"}, 
+		"tidal": {"Identifier": 33, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "tidal"}, 
+		"c": {"Identifier": 34, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}};
 	this.log.debug(config);
 	for(var key in this.inputs) {
 		this.log.debug("updating name for " + key);
