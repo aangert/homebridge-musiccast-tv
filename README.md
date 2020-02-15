@@ -73,10 +73,16 @@ Currently supported and planned inputs:
 | optical2 | yes |
 | coaxial1 | yes |
 | coaxial2 | yes |
-| hdmi1 | no |
-| av1 | no |
+| hdmi[1-8] | no |
+| aux | no |
+| aux1 | no |
+| aux2 | no |
+| av[1-7] | no |
 | analog | no |
+| audio[1-4] | no |
 |  |  |
+| mc_link | no |
+| main_sync | no |
 | **streaming services** |
 | spotify | yes |
 | deezer | yes |
@@ -84,8 +90,12 @@ Currently supported and planned inputs:
 | qobuz | yes |
 | juke | yes |
 | tidal | yes |
+| pandora | no |
+| siriusxm | no |
+| radiko | no |
 
 If your MusicCast device has additional inputs, please file an issue. 
+hdmi[1-8] summarizes hdmi1, hdmi2, ..., hdmi8
 
 ## Debugging 
  - check you are using the right ip-adress
