@@ -95,6 +95,7 @@ Currently supported and planned inputs:
 | radiko | no |
 
 If your MusicCast device has additional inputs, please file an issue. 
+
 hdmi[1-8] summarizes hdmi1, hdmi2, ..., hdmi8
 
 ## Debugging 
@@ -103,7 +104,5 @@ hdmi[1-8] summarizes hdmi1, hdmi2, ..., hdmi8
  - run in debug mode using "homebridge -D" and file an issue
 
 ## TODO
- - [ ] prepare one InputService for each possible input
- - [x] remove eval
- - [x] create npm package
-
+ - [ ] prepare one InputService for each remaining input
+ - [ ] automatically detect volume and maxVolume

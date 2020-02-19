@@ -51,13 +51,17 @@ function MusicCastTV(log, config) {
 		"hdmi8": {"Identifier": 25, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"aux1": {"Identifier": 26, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"aux2": {"Identifier": 27, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"spotify": {"Identifier": 28, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "spotify"}, 
-		"deezer": {"Identifier": 29, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "deezer"}, 
-		"napster": {"Identifier": 30, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "napster"}, 
-		"qobuz": {"Identifier": 31, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "qobuz"}, 
-		"juke": {"Identifier": 32, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "juke"}, 
-		"tidal": {"Identifier": 33, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "tidal"}, 
-		"c": {"Identifier": 34, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}};
+		"mc_link": {"Identifier": 36, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"main_sync": {"Identifier": 37, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"spotify": {"Identifier": 38, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "spotify"}, 
+		"deezer": {"Identifier": 39, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "deezer"}, 
+		"napster": {"Identifier": 40, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "napster"}, 
+		"qobuz": {"Identifier": 41, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "qobuz"}, 
+		"juke": {"Identifier": 42, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "juke"}, 
+		"tidal": {"Identifier": 43, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "tidal"}, 
+		"pandora": {"Identifier": 44, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"siriusxm": {"Identifier": 45, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"radiko": {"Identifier": 46, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}};
 	this.log.debug(config);
 	for(var key in this.inputs) {
 		this.log.debug("updating name for " + key);
@@ -126,6 +130,52 @@ function MusicCastTV(log, config) {
 			case "Coaxial2":
 				this.info["coaxial2"]["ConfiguredName"]=this.inputs[key];
 				break;
+			case "hdmi1":
+			case "HDMI1":
+				this.info["hdmi1"]["ConfiguredName"]=this.inputs[key];
+				break;
+			case "hdmi2":
+			case "HDMI2":
+				this.info["hdmi2"]["ConfiguredName"]=this.inputs[key];
+				break;
+			case "hdmi3":
+			case "HDMI3":
+				this.info["hdmi3"]["ConfiguredName"]=this.inputs[key];
+				break;
+			case "hdmi4":
+			case "HDMI4":
+				this.info["hdmi4"]["ConfiguredName"]=this.inputs[key];
+				break;
+			case "hdmi5":
+			case "HDMI5":
+				this.info["hdmi5"]["ConfiguredName"]=this.inputs[key];
+				break;
+			case "hdmi6":
+			case "HDMI6":
+				this.info["hdmi6"]["ConfiguredName"]=this.inputs[key];
+				break;
+			case "hdmi7":
+			case "HDMI7":
+				this.info["hdmi7"]["ConfiguredName"]=this.inputs[key];
+				break;
+			case "hdmi8":
+			case "HDMI8":
+				this.info["hdmi8"]["ConfiguredName"]=this.inputs[key];
+				break;
+			case "aux1":
+			case "AUX1":
+				this.info["aux1"]["ConfiguredName"]=this.inputs[key];
+				break;
+			case "aux2":
+			case "AUX2":
+				this.info["aux2"]["ConfiguredName"]=this.inputs[key];
+				break;
+			case "mc_link":
+				this.info["mc_link"]["ConfiguredName"]=this.inputs[key];
+				break;
+			case "main_sync":
+				this.info["main_sync"]["ConfiguredName"]=this.inputs[key];
+				break;
 			case "spotify":
 			case "Spotify":
 				this.info["spotify"]["ConfiguredName"]=this.inputs[key];
@@ -149,6 +199,17 @@ function MusicCastTV(log, config) {
 			case "tidal":
 			case "Tidal":
 				this.info["tidal"]["ConfiguredName"]=this.inputs[key];
+				break;
+			case "pandora":
+			case "Pandora":
+				this.info["pandora"]["ConfiguredName"]=this.inputs[key];
+				break;
+			case "siriusxm":
+			case "Siriusxm":
+				this.info["siriusxm"]["ConfiguredName"]=this.inputs[key];
+				break;
+			case "radiko":
+				this.info["radiko"]["ConfiguredName"]=this.inputs[key];
 				break;
 			default:
 				this.log("input " + key + ": " + this.inputs[key] + " not found");
@@ -327,9 +388,10 @@ MusicCastTV.prototype = {
 	},
 	setVolume: function(value, callback) {
 		const that = this;
-		if (value<0 || this.maxVol>value) {
+		if (value<0 || this.maxVol<value) {
 			this.log("Volume must be between 0 and " + this.maxVol);
 			callback();
+			return;
 		}
 		this.volume = value;
 		request({
