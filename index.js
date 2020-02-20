@@ -41,14 +41,14 @@ function MusicCastTV(log, config) {
 		"optical2": {"Identifier": 15, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "optical2"}, 
 		"coaxial1": {"Identifier": 16, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "coaxial1"}, 
 		"coaxial2": {"Identifier": 17, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "coaxial2"}, 
-		"hdmi1": {"Identifier": 18, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"hdmi2": {"Identifier": 19, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"hdmi3": {"Identifier": 20, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"hdmi4": {"Identifier": 21, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"hdmi5": {"Identifier": 22, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"hdmi6": {"Identifier": 23, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"hdmi7": {"Identifier": 24, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"hdmi8": {"Identifier": 25, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"hdmi1": {"Identifier": 18, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi1"}, 
+		"hdmi2": {"Identifier": 19, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi2"}, 
+		"hdmi3": {"Identifier": 20, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi3"}, 
+		"hdmi4": {"Identifier": 21, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi4"}, 
+		"hdmi5": {"Identifier": 22, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi5"}, 
+		"hdmi6": {"Identifier": 23, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi6"}, 
+		"hdmi7": {"Identifier": 24, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi7"}, 
+		"hdmi8": {"Identifier": 25, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi8"}, 
 		"aux1": {"Identifier": 26, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"aux2": {"Identifier": 27, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"mc_link": {"Identifier": 36, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
@@ -59,9 +59,9 @@ function MusicCastTV(log, config) {
 		"qobuz": {"Identifier": 41, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "qobuz"}, 
 		"juke": {"Identifier": 42, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "juke"}, 
 		"tidal": {"Identifier": 43, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "tidal"}, 
-		"pandora": {"Identifier": 44, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"siriusxm": {"Identifier": 45, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"radiko": {"Identifier": 46, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}};
+		"pandora": {"Identifier": 44, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "pandora"}, 
+		"siriusxm": {"Identifier": 45, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "siriusxm"}, 
+		"radiko": {"Identifier": 46, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "radiko"}};
 	this.log.debug(config);
 	for(var key in this.inputs) {
 		this.log.debug("updating name for " + key);
@@ -410,7 +410,7 @@ MusicCastTV.prototype = {
 		callback();
 	},
 	setVolumeSelector: function(value, callback) {
-		this.log("VolumeSelector: " + value + ", current Volume: " + this.volume);
+		this.log.debug("VolumeSelector: " + value + ", current Volume: " + this.volume);
 		if (value == 0) {
 			this.setVolume(this.volume+1, callback);
 		}else if (value == 1){
@@ -757,6 +757,174 @@ MusicCastTV.prototype = {
 		});
 		this.coaxial2Service = coaxial2Service;
 		
+		var hdmi1Service = new Service.InputSource("hdmi1", "hdmi1");
+		hdmi1Service.setCharacteristic(Characteristic.Identifier, this.info["hdmi1"]["Identifier"]);
+		hdmi1Service.setCharacteristic(Characteristic.ConfiguredName, this.info["hdmi1"]["ConfiguredName"]);
+		hdmi1Service.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
+		hdmi1Service.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
+		hdmi1Service.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
+			this.log.debug('get CurrentVisibilityState of hdmi1' + this.info["hdmi1"]['CurrentVisibilityState']);
+			callback(null, this.info["hdmi1"]['CurrentVisibilityState']);
+		}); //0=SHOWN;1=HIDDEN
+		hdmi1Service.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
+			this.log.debug('get TargetVisibilityState of ' + this.info["hdmi1"]['TargetVisibilityState']);
+			callback(null, this.info["hdmi1"]['TargetVisibilityState']);
+		});
+		hdmi1Service.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
+			this.info["hdmi1"]['TargetVisibilityState'] = value;
+			this.log('Target Visibility State to ' + value + " " + this.info["hdmi1"]['ConfiguredName']);
+			this.info["hdmi1"]['CurrentVisibilityState'] = value;
+			callback();
+		});
+		this.hdmi1Service = hdmi1Service;
+		
+		var hdmi2Service = new Service.InputSource("hdmi2", "hdmi2");
+		hdmi2Service.setCharacteristic(Characteristic.Identifier, this.info["hdmi2"]["Identifier"]);
+		hdmi2Service.setCharacteristic(Characteristic.ConfiguredName, this.info["hdmi2"]["ConfiguredName"]);
+		hdmi2Service.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
+		hdmi2Service.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
+		hdmi2Service.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
+			this.log.debug('get CurrentVisibilityState of hdmi2' + this.info["hdmi2"]['CurrentVisibilityState']);
+			callback(null, this.info["hdmi2"]['CurrentVisibilityState']);
+		}); //0=SHOWN;1=HIDDEN
+		hdmi2Service.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
+			this.log.debug('get TargetVisibilityState of ' + this.info["hdmi2"]['TargetVisibilityState']);
+			callback(null, this.info["hdmi2"]['TargetVisibilityState']);
+		});
+		hdmi2Service.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
+			this.info["hdmi2"]['TargetVisibilityState'] = value;
+			this.log('Target Visibility State to ' + value + " " + this.info["hdmi2"]['ConfiguredName']);
+			this.info["hdmi2"]['CurrentVisibilityState'] = value;
+			callback();
+		});
+		this.hdmi2Service = hdmi2Service;
+		
+		var hdmi3Service = new Service.InputSource("hdmi3", "hdmi3");
+		hdmi3Service.setCharacteristic(Characteristic.Identifier, this.info["hdmi3"]["Identifier"]);
+		hdmi3Service.setCharacteristic(Characteristic.ConfiguredName, this.info["hdmi3"]["ConfiguredName"]);
+		hdmi3Service.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
+		hdmi3Service.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
+		hdmi3Service.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
+			this.log.debug('get CurrentVisibilityState of hdmi3' + this.info["hdmi3"]['CurrentVisibilityState']);
+			callback(null, this.info["hdmi3"]['CurrentVisibilityState']);
+		}); //0=SHOWN;1=HIDDEN
+		hdmi3Service.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
+			this.log.debug('get TargetVisibilityState of ' + this.info["hdmi3"]['TargetVisibilityState']);
+			callback(null, this.info["hdmi3"]['TargetVisibilityState']);
+		});
+		hdmi3Service.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
+			this.info["hdmi3"]['TargetVisibilityState'] = value;
+			this.log('Target Visibility State to ' + value + " " + this.info["hdmi3"]['ConfiguredName']);
+			this.info["hdmi3"]['CurrentVisibilityState'] = value;
+			callback();
+		});
+		this.hdmi3Service = hdmi3Service;
+		
+		var hdmi4Service = new Service.InputSource("hdmi4", "hdmi4");
+		hdmi4Service.setCharacteristic(Characteristic.Identifier, this.info["hdmi4"]["Identifier"]);
+		hdmi4Service.setCharacteristic(Characteristic.ConfiguredName, this.info["hdmi4"]["ConfiguredName"]);
+		hdmi4Service.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
+		hdmi4Service.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
+		hdmi4Service.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
+			this.log.debug('get CurrentVisibilityState of hdmi4' + this.info["hdmi4"]['CurrentVisibilityState']);
+			callback(null, this.info["hdmi4"]['CurrentVisibilityState']);
+		}); //0=SHOWN;1=HIDDEN
+		hdmi4Service.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
+			this.log.debug('get TargetVisibilityState of ' + this.info["hdmi4"]['TargetVisibilityState']);
+			callback(null, this.info["hdmi4"]['TargetVisibilityState']);
+		});
+		hdmi4Service.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
+			this.info["hdmi4"]['TargetVisibilityState'] = value;
+			this.log('Target Visibility State to ' + value + " " + this.info["hdmi4"]['ConfiguredName']);
+			this.info["hdmi4"]['CurrentVisibilityState'] = value;
+			callback();
+		});
+		this.hdmi4Service = hdmi4Service;
+		
+		var hdmi5Service = new Service.InputSource("hdmi5", "hdmi5");
+		hdmi5Service.setCharacteristic(Characteristic.Identifier, this.info["hdmi5"]["Identifier"]);
+		hdmi5Service.setCharacteristic(Characteristic.ConfiguredName, this.info["hdmi5"]["ConfiguredName"]);
+		hdmi5Service.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
+		hdmi5Service.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
+		hdmi5Service.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
+			this.log.debug('get CurrentVisibilityState of hdmi5' + this.info["hdmi5"]['CurrentVisibilityState']);
+			callback(null, this.info["hdmi5"]['CurrentVisibilityState']);
+		}); //0=SHOWN;1=HIDDEN
+		hdmi5Service.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
+			this.log.debug('get TargetVisibilityState of ' + this.info["hdmi5"]['TargetVisibilityState']);
+			callback(null, this.info["hdmi5"]['TargetVisibilityState']);
+		});
+		hdmi5Service.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
+			this.info["hdmi5"]['TargetVisibilityState'] = value;
+			this.log('Target Visibility State to ' + value + " " + this.info["hdmi5"]['ConfiguredName']);
+			this.info["hdmi5"]['CurrentVisibilityState'] = value;
+			callback();
+		});
+		this.hdmi5Service = hdmi5Service;
+		
+		var hdmi6Service = new Service.InputSource("hdmi6", "hdmi6");
+		hdmi6Service.setCharacteristic(Characteristic.Identifier, this.info["hdmi6"]["Identifier"]);
+		hdmi6Service.setCharacteristic(Characteristic.ConfiguredName, this.info["hdmi6"]["ConfiguredName"]);
+		hdmi6Service.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
+		hdmi6Service.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
+		hdmi6Service.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
+			this.log.debug('get CurrentVisibilityState of hdmi6' + this.info["hdmi6"]['CurrentVisibilityState']);
+			callback(null, this.info["hdmi6"]['CurrentVisibilityState']);
+		}); //0=SHOWN;1=HIDDEN
+		hdmi6Service.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
+			this.log.debug('get TargetVisibilityState of ' + this.info["hdmi6"]['TargetVisibilityState']);
+			callback(null, this.info["hdmi6"]['TargetVisibilityState']);
+		});
+		hdmi6Service.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
+			this.info["hdmi6"]['TargetVisibilityState'] = value;
+			this.log('Target Visibility State to ' + value + " " + this.info["hdmi6"]['ConfiguredName']);
+			this.info["hdmi6"]['CurrentVisibilityState'] = value;
+			callback();
+		});
+		this.hdmi6Service = hdmi6Service;
+		
+		var hdmi7Service = new Service.InputSource("hdmi7", "hdmi7");
+		hdmi7Service.setCharacteristic(Characteristic.Identifier, this.info["hdmi7"]["Identifier"]);
+		hdmi7Service.setCharacteristic(Characteristic.ConfiguredName, this.info["hdmi7"]["ConfiguredName"]);
+		hdmi7Service.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
+		hdmi7Service.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
+		hdmi7Service.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
+			this.log.debug('get CurrentVisibilityState of hdmi7' + this.info["hdmi7"]['CurrentVisibilityState']);
+			callback(null, this.info["hdmi7"]['CurrentVisibilityState']);
+		}); //0=SHOWN;1=HIDDEN
+		hdmi7Service.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
+			this.log.debug('get TargetVisibilityState of ' + this.info["hdmi7"]['TargetVisibilityState']);
+			callback(null, this.info["hdmi7"]['TargetVisibilityState']);
+		});
+		hdmi7Service.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
+			this.info["hdmi7"]['TargetVisibilityState'] = value;
+			this.log('Target Visibility State to ' + value + " " + this.info["hdmi7"]['ConfiguredName']);
+			this.info["hdmi7"]['CurrentVisibilityState'] = value;
+			callback();
+		});
+		this.hdmi7Service = hdmi7Service;
+		
+		var hdmi8Service = new Service.InputSource("hdmi8", "hdmi8");
+		hdmi8Service.setCharacteristic(Characteristic.Identifier, this.info["hdmi8"]["Identifier"]);
+		hdmi8Service.setCharacteristic(Characteristic.ConfiguredName, this.info["hdmi8"]["ConfiguredName"]);
+		hdmi8Service.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
+		hdmi8Service.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
+		hdmi8Service.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
+			this.log.debug('get CurrentVisibilityState of hdmi8' + this.info["hdmi8"]['CurrentVisibilityState']);
+			callback(null, this.info["hdmi8"]['CurrentVisibilityState']);
+		}); //0=SHOWN;1=HIDDEN
+		hdmi8Service.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
+			this.log.debug('get TargetVisibilityState of ' + this.info["hdmi8"]['TargetVisibilityState']);
+			callback(null, this.info["hdmi8"]['TargetVisibilityState']);
+		});
+		hdmi8Service.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
+			this.info["hdmi8"]['TargetVisibilityState'] = value;
+			this.log('Target Visibility State to ' + value + " " + this.info["hdmi8"]['ConfiguredName']);
+			this.info["hdmi8"]['CurrentVisibilityState'] = value;
+			callback();
+		});
+		this.hdmi8Service = hdmi8Service;
+		
 		var spotifyService = new Service.InputSource("spotify", "spotify");
 		spotifyService.setCharacteristic(Characteristic.Identifier, this.info["spotify"]["Identifier"]);
 		spotifyService.setCharacteristic(Characteristic.ConfiguredName, this.info["spotify"]["ConfiguredName"]);
@@ -882,6 +1050,69 @@ MusicCastTV.prototype = {
 			callback();
 		});
 		this.tidalService = tidalService;
+		
+		var pandoraService = new Service.InputSource("pandora", "pandora");
+		pandoraService.setCharacteristic(Characteristic.Identifier, this.info["pandora"]["Identifier"]);
+		pandoraService.setCharacteristic(Characteristic.ConfiguredName, this.info["pandora"]["ConfiguredName"]);
+		pandoraService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
+		pandoraService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
+		pandoraService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
+			this.log.debug('get CurrentVisibilityState of pandora' + this.info["pandora"]['CurrentVisibilityState']);
+			callback(null, this.info["pandora"]['CurrentVisibilityState']);
+		}); //0=SHOWN;1=HIDDEN
+		pandoraService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
+			this.log.debug('get TargetVisibilityState of ' + this.info["pandora"]['TargetVisibilityState']);
+			callback(null, this.info["pandora"]['TargetVisibilityState']);
+		});
+		pandoraService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
+			this.info["pandora"]['TargetVisibilityState'] = value;
+			this.log('Target Visibility State to ' + value + " " + this.info["pandora"]['ConfiguredName']);
+			this.info["pandora"]['CurrentVisibilityState'] = value;
+			callback();
+		});
+		this.pandoraService = pandoraService;
+		
+		var siriusxmService = new Service.InputSource("siriusxm", "siriusxm");
+		siriusxmService.setCharacteristic(Characteristic.Identifier, this.info["siriusxm"]["Identifier"]);
+		siriusxmService.setCharacteristic(Characteristic.ConfiguredName, this.info["siriusxm"]["ConfiguredName"]);
+		siriusxmService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
+		siriusxmService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
+		siriusxmService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
+			this.log.debug('get CurrentVisibilityState of siriusxm' + this.info["siriusxm"]['CurrentVisibilityState']);
+			callback(null, this.info["siriusxm"]['CurrentVisibilityState']);
+		}); //0=SHOWN;1=HIDDEN
+		siriusxmService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
+			this.log.debug('get TargetVisibilityState of ' + this.info["siriusxm"]['TargetVisibilityState']);
+			callback(null, this.info["siriusxm"]['TargetVisibilityState']);
+		});
+		siriusxmService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
+			this.info["siriusxm"]['TargetVisibilityState'] = value;
+			this.log('Target Visibility State to ' + value + " " + this.info["siriusxm"]['ConfiguredName']);
+			this.info["siriusxm"]['CurrentVisibilityState'] = value;
+			callback();
+		});
+		this.siriusxmService = siriusxmService;
+		
+		var radikoService = new Service.InputSource("radiko", "radiko");
+		radikoService.setCharacteristic(Characteristic.Identifier, this.info["radiko"]["Identifier"]);
+		radikoService.setCharacteristic(Characteristic.ConfiguredName, this.info["radiko"]["ConfiguredName"]);
+		radikoService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
+		radikoService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
+		radikoService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
+			this.log.debug('get CurrentVisibilityState of radiko' + this.info["radiko"]['CurrentVisibilityState']);
+			callback(null, this.info["radiko"]['CurrentVisibilityState']);
+		}); //0=SHOWN;1=HIDDEN
+		radikoService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
+			this.log.debug('get TargetVisibilityState of ' + this.info["radiko"]['TargetVisibilityState']);
+			callback(null, this.info["radiko"]['TargetVisibilityState']);
+		});
+		radikoService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
+			this.info["radiko"]['TargetVisibilityState'] = value;
+			this.log('Target Visibility State to ' + value + " " + this.info["radiko"]['ConfiguredName']);
+			this.info["radiko"]['CurrentVisibilityState'] = value;
+			callback();
+		});
+		this.radikoService = radikoService;
 		
 		let informationService = new Service.AccessoryInformation();
 		informationService
@@ -1046,6 +1277,46 @@ MusicCastTV.prototype = {
 					TelevisionService.addLinkedService(this.coaxial2Service);
 					ServiceList.push(this.coaxial2Service);
 					break;
+				case "hdmi1":
+				case "HDMI1":
+					TelevisionService.addLinkedService(this.hdmi1Service);
+					ServiceList.push(this.hdmi1Service);
+					break;
+				case "hdmi2":
+				case "HDMI2":
+					TelevisionService.addLinkedService(this.hdmi2Service);
+					ServiceList.push(this.hdmi2Service);
+					break;
+				case "hdmi3":
+				case "HDMI3":
+					TelevisionService.addLinkedService(this.hdmi3Service);
+					ServiceList.push(this.hdmi3Service);
+					break;
+				case "hdmi4":
+				case "HDMI4":
+					TelevisionService.addLinkedService(this.hdmi4Service);
+					ServiceList.push(this.hdmi4Service);
+					break;
+				case "hdmi5":
+				case "HDMI5":
+					TelevisionService.addLinkedService(this.hdmi5Service);
+					ServiceList.push(this.hdmi5Service);
+					break;
+				case "hdmi6":
+				case "HDMI6":
+					TelevisionService.addLinkedService(this.hdmi6Service);
+					ServiceList.push(this.hdmi6Service);
+					break;
+				case "hdmi7":
+				case "HDMI7":
+					TelevisionService.addLinkedService(this.hdmi7Service);
+					ServiceList.push(this.hdmi7Service);
+					break;
+				case "hdmi8":
+				case "HDMI8":
+					TelevisionService.addLinkedService(this.hdmi8Service);
+					ServiceList.push(this.hdmi8Service);
+					break;
 				case "spotify":
 				case "Spotify":
 					TelevisionService.addLinkedService(this.spotifyService);
@@ -1075,6 +1346,19 @@ MusicCastTV.prototype = {
 				case "Tidal":
 					TelevisionService.addLinkedService(this.tidalService);
 					ServiceList.push(this.tidalService);
+					break;
+				case "pandora":
+				case "Pandora":
+					TelevisionService.addLinkedService(this.pandoraService);
+					ServiceList.push(this.pandoraService);
+					break;
+				case "sirusxm":
+					TelevisionService.addLinkedService(this.siriusxmService);
+					ServiceList.push(this.siriusxmService);
+					break;
+				case "radiko":
+					TelevisionService.addLinkedService(this.radikoService);
+					ServiceList.push(this.radikoService);
 					break;
 				default:
 					this.log("input " + key + " not found");
