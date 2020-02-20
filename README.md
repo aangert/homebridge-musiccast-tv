@@ -73,7 +73,7 @@ Currently supported and planned inputs:
 | optical2 | yes |
 | coaxial1 | yes |
 | coaxial2 | yes |
-| hdmi[1-8] | no |
+| hdmi[1-8] | yes |
 | aux | no |
 | aux1 | no |
 | aux2 | no |
@@ -90,9 +90,9 @@ Currently supported and planned inputs:
 | qobuz | yes |
 | juke | yes |
 | tidal | yes |
-| pandora | no |
-| siriusxm | no |
-| radiko | no |
+| pandora | yes |
+| siriusxm | yes |
+| radiko | yes |
 
 If your MusicCast device has additional inputs, please file an issue. 
 
