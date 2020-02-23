@@ -14,13 +14,32 @@ function MusicCastTV(log, config) {
 	this.ip = config["ip"];
 	this.zone = config["zone"] || "main";
 	this.modell = config["modell"] || "MusicCast TV";
+	var vol;
+	that = this;
+	request({
+	method: 'GET',
+	url: 'http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/getStatus',
+	headers: {
+		'X-AppName': 'MusicCast/1.0',
+		'X-AppPort': '41100',
+	},
+	}, 
+	function (error, response, body) {
+		if (error) {
+			that.log.debug('HTTP get error');
+			that.log(error.message);
+		}
+		att=JSON.parse(body);
+		that.log('HTTP GetStatus result: Volume = ' + att.volume);
+		that.volume = config["volume"] || att.volume;
+	});
 	this.maxVol = config["maxVol"] || 160;
 	this.inputs =  config["inputs"] || {"AirPlay": "1. 'inputs' missing", "bluetooth": "2. in config.json", "spotify": "3. please modify"};
 	this.active = config["active"] || config["power"] || 0;
 	this.ActiveIdentifier = config["identifier"] || 1;
 	this.mute = 1;
 	//this.brightness = config["brightness"] || 100;
-	this.volume = config["volume"] || 100;
+	this.volume = config["volume"] || vol;
 	//this.updateInterval = 1000;
 	this.version = require("./package.json").version;
 	this.features = {};
