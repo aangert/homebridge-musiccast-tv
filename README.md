@@ -48,7 +48,7 @@ config arguments:
 | inputs | {"fm": "radio", "line_cd": "CD", "airplay": "AirPlay"} | one key:value pair for each input you want to use. You can hide inputs by removing the checkbox in your HomeKit app or by removing it here. | yes |
 | volume | 100 | initial Volume; automatically detected | no |
 | modell | "Yamaha R-N602" | device modell shown in homebridge | no |
-| identifier | 38 | used to set initial input after homebridge restart; values from index.js line 28 | no |
+| identifier | 38 | used to set initial input after homebridge restart; values from [index.js line 28](https://github.com/DoctorNSA/homebridge-musiccast-tv/blob/0232cc3b21ced466049eef451e43443047d2ed00/index.js#L28) | no |
 
 
 Currently supported and planned inputs:
