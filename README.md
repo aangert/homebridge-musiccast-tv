@@ -46,8 +46,9 @@ config arguments:
 | ip | 192.168.178.29 | ip address for your MusicCast device | yes |
 | maxVol | 161 | maxVol from getFeatures.json | yes |
 | inputs | {"fm": "radio", "line_cd": "CD", "airplay": "AirPlay"} | one key:value pair for each input you want to use. You can hide inputs by removing the checkbox in your HomeKit app or by removing it here. | yes |
-| volume | 100 | initial Volume | no |
-| modell | "Yamaha R-N602" |  | no |
+| volume | 100 | initial Volume; automatically detected | no |
+| modell | "Yamaha R-N602" | device modell shown in homebridge | no |
+| identifier | 38 | used to set initial input after homebridge restart; values from index.js line 28 | no |
 
 
 Currently supported and planned inputs:
@@ -105,4 +106,5 @@ hdmi[1-8] summarizes hdmi1, hdmi2, ..., hdmi8
 
 ## TODO
  - [ ] prepare one InputService for each remaining input
- - [ ] automatically detect volume and maxVolume
+ - [x] automatically detect volume
+ - [ ] automatically detect  maxVolume
