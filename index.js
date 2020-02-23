@@ -228,24 +228,24 @@ MusicCastTV.prototype = {
 		const that = this;
 		this.log.debug("get Active of " + this.name + ": " + this.active);
 		request({
-        method: 'GET',
-            url: 'http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/getStatus',
-            headers: {
-                'X-AppName': 'MusicCast/1.0',
-                'X-AppPort': '41100',
-			},
-    }, 
-    function (error, response, body) {
-      if (error) {
-        that.log.debug('HTTP get error');
-        that.log(error.message);
-        return callback(error);
-      }
-	  att=JSON.parse(body);
-	  that.log.debug('HTTP GetStatus result: ' + att.power);
-	  that.active = (att.power=='on');
-      return callback(null, (att.power=='on'));
-	  });
+		method: 'GET',
+		url: 'http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/getStatus',
+		headers: {
+			'X-AppName': 'MusicCast/1.0',
+		'X-AppPort': '41100',
+		},
+		}, 
+		function (error, response, body) {
+			if (error) {
+				that.log.debug('HTTP get error');
+				that.log(error.message);
+				return callback(error);
+			}
+			att=JSON.parse(body);
+			that.log.debug('HTTP GetStatus result: ' + att.power);
+			that.active = (att.power=='on');
+			return callback(null, (att.power=='on'));
+		});
 	},
 	setActive: function(value, callback) {
 		const that = this;
@@ -257,9 +257,9 @@ MusicCastTV.prototype = {
 		},
 		function (error, response) {
 			if (error) {
-			that.log.debug('http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/setPower?power=' + (value ? 'on' : 'standby'));
-			that.log(error.message);
-			return callback(error);
+				that.log.debug('http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/setPower?power=' + (value ? 'on' : 'standby'));
+				that.log(error.message);
+				return callback(error);
 			}
 		})
 		this.log("Active to " + value);
@@ -367,24 +367,24 @@ MusicCastTV.prototype = {
 		const that = this;
 		this.log.debug("get Volume of " + this.name + ": " + this.volume);
 		request({
-        method: 'GET',
-            url: 'http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/getStatus',
-            headers: {
-                'X-AppName': 'MusicCast/1.0',
-                'X-AppPort': '41100',
-			},
-    }, 
-    function (error, response, body) {
-      if (error) {
-        that.log.debug('HTTP get error');
-        that.log(error.message);
-        return callback(error);
-      }
-	  att=JSON.parse(body);
-	  that.log('HTTP GetStatus result: Volume = ' + att.volume);
-	  that.volume = (att.volume * 100 / that.maxVol);
-      return callback(null, att.volume);
-	  });
+		method: 'GET',
+		url: 'http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/getStatus',
+		headers: {
+			'X-AppName': 'MusicCast/1.0',
+			'X-AppPort': '41100',
+		},
+		}, 
+		function (error, response, body) {
+			if (error) {
+				that.log.debug('HTTP get error');
+				that.log(error.message);
+				return callback(error);
+			}
+			att=JSON.parse(body);
+			that.log('HTTP GetStatus result: Volume = ' + att.volume);
+			//that.volume = (att.volume * 100 / that.maxVol);
+			return callback(null, att.volume);
+		});
 	},
 	setVolume: function(value, callback) {
 		const that = this;
@@ -393,7 +393,6 @@ MusicCastTV.prototype = {
 			callback();
 			return;
 		}
-		this.volume = value;
 		request({
 		url: 'http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/setVolume?volume=' + value,
 		method: 'GET',
@@ -406,6 +405,7 @@ MusicCastTV.prototype = {
 			return callback(error);
 			}
 		})
+		this.volume = value;
 		this.log("Volume to " + value);
 		callback();
 	},
