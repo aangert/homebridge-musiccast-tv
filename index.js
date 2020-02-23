@@ -348,7 +348,7 @@ MusicCastTV.prototype = {
 				if (this.CurrentMediaState == 0) {
 					setTargetMediaState(1, callback);
 					//this.TargetMediaState = 1;
-				} 
+				}
 				if (this.CurrentMediaState == 1) {
 					setTargetMediaState(0, callback);
 					//this.TargetMediaState = 0;
