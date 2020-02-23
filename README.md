@@ -9,8 +9,6 @@
         "accessory": "MusicCastTV",
         "name": "Living Room Radio",
         "ip": "192.168.178.2",
-        "maxVol": 60,
-        "volume": 50,
         "inputs": {
             "airplay": "AirPlay", 
             "am": "AM", 
@@ -44,11 +42,11 @@ config arguments:
 | name | "TV stereo" | the name of your device | yes |
 | zone | "zone2" | MusicCast zone from getFeatures.json, default: "main" | no |
 | ip | 192.168.178.29 | ip address for your MusicCast device | yes |
-| maxVol | 161 | maxVol from getFeatures.json | yes |
 | inputs | {"fm": "radio", "line_cd": "CD", "airplay": "AirPlay"} | one key:value pair for each input you want to use. You can hide inputs by removing the checkbox in your HomeKit app or by removing it here. | yes |
 | volume | 100 | initial Volume; automatically detected | no |
+| maxVol | 161 | maxVol from getFeatures.json; automatically detected | no |
 | modell | "Yamaha R-N602" | device modell shown in homebridge | no |
-| identifier | 38 | used to set initial input after homebridge restart; values from [index.js line 28](https://github.com/DoctorNSA/homebridge-musiccast-tv/blob/0232cc3b21ced466049eef451e43443047d2ed00/index.js#L28) | no |
+| identifier | 38 | used to set initial input after homebridge restart; values from [index.js line 46](https://github.com/DoctorNSA/homebridge-musiccast-tv/blob/0232cc3b21ced466049eef451e43443047d2ed00/index.js#L46) | no |
 
 
 Currently supported and planned inputs:
