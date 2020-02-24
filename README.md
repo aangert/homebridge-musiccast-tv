@@ -1,5 +1,7 @@
 # homebridge-musiccast-tv
 
+![npm](https://img.shields.io/npm/v/homebridge-musiccast-tv)
+
 ## Features
 
 ## Configuration
@@ -101,6 +103,12 @@ hdmi[1-8] summarizes hdmi1, hdmi2, ..., hdmi8
  - check you are using the right ip-adress
  - check your log file for error messages
  - run in debug mode using "homebridge -D" and file an issue
+
+## Common issues
+
+### Input appears as additional tile
+remove and repair homebridge
+
 
 ## TODO
  - [ ] prepare one InputService for each remaining input
