@@ -30,11 +30,11 @@ function MusicCastTV(log, config) {
 			that.log(error.message);
 		}
 		att=JSON.parse(body);
-		that.log('HTTP GetStatus result: volume = ' + att.volume);
+		that.log.debug('HTTP GetStatus result: volume = ' + att.volume);
 		that.volume = config["volume"] || att.volume;
-		that.log('HTTP GetStatus result: maximal volume = ' + att.max_volume);
+		that.log.debug('HTTP GetStatus result: max volume = ' + att.max_volume);
 		that.maxVol = config["maxVol"] || att.max_volume;
-		that.log("volume: " + that.volume + " maxVol: " + that.maxVol);
+		that.log("volume: " + that.volume + " maxVol: " + that.maxVol + " Input: " + att.input);
 	});
 	this.inputs =  config["inputs"] || {"AirPlay": "1. 'inputs' missing", "bluetooth": "2. in config.json", "spotify": "3. please modify"};
 	this.active = config["active"] || config["power"] || 0;
@@ -251,7 +251,7 @@ MusicCastTV.prototype = {
 		url: 'http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/getStatus',
 		headers: {
 			'X-AppName': 'MusicCast/1.0',
-		'X-AppPort': '41100',
+			'X-AppPort': '41100',
 		},
 		}, 
 		function (error, response, body) {
