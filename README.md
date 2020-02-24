@@ -105,4 +105,7 @@ hdmi[1-8] summarizes hdmi1, hdmi2, ..., hdmi8
 ## TODO
  - [ ] prepare one InputService for each remaining input
  - [x] automatically detect volume
- - [ ] automatically detect  maxVolume
+ - [x] automatically detect maxVolume
+ - [ ] automatically detect current input
+ - [ ] turn on optional input from config.json after power on
+ - [ ] 
