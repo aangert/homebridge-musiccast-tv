@@ -39,6 +39,7 @@ function MusicCastTV(log, config) {
 	this.inputs =  config["inputs"] || {"AirPlay": "1. 'inputs' missing", "bluetooth": "2. in config.json", "spotify": "3. please modify"};
 	this.active = config["active"] || config["power"] || 0;
 	this.ActiveIdentifier = config["identifier"] || 1;
+	this.powerOnInput = config["powerOnInput"];
 	this.mute = 1;
 	//this.brightness = config["brightness"] || 100;
 	//this.updateInterval = 1000;
@@ -282,6 +283,10 @@ MusicCastTV.prototype = {
 			}
 		})
 		this.log("Active to " + value);
+		if(this.powerOnInput&&value) {
+			this.log("powerOnInput: " + this.powerOnInput)
+			// turn on powerOnInput
+		}
 		callback();
 	},
 	getActiveIdentifier: function(callback) {
