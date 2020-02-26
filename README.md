@@ -1,8 +1,11 @@
 # homebridge-musiccast-tv
 
-![npm](https://img.shields.io/npm/v/homebridge-musiccast-tv)
+[![npm](https://img.shields.io/npm/v/homebridge-musiccast-tv)](https://npmjs.com/package/homebridge-musiccast-tv)
 
 ## Features
+
+This plugin publishes MusicCast devices as HomeKit compatible TVs. 
+It supports any number of inputs and volume control via the Apple TV Remote widget in the iOS Control Center. 
 
 ## Configuration
 
@@ -16,6 +19,7 @@
             "am": "AM", 
             "fm": "FM", 
             "line_cd": "CD", 
+            "hdmi1": "DVD Player", 
             "server": "Homeserver", 
             "net_radio": "Online radio"
             }
@@ -107,7 +111,8 @@ hdmi[1-8] summarizes hdmi1, hdmi2, ..., hdmi8
 ## Common issues
 
 ### Input appears as additional tile
-remove and repair homebridge
+ - remove and repair homebridge
+ - restart homebridge
 
 
 ## TODO
