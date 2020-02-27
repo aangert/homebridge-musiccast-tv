@@ -120,132 +120,99 @@ MusicCastTV.prototype = {
 			case "line2":
 			case "Line2":
 				return "line2";
-				break;
 			case "line3":
 			case "Line3":
 				return "line3";
-				break;
 			case "fm":
 			case "FM":
 				return "fm";
-				break;
 			case "am":
 			case "AM":
 				return "am";
-				break;
 			case "net_radio":
 			case "NetRadio":
 				return "net_radio";
-				break;
 			case "server":
 			case "Server":
 				return "server";
-				break;
 			case "bluetooth":
 			case "Bluetooth":
 				return "bluetooth";
-				break;
 			case "usb":
 			case "USB":
 				return "usb";
-				break;
 			case "optical1":
 			case "Optical1":
 				return "optical1";
-				break;
 			case "optical2":
 			case "Optical2":
 				return "optical2";
-				break;
 			case "coaxial1":
 			case "Coaxial1":
 				return "coaxial1";
-				break;
 			case "coaxial2":
 			case "Coaxial2":
 				return "coaxial2";
-				break;
 			case "hdmi1":
 			case "HDMI1":
 				return "hdmi1";
-				break;
 			case "hdmi2":
 			case "HDMI2":
 				return "hdmi2";
-				break;
 			case "hdmi3":
 			case "HDMI3":
 				return "hdmi3";
-				break;
 			case "hdmi4":
 			case "HDMI4":
 				return "hdmi4";
-				break;
 			case "hdmi5":
 			case "HDMI5":
 				return "hdmi5";
-				break;
 			case "hdmi6":
 			case "HDMI6":
 				return "hdmi6";
-				break;
 			case "hdmi7":
 			case "HDMI7":
 				return "hdmi7";
-				break;
 			case "hdmi8":
 			case "HDMI8":
 				return "hdmi8";
-				break;
 			case "aux1":
 			case "AUX1":
 				return "aux1";
-				break;
 			case "aux2":
 			case "AUX2":
 				return "aux2";
-				break;
 			case "mc_link":
 				return "mc_link";
-				break;
 			case "main_sync":
 				return "main_sync";
-				break;
 			case "spotify":
 			case "Spotify":
 				return "spotify";
-				break;
 			case "deezer":
 			case "Deezer":
 				return "deezer";
-				break;
 			case "napster":
 			case "Napster":
 				return "napster";
-				break;
 			case "qobuz":
 			case "Qobuz":
 				return "qobuz";
-				break;
 			case "juke":
 			case "Juke":
 				return "juke";
-				break;
 			case "tidal":
 			case "Tidal":
 				return "tidal";
-				break;
 			case "pandora":
 			case "Pandora":
 				return "pandora";
-				break;
 			case "siriusxm":
 			case "Siriusxm":
 				return "siriusxm";
-				break;
 			case "radiko":
 				return "radiko";
-				break;
 			default:
 				this.log("input " + name + " not found");
 				return "";
@@ -982,7 +949,7 @@ MusicCastTV.prototype = {
 			this.info["hdmi8"]['CurrentVisibilityState'] = value;
 			callback();
 		});
-		this.hdmi8Service = hdmi8Service;*/
+		this.hdmi8Service = hdmi8Service;
 		
 		var spotifyService = new Service.InputSource("spotify", "spotify");
 		spotifyService.setCharacteristic(Characteristic.Identifier, this.info["spotify"]["Identifier"]);
@@ -1171,7 +1138,7 @@ MusicCastTV.prototype = {
 			this.info["radiko"]['CurrentVisibilityState'] = value;
 			callback();
 		});
-		this.radikoService = radikoService;
+		this.radikoService = radikoService;*/
 		
 		let informationService = new Service.AccessoryInformation();
 		informationService
@@ -1416,44 +1383,53 @@ MusicCastTV.prototype = {
 					break;
 				case "spotify":
 				case "Spotify":
+					this.spotifyService = this.getInputService("spotify");
 					TelevisionService.addLinkedService(this.spotifyService);
 					ServiceList.push(this.spotifyService);
 					break;
 				case "deezer":
 				case "Deezer":
+					this.deezerService = this.getInputService("deezer");
 					TelevisionService.addLinkedService(this.deezerService);
 					ServiceList.push(this.deezerService);
 					break;
 				case "napster":
 				case "Napster":
+					this.napsterService = this.getInputService("napster");
 					TelevisionService.addLinkedService(this.napsterService);
 					ServiceList.push(this.napsterService);
 					break;
 				case "qobuz":
 				case "Qobuz":
+					this.qobuzService = this.getInputService("qobuz");
 					TelevisionService.addLinkedService(this.qobuzService);
 					ServiceList.push(this.qobuzService);
 					break;
 				case "juke":
 				case "Juke":
+					this.jukeService = this.getInputService("juke");
 					TelevisionService.addLinkedService(this.jukeService);
 					ServiceList.push(this.jukeService);
 					break;
 				case "tidal":
 				case "Tidal":
+					this.tidalService = this.getInputService("tidal");
 					TelevisionService.addLinkedService(this.tidalService);
 					ServiceList.push(this.tidalService);
 					break;
 				case "pandora":
 				case "Pandora":
+					this.pandoraService = this.getInputService("pandora");
 					TelevisionService.addLinkedService(this.pandoraService);
 					ServiceList.push(this.pandoraService);
 					break;
 				case "sirusxm":
+					this.siriusxmService = this.getInputService("siriusxm");
 					TelevisionService.addLinkedService(this.siriusxmService);
 					ServiceList.push(this.siriusxmService);
 					break;
 				case "radiko":
+					this.radikoService = this.getInputService("radiko");
 					TelevisionService.addLinkedService(this.radikoService);
 					ServiceList.push(this.radikoService);
 					break;

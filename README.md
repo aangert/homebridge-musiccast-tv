@@ -44,7 +44,7 @@ config arguments:
 
 | name | exaple | description | required |
 | ---- | ------ | ----------- | -------- |
-| acessory | MusicCastTV | this value is used to identify this plugin | yes |
+| accessory | MusicCastTV | this value is used to identify this plugin | yes |
 | name | "TV stereo" | the name of your device | yes |
 | zone | "zone2" | MusicCast zone from getFeatures.json, default: "main" | no |
 | ip | 192.168.178.29 | ip address for your MusicCast device | yes |
@@ -111,8 +111,8 @@ hdmi[1-8] summarizes hdmi1, hdmi2, ..., hdmi8
 ## Common issues
 
 ### Input appears as additional tile
- - remove and repair homebridge
- - restart homebridge
+ - remove and repair Homebridge
+ - restart Homebridge
 
 
 ## TODO
