@@ -40,7 +40,7 @@ function MusicCastTV(log, config) {
 			that.log("Input: " + att.input + " String: " + that.getInputFromString(att.input));
 		}
 	});
-	this.inputs =  config["inputs"] || {"AirPlay": "1. 'inputs' missing", "bluetooth": "2. in config.json", "spotify": "3. please modify"};
+	this.inputs =  config["inputs"] || {"airplay": "1. 'inputs' missing", "bluetooth": "2. in config.json", "spotify": "3. please modify"};
 	this.active = config["active"] || config["power"] || 0;
 	this.ActiveIdentifier = config["identifier"] || 1;
 	this.powerOnInput = config["powerOnInput"];
@@ -49,13 +49,13 @@ function MusicCastTV(log, config) {
 	//this.updateInterval = 1000;
 	this.version = require("./package.json").version;
 	this.features = {};
-	this.info = {"AirPlay": {"Identifier": 1, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "airplay"}, 
+	this.info = {"airplay": {"Identifier": 1, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "airplay"}, 
 		"line_cd": {"Identifier": 2, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "line_cd"}, 
 		"fm": {"Identifier": 3, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "fm"}, 
 		"am": {"Identifier": 4, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "am"}, 
 		"dab": {"Identifier": 5, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"server": {"Identifier": 6, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "server"}, 
-		"Phono": {"Identifier": 7, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "phono"}, 
+		"phono": {"Identifier": 7, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "phono"}, 
 		"usb": {"Identifier": 8, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "usb"}, 
 		"bluetooth": {"Identifier": 9, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "bluetooth"}, 
 		"net_radio": {"Identifier": 10, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "net_radio"}, 
@@ -90,156 +90,10 @@ function MusicCastTV(log, config) {
 	this.log.debug(config);
 	for(var key in this.inputs) {
 		this.log.debug("updating name for " + key);
-		this.info[this.getInputFromString(key)]["ConfiguredName"]=this.inputs[key];
-		/*switch (key) {
-			case "airplay":
-			case "AirPlay":
-				this.info["AirPlay"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "phono":
-			case "Phono":
-				this.info["Phono"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "line_cd":
-			case "LineCD":
-				this.info["line_cd"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "line1":
-			case "Line1":
-				this.info["line1"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "line2":
-			case "Line2":
-				this.info["line2"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "line3":
-			case "Line3":
-				this.info["line3"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "fm":
-			case "FM":
-				this.info["fm"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "am":
-			case "AM":
-				this.info["am"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "net_radio":
-			case "NetRadio":
-				this.info["net_radio"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "server":
-			case "Server":
-				this.info["server"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "bluetooth":
-			case "Bluetooth":
-				this.info["bluetooth"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "usb":
-			case "USB":
-				this.info["usb"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "optical1":
-			case "Optical1":
-				this.info["optical1"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "optical2":
-			case "Optical2":
-				this.info["optical2"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "coaxial1":
-			case "Coaxial1":
-				this.info["coaxial1"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "coaxial2":
-			case "Coaxial2":
-				this.info["coaxial2"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "hdmi1":
-			case "HDMI1":
-				this.info["hdmi1"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "hdmi2":
-			case "HDMI2":
-				this.info["hdmi2"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "hdmi3":
-			case "HDMI3":
-				this.info["hdmi3"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "hdmi4":
-			case "HDMI4":
-				this.info["hdmi4"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "hdmi5":
-			case "HDMI5":
-				this.info["hdmi5"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "hdmi6":
-			case "HDMI6":
-				this.info["hdmi6"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "hdmi7":
-			case "HDMI7":
-				this.info["hdmi7"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "hdmi8":
-			case "HDMI8":
-				this.info["hdmi8"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "aux1":
-			case "AUX1":
-				this.info["aux1"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "aux2":
-			case "AUX2":
-				this.info["aux2"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "mc_link":
-				this.info["mc_link"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "main_sync":
-				this.info["main_sync"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "spotify":
-			case "Spotify":
-				this.info["spotify"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "deezer":
-			case "Deezer":
-				this.info["deezer"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "napster":
-			case "Napster":
-				this.info["napster"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "qobuz":
-			case "Qobuz":
-				this.info["qobuz"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "juke":
-			case "Juke":
-				this.info["juke"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "tidal":
-			case "Tidal":
-				this.info["tidal"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "pandora":
-			case "Pandora":
-				this.info["pandora"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "siriusxm":
-			case "Siriusxm":
-				this.info["siriusxm"]["ConfiguredName"]=this.inputs[key];
-				break;
-			case "radiko":
-				this.info["radiko"]["ConfiguredName"]=this.inputs[key];
-				break;
-			default:
-				this.log("input " + key + ": " + this.inputs[key] + " not found");
-		}*/
+		tmpInput = this.getInputFromString(key);
+		if(tmpInput != "") {
+			this.info[tmpInput]["ConfiguredName"]=this.inputs[key];
+		}
 	}
 	this.log("Initialized '" + this.name + "'");
 }
@@ -253,11 +107,11 @@ MusicCastTV.prototype = {
 		switch(name) {
 			case "airplay":
 			case "AirPlay":
-				return "AirPlay";
+				return "airplay";
 				break;
 			case "phono":
 			case "Phono":
-				return "Phono";
+				return "phono";
 				break;
 			case "line_cd":
 			case "LineCD":
@@ -447,7 +301,7 @@ MusicCastTV.prototype = {
 		})
 		this.log("Active to " + value);
 		if(this.powerOnInput&&value) {
-			this.log("powerOnInput: " + this.powerOnInput + " " + this.getInputFromString(this.powerOnInput))
+			this.log("powerOnInput: " + this.powerOnInput + "; String: " + this.getInputFromString(this.powerOnInput));
 			// turn on powerOnInput
 		}
 		callback();
@@ -608,47 +462,47 @@ MusicCastTV.prototype = {
 	getServices: function() {
 		const that = this;
 		
-		var AirPlayService = new Service.InputSource("AirPlay", "AirPlay");
-		AirPlayService.setCharacteristic(Characteristic.Identifier, this.info["AirPlay"]["Identifier"]);
-		AirPlayService.setCharacteristic(Characteristic.ConfiguredName, this.info["AirPlay"]["ConfiguredName"]);
-		AirPlayService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		AirPlayService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		AirPlayService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of AirPlay ' + this.info["AirPlay"]['CurrentVisibilityState']);
-			callback(null, this.info["AirPlay"]['CurrentVisibilityState']);
+		var airplayService = new Service.InputSource("airplay", "airplay");
+		airplayService.setCharacteristic(Characteristic.Identifier, this.info["airplay"]["Identifier"]);
+		airplayService.setCharacteristic(Characteristic.ConfiguredName, this.info["airplay"]["ConfiguredName"]);
+		airplayService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
+		airplayService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
+		airplayService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
+			this.log.debug('get CurrentVisibilityState of airplay ' + this.info["airplay"]['CurrentVisibilityState']);
+			callback(null, this.info["airplay"]['CurrentVisibilityState']);
 		}); //0=SHOWN;1=HIDDEN
-		AirPlayService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["AirPlay"]['TargetVisibilityState']);
-			callback(null, this.info["AirPlay"]['TargetVisibilityState']);
+		airplayService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
+			this.log.debug('get TargetVisibilityState of ' + this.info["airplay"]['TargetVisibilityState']);
+			callback(null, this.info["airplay"]['TargetVisibilityState']);
 		});
-		AirPlayService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["AirPlay"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["AirPlay"]['ConfiguredName']);
-			this.info["AirPlay"]['CurrentVisibilityState'] = value;
+		airplayService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
+			this.info["airplay"]['TargetVisibilityState'] = value;
+			this.log('Target Visibility State to ' + value + " " + this.info["airplay"]['ConfiguredName']);
+			this.info["airplay"]['CurrentVisibilityState'] = value;
 			callback();
 		});
-		this.AirPlayService = AirPlayService;
+		this.airplayService = airplayService;
 		
-		var PhonoService = new Service.InputSource("Phono", "Phono");
-		PhonoService.setCharacteristic(Characteristic.Identifier, this.info["Phono"]["Identifier"]);
-		PhonoService.setCharacteristic(Characteristic.ConfiguredName, this.info["Phono"]["ConfiguredName"]);
-		PhonoService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		PhonoService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		PhonoService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of Phono ' + this.info["Phono"]['CurrentVisibilityState']);
-			callback(null, this.info["Phono"]['CurrentVisibilityState']);
+		var phonoService = new Service.InputSource("phono", "phono");
+		phonoService.setCharacteristic(Characteristic.Identifier, this.info["phono"]["Identifier"]);
+		phonoService.setCharacteristic(Characteristic.ConfiguredName, this.info["phono"]["ConfiguredName"]);
+		phonoService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
+		phonoService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
+		phonoService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
+			this.log.debug('get CurrentVisibilityState of phono ' + this.info["phono"]['CurrentVisibilityState']);
+			callback(null, this.info["phono"]['CurrentVisibilityState']);
 		}); //0=SHOWN;1=HIDDEN
-		PhonoService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["Phono"]['TargetVisibilityState']);
-			callback(null, this.info["Phono"]['TargetVisibilityState']);
+		phonoService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
+			this.log.debug('get TargetVisibilityState of ' + this.info["phono"]['TargetVisibilityState']);
+			callback(null, this.info["phono"]['TargetVisibilityState']);
 		});
-		PhonoService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["Phono"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["Phono"]['ConfiguredName']);
-			this.info["Phono"]['CurrentVisibilityState'] = value;
+		phonoService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
+			this.info["phono"]['TargetVisibilityState'] = value;
+			this.log('Target Visibility State to ' + value + " " + this.info["phono"]['ConfiguredName']);
+			this.info["phono"]['CurrentVisibilityState'] = value;
 			callback();
 		});
-		this.PhonoService = PhonoService;
+		this.phonoService = phonoService;
 		
 		var line_cdService = new Service.InputSource("line_cd", "line_cd");
 		line_cdService.setCharacteristic(Characteristic.Identifier, this.info["line_cd"]["Identifier"]);
@@ -1371,28 +1225,33 @@ MusicCastTV.prototype = {
 			.getCharacteristic(Characteristic.VolumeSelector)//0 INCREMENT; 1 DECREMENT
 				.on('set', this.setVolumeSelector.bind(this));
 		TelevisionSpeakerService
-			.getCharacteristic(Characteristic.Mute)//läuft nicht
+			.getCharacteristic(Characteristic.Mute) //unused
 				.on('get', this.getMute.bind(this))
 				.on('set', this.setMute.bind(this));
 		TelevisionSpeakerService
-			.getCharacteristic(Characteristic.Volume)//läuft nicht
+			.getCharacteristic(Characteristic.Volume) //unused
 				.on('get', this.getVolume.bind(this))
 				.on('set', this.setVolume.bind(this));
 		TelevisionService.addLinkedService(TelevisionSpeakerService);
 		ServiceList.push(TelevisionSpeakerService);
-		//var i = 0;
+		
 		for(var key in this.inputs) {
 			this.log.debug("processing input " + key);
+			tmpInput = this.getInputFromString(key);
+			//this.getInputService(tmpInput)
+			//TelevisionService.addLinkedService(this.airplayService);
+			//ServiceList.push(this.airplayService);
+			
 			switch (key) {
 				case "airplay":
 				case "AirPlay":
-					TelevisionService.addLinkedService(this.AirPlayService);
-					ServiceList.push(this.AirPlayService);
+					TelevisionService.addLinkedService(this.airplayService);
+					ServiceList.push(this.airplayService);
 					break;
 				case "phono":
 				case "Phono":
-					TelevisionService.addLinkedService(this.PhonoService);
-					ServiceList.push(this.PhonoService);
+					TelevisionService.addLinkedService(this.phonoService);
+					ServiceList.push(this.phonoService);
 					break;
 				case "line_cd":
 				case "LineCD":
