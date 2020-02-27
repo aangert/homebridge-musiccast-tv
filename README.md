@@ -80,8 +80,8 @@ Currently supported inputs:
 | coaxial2 | yes |
 | hdmi[1-8] | yes |
 | aux | no |
-| aux1 | no |
-| aux2 | no |
+| aux1 | yes |
+| aux2 | yes |
 | av[1-7] | no |
 | analog | no |
 | audio[1-4] | no |
