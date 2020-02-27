@@ -814,7 +814,7 @@ MusicCastTV.prototype = {
 			this.info["coaxial2"]['CurrentVisibilityState'] = value;
 			callback();
 		});
-		this.coaxial2Service = coaxial2Service;*/
+		this.coaxial2Service = coaxial2Service;
 		
 		var hdmi1Service = new Service.InputSource("hdmi1", "hdmi1");
 		hdmi1Service.setCharacteristic(Characteristic.Identifier, this.info["hdmi1"]["Identifier"]);
@@ -982,7 +982,7 @@ MusicCastTV.prototype = {
 			this.info["hdmi8"]['CurrentVisibilityState'] = value;
 			callback();
 		});
-		this.hdmi8Service = hdmi8Service;
+		this.hdmi8Service = hdmi8Service;*/
 		
 		var spotifyService = new Service.InputSource("spotify", "spotify");
 		spotifyService.setCharacteristic(Characteristic.Identifier, this.info["spotify"]["Identifier"]);
@@ -1358,43 +1358,61 @@ MusicCastTV.prototype = {
 					break;
 				case "hdmi1":
 				case "HDMI1":
+					this.hdmi1Service = this.getInputService("hdmi1");
 					TelevisionService.addLinkedService(this.hdmi1Service);
 					ServiceList.push(this.hdmi1Service);
 					break;
 				case "hdmi2":
 				case "HDMI2":
+					this.hdmi2Service = this.getInputService("hdmi2");
 					TelevisionService.addLinkedService(this.hdmi2Service);
 					ServiceList.push(this.hdmi2Service);
 					break;
 				case "hdmi3":
 				case "HDMI3":
+					this.hdmi3Service = this.getInputService("hdmi3");
 					TelevisionService.addLinkedService(this.hdmi3Service);
 					ServiceList.push(this.hdmi3Service);
 					break;
 				case "hdmi4":
 				case "HDMI4":
+					this.hdmi4Service = this.getInputService("hdmi4");
 					TelevisionService.addLinkedService(this.hdmi4Service);
 					ServiceList.push(this.hdmi4Service);
 					break;
 				case "hdmi5":
 				case "HDMI5":
+					this.hdmi5Service = this.getInputService("hdmi5");
 					TelevisionService.addLinkedService(this.hdmi5Service);
 					ServiceList.push(this.hdmi5Service);
 					break;
 				case "hdmi6":
 				case "HDMI6":
+					this.hdmi6Service = this.getInputService("hdmi6");
 					TelevisionService.addLinkedService(this.hdmi6Service);
 					ServiceList.push(this.hdmi6Service);
 					break;
 				case "hdmi7":
 				case "HDMI7":
+					this.hdmi7Service = this.getInputService("hdmi7");
 					TelevisionService.addLinkedService(this.hdmi7Service);
 					ServiceList.push(this.hdmi7Service);
 					break;
 				case "hdmi8":
 				case "HDMI8":
+					this.hdmi8Service = this.getInputService("hdmi8");
 					TelevisionService.addLinkedService(this.hdmi8Service);
 					ServiceList.push(this.hdmi8Service);
+					break;
+				case "aux1":
+					this.aux1Service = this.getInputService("aux1");
+					TelevisionService.addLinkedService(this.aux1Service);
+					ServiceList.push(this.aux1Service);
+					break;
+				case "aux2":
+					this.aux2Service = this.getInputService("aux2");
+					TelevisionService.addLinkedService(this.aux2Service);
+					ServiceList.push(this.aux2Service);
 					break;
 				case "spotify":
 				case "Spotify":
