@@ -55,7 +55,7 @@ config arguments:
 | identifier | 38 | used to set initial input after homebridge restart; values from [index.js line 46](https://github.com/DoctorNSA/homebridge-musiccast-tv/blob/0232cc3b21ced466049eef451e43443047d2ed00/index.js#L46) | no |
 
 
-Currently supported and planned inputs:
+Currently supported inputs:
 
 | Input Name | Implemented |
 | ---------- | ----------- |
@@ -99,7 +99,7 @@ Currently supported and planned inputs:
 | siriusxm | yes |
 | radiko | yes |
 
-If your MusicCast device has additional inputs, please file an issue. 
+If your MusicCast device supports additional inputs, please file an issue. 
 
 hdmi[1-8] summarizes hdmi1, hdmi2, ..., hdmi8
 
