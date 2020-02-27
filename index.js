@@ -108,19 +108,15 @@ MusicCastTV.prototype = {
 			case "airplay":
 			case "AirPlay":
 				return "airplay";
-				break;
 			case "phono":
 			case "Phono":
 				return "phono";
-				break;
 			case "line_cd":
 			case "LineCD":
 				return "line_cd";
-				break;
 			case "line1":
 			case "Line1":
 				return "line1";
-				break;
 			case "line2":
 			case "Line2":
 				return "line2";
@@ -255,6 +251,28 @@ MusicCastTV.prototype = {
 				return "";
 		}
 	},
+	getInputService: function(name) {
+		var tmpInputService = new Service.InputSource(name, name);
+		tmpInputService.setCharacteristic(Characteristic.Identifier, this.info[name]["Identifier"]);
+		tmpInputService.setCharacteristic(Characteristic.ConfiguredName, this.info[name]["ConfiguredName"]);
+		tmpInputService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
+		tmpInputService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
+		tmpInputService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
+			this.log.debug("get CurrentVisibilityState of " + name + ": " + this.info[name]['CurrentVisibilityState']);
+			callback(null, this.info[name]['CurrentVisibilityState']);
+		}); //0=SHOWN;1=HIDDEN
+		tmpInputService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
+			this.log.debug('get TargetVisibilityState of ' + name + ": " + this.info[name]['TargetVisibilityState']);
+			callback(null, this.info[name]['TargetVisibilityState']);
+		});
+		tmpInputService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
+			this.info[name]['TargetVisibilityState'] = value;
+			this.log('Target Visibility State to ' + value + " " + this.info[name]['ConfiguredName']);
+			this.info[name]['CurrentVisibilityState'] = value;
+			callback();
+		});
+		return tmpInputService;
+	},
 	getHttpActive: function() {
 	},
 	getHttpInput: function() {
@@ -313,9 +331,9 @@ MusicCastTV.prototype = {
 	setActiveIdentifier: function(value, callback) {
 		const that = this;
 		for(var key in this.info) {
-		this.log.debug(key);
+		//this.log.debug(key);
 			if (this.info[key]["Identifier"] == value) {
-				var newInput = this.info[key]["Command"]
+				var newInput = this.info[key]["Command"];
 				var tempInput = newInput;
 				this.log("Switch to " + newInput);
 			}
@@ -462,7 +480,7 @@ MusicCastTV.prototype = {
 	getServices: function() {
 		const that = this;
 		
-		var airplayService = new Service.InputSource("airplay", "airplay");
+		/*var airplayService = new Service.InputSource("airplay", "airplay");
 		airplayService.setCharacteristic(Characteristic.Identifier, this.info["airplay"]["Identifier"]);
 		airplayService.setCharacteristic(Characteristic.ConfiguredName, this.info["airplay"]["ConfiguredName"]);
 		airplayService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
@@ -481,7 +499,7 @@ MusicCastTV.prototype = {
 			this.info["airplay"]['CurrentVisibilityState'] = value;
 			callback();
 		});
-		this.airplayService = airplayService;
+		this.airplayService = this.getInputService("airplay");
 		
 		var phonoService = new Service.InputSource("phono", "phono");
 		phonoService.setCharacteristic(Characteristic.Identifier, this.info["phono"]["Identifier"]);
@@ -544,7 +562,7 @@ MusicCastTV.prototype = {
 			this.info["line1"]['CurrentVisibilityState'] = value;
 			callback();
 		});
-		this.line1Service = line1Service;
+		this.line1Service = this.getInputService("line1");
 		
 		var line2Service = new Service.InputSource("line2", "line2");
 		line2Service.setCharacteristic(Characteristic.Identifier, this.info["line2"]["Identifier"]);
@@ -796,7 +814,7 @@ MusicCastTV.prototype = {
 			this.info["coaxial2"]['CurrentVisibilityState'] = value;
 			callback();
 		});
-		this.coaxial2Service = coaxial2Service;
+		this.coaxial2Service = coaxial2Service;*/
 		
 		var hdmi1Service = new Service.InputSource("hdmi1", "hdmi1");
 		hdmi1Service.setCharacteristic(Characteristic.Identifier, this.info["hdmi1"]["Identifier"]);
@@ -1174,7 +1192,6 @@ MusicCastTV.prototype = {
 		}
 		},
 		function (error, response, body) {
-			that.log.debug(response + ", body= " + body);
 			if (error) {
         			that.log.debug('HTTP get error');
         			that.log(error.message);
@@ -1245,81 +1262,97 @@ MusicCastTV.prototype = {
 			switch (key) {
 				case "airplay":
 				case "AirPlay":
+					this.airplayService = this.getInputService("airplay");
 					TelevisionService.addLinkedService(this.airplayService);
 					ServiceList.push(this.airplayService);
 					break;
 				case "phono":
 				case "Phono":
+					this.phonoService = this.getInputService("phono");
 					TelevisionService.addLinkedService(this.phonoService);
 					ServiceList.push(this.phonoService);
 					break;
 				case "line_cd":
 				case "LineCD":
+					this.line_cdService = this.getInputService("line_cd");
 					TelevisionService.addLinkedService(this.line_cdService);
 					ServiceList.push(this.line_cdService);
 					break;
 				case "line1":
 				case "Line1":
+					this.line1Service = this.getInputService("line1");
 					TelevisionService.addLinkedService(this.line1Service);
 					ServiceList.push(this.line1Service);
 					break;
 				case "line2":
 				case "Line2":
+					this.line2Service = this.getInputService("line2");
 					TelevisionService.addLinkedService(this.line2Service);
 					ServiceList.push(this.line2Service);
 					break;
 				case "line3":
 				case "Line3":
+					this.line3Service = this.getInputService("line3");
 					TelevisionService.addLinkedService(this.line3Service);
 					ServiceList.push(this.line3Service);
 					break;
 				case "fm":
 				case "FM":
+					this.fmService = this.getInputService("fm");
 					TelevisionService.addLinkedService(this.fmService);
 					ServiceList.push(this.fmService);
 					break;
 				case "am":
 				case "AM":
+					this.amService = this.getInputService("am");
 					TelevisionService.addLinkedService(this.amService);
 					ServiceList.push(this.amService);
 					break;
 				case "net_radio":
 				case "NetRadio":
+					this.net_radioService = this.getInputService("net_radio");
 					TelevisionService.addLinkedService(this.net_radioService);
 					ServiceList.push(this.net_radioService);
 					break;
 				case "server":
 				case "Server":
+					this.serverService = this.getInputService("server");
 					TelevisionService.addLinkedService(this.serverService);
 					ServiceList.push(this.serverService);
 					break;
 				case "bluetooth":
 				case "Bluetooth":
+					this.bluetoothService = this.getInputService("bluetooth");
 					TelevisionService.addLinkedService(this.bluetoothService);
 					ServiceList.push(this.bluetoothService);
 					break;
 				case "usb":
 				case "USB":
+					this.usbService = this.getInputService("usb");
 					TelevisionService.addLinkedService(this.usbService);
 					ServiceList.push(this.usbService);
 					break;
 				case "optical1":
 				case "Optical1":
+					this.optical1Service = this.getInputService("optical1");
 					TelevisionService.addLinkedService(this.optical1Service);
 					ServiceList.push(this.optical1Service);
 					break;
 				case "optical2":
 				case "Optical2":
+					this.optical2Service = this.getInputService("optical2");
 					TelevisionService.addLinkedService(this.optical2Service);
 					ServiceList.push(this.optical2Service);
 					break;
 				case "coaxial1":
 				case "Coaxial1":
+					this.coaxial1Service = this.getInputService("coaxial1");
 					TelevisionService.addLinkedService(this.coaxial1Service);
 					ServiceList.push(this.coaxial1Service);
 					break;
 				case "coaxial2":
 				case "Coaxial2":
+					this.coaxial2Service = this.getInputService("coaxial2");
 					TelevisionService.addLinkedService(this.coaxial2Service);
 					ServiceList.push(this.coaxial2Service);
 					break;
