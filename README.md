@@ -42,8 +42,8 @@ You can get information about your MusicCast device by visiting
 
 config arguments: 
 
-| name | exaple | description | required |
-| ---- | ------ | ----------- | -------- |
+| name | example | description | required |
+| ---- | ------- | ----------- | -------- |
 | accessory | MusicCastTV | this value is used to identify this plugin | yes |
 | name | "TV stereo" | the name of your device | yes |
 | ip | 192.168.178.29 | ip address for your MusicCast device | yes |
