@@ -78,6 +78,7 @@ function MusicCastTV(log, config) {
 		"hdmi8": {"Identifier": 25, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi8"}, 
 		"aux1": {"Identifier": 26, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "aux1"}, 
 		"aux2": {"Identifier": 27, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "aux2"}, 
+		"m": {"Identifier": 28, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"mc_link": {"Identifier": 36, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"main_sync": {"Identifier": 37, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"spotify": {"Identifier": 38, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "spotify"}, 
@@ -188,6 +189,7 @@ MusicCastTV.prototype = {
 			case "mc_link":
 				return "mc_link";
 			case "main_sync":
+			case "sync":
 				return "main_sync";
 			case "spotify":
 			case "Spotify":
@@ -535,11 +537,9 @@ MusicCastTV.prototype = {
 		for(var key in this.inputs) {
 			this.log.debug("processing input " + key);
 			tmpInput = this.getInputFromString(key);
-			//this.getInputService(tmpInput)
-			//TelevisionService.addLinkedService(this.airplayService);
-			//ServiceList.push(this.airplayService);
+			//tmpService = this.getInputService(tmpInput)
 			
-			switch (key) {
+			switch (tmpInput) {
 				case "airplay":
 					this.airplayService = this.getInputService("airplay");
 					TelevisionService.addLinkedService(this.airplayService);
