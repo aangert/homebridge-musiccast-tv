@@ -46,8 +46,8 @@ config arguments:
 | ---- | ------ | ----------- | -------- |
 | accessory | MusicCastTV | this value is used to identify this plugin | yes |
 | name | "TV stereo" | the name of your device | yes |
-| zone | "zone2" | MusicCast zone from getFeatures.json, default: "main" | no |
 | ip | 192.168.178.29 | ip address for your MusicCast device | yes |
+| zone | "zone2" | MusicCast zone from getFeatures.json, default: "main" | no |
 | inputs | {"fm": "radio", "line_cd": "CD", "airplay": "AirPlay"} | one key:value pair for each input you want to use. You can hide inputs by removing the checkbox in your HomeKit app or by removing it here. | yes |
 | volume | 100 | initial Volume; automatically detected | no |
 | maxVol | 161 | maxVol from getFeatures.json; automatically detected | no |
