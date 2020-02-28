@@ -14,6 +14,8 @@ function MusicCastTV(log, config) {
 	this.ip = config["ip"];
 	this.zone = config["zone"] || "main";
 	this.modell = config["modell"] || "MusicCast TV";
+	this.volume = config["volume"];
+	this.maxVol = config["maxVol"];
 	var vol;
 	that = this;
 	request({
@@ -74,8 +76,8 @@ function MusicCastTV(log, config) {
 		"hdmi6": {"Identifier": 23, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi6"}, 
 		"hdmi7": {"Identifier": 24, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi7"}, 
 		"hdmi8": {"Identifier": 25, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi8"}, 
-		"aux1": {"Identifier": 26, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"aux2": {"Identifier": 27, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"aux1": {"Identifier": 26, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "aux1"}, 
+		"aux2": {"Identifier": 27, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "aux2"}, 
 		"mc_link": {"Identifier": 36, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"main_sync": {"Identifier": 37, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"spotify": {"Identifier": 38, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "spotify"}, 
@@ -210,6 +212,7 @@ MusicCastTV.prototype = {
 				return "pandora";
 			case "siriusxm":
 			case "Siriusxm":
+			case "SiriusXM":
 				return "siriusxm";
 			case "radiko":
 				return "radiko";
@@ -447,705 +450,13 @@ MusicCastTV.prototype = {
 	getServices: function() {
 		const that = this;
 		
-		/*var airplayService = new Service.InputSource("airplay", "airplay");
-		airplayService.setCharacteristic(Characteristic.Identifier, this.info["airplay"]["Identifier"]);
-		airplayService.setCharacteristic(Characteristic.ConfiguredName, this.info["airplay"]["ConfiguredName"]);
-		airplayService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		airplayService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		airplayService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of airplay ' + this.info["airplay"]['CurrentVisibilityState']);
-			callback(null, this.info["airplay"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		airplayService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["airplay"]['TargetVisibilityState']);
-			callback(null, this.info["airplay"]['TargetVisibilityState']);
-		});
-		airplayService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["airplay"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["airplay"]['ConfiguredName']);
-			this.info["airplay"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.airplayService = this.getInputService("airplay");
-		
-		var phonoService = new Service.InputSource("phono", "phono");
-		phonoService.setCharacteristic(Characteristic.Identifier, this.info["phono"]["Identifier"]);
-		phonoService.setCharacteristic(Characteristic.ConfiguredName, this.info["phono"]["ConfiguredName"]);
-		phonoService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		phonoService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		phonoService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of phono ' + this.info["phono"]['CurrentVisibilityState']);
-			callback(null, this.info["phono"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		phonoService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["phono"]['TargetVisibilityState']);
-			callback(null, this.info["phono"]['TargetVisibilityState']);
-		});
-		phonoService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["phono"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["phono"]['ConfiguredName']);
-			this.info["phono"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.phonoService = phonoService;
-		
-		var line_cdService = new Service.InputSource("line_cd", "line_cd");
-		line_cdService.setCharacteristic(Characteristic.Identifier, this.info["line_cd"]["Identifier"]);
-		line_cdService.setCharacteristic(Characteristic.ConfiguredName, this.info["line_cd"]["ConfiguredName"]);
-		line_cdService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		line_cdService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		line_cdService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of line_cd ' + this.info["line_cd"]['CurrentVisibilityState']);
-			callback(null, this.info["line_cd"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		line_cdService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["line_cd"]['TargetVisibilityState']);
-			callback(null, this.info["line_cd"]['TargetVisibilityState']);
-		});
-		line_cdService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["line_cd"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["line_cd"]['ConfiguredName']);
-			this.info["line_cd"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.line_cdService = line_cdService;
-		
-		var line1Service = new Service.InputSource("line1", "line1");
-		line1Service.setCharacteristic(Characteristic.Identifier, this.info["line1"]["Identifier"]);
-		line1Service.setCharacteristic(Characteristic.ConfiguredName, this.info["line1"]["ConfiguredName"]);
-		line1Service.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		line1Service.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		line1Service.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of line1' + this.info["line1"]['CurrentVisibilityState']);
-			callback(null, this.info["line1"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		line1Service.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["line1"]['TargetVisibilityState']);
-			callback(null, this.info["line1"]['TargetVisibilityState']);
-		});
-		line1Service.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["line1"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["line1"]['ConfiguredName']);
-			this.info["line1"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.line1Service = this.getInputService("line1");
-		
-		var line2Service = new Service.InputSource("line2", "line2");
-		line2Service.setCharacteristic(Characteristic.Identifier, this.info["line2"]["Identifier"]);
-		line2Service.setCharacteristic(Characteristic.ConfiguredName, this.info["line2"]["ConfiguredName"]);
-		line2Service.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		line2Service.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		line2Service.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of line2' + this.info["line2"]['CurrentVisibilityState']);
-			callback(null, this.info["line2"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		line2Service.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["line2"]['TargetVisibilityState']);
-			callback(null, this.info["line2"]['TargetVisibilityState']);
-		});
-		line2Service.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["line2"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["line2"]['ConfiguredName']);
-			this.info["line2"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.line2Service = line2Service;
-		
-		var line3Service = new Service.InputSource("line3", "line3");
-		line3Service.setCharacteristic(Characteristic.Identifier, this.info["line3"]["Identifier"]);
-		line3Service.setCharacteristic(Characteristic.ConfiguredName, this.info["line3"]["ConfiguredName"]);
-		line3Service.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		line3Service.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		line3Service.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of line3' + this.info["line3"]['CurrentVisibilityState']);
-			callback(null, this.info["line3"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		line3Service.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["line3"]['TargetVisibilityState']);
-			callback(null, this.info["line3"]['TargetVisibilityState']);
-		});
-		line3Service.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["line3"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["line3"]['ConfiguredName']);
-			this.info["line3"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.line3Service = line3Service;
-		
-		var fmService = new Service.InputSource("fm", "fm");
-		fmService.setCharacteristic(Characteristic.Identifier, this.info["fm"]["Identifier"]);
-		fmService.setCharacteristic(Characteristic.ConfiguredName, this.info["fm"]["ConfiguredName"]);
-		fmService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		fmService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		fmService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of fm' + this.info["fm"]['CurrentVisibilityState']);
-			callback(null, this.info["fm"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		fmService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["fm"]['TargetVisibilityState']);
-			callback(null, this.info["fm"]['TargetVisibilityState']);
-		});
-		fmService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["fm"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["fm"]['ConfiguredName']);
-			this.info["fm"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.fmService = fmService;
-		
-		var amService = new Service.InputSource("am", "am");
-		amService.setCharacteristic(Characteristic.Identifier, this.info["am"]["Identifier"]);
-		amService.setCharacteristic(Characteristic.ConfiguredName, this.info["am"]["ConfiguredName"]);
-		amService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		amService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		amService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of am' + this.info["am"]['CurrentVisibilityState']);
-			callback(null, this.info["am"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		amService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["am"]['TargetVisibilityState']);
-			callback(null, this.info["am"]['TargetVisibilityState']);
-		});
-		amService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["am"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["am"]['ConfiguredName']);
-			this.info["am"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.amService = amService;
-		
-		var net_radioService = new Service.InputSource("net_radio", "net_radio");
-		net_radioService.setCharacteristic(Characteristic.Identifier, this.info["net_radio"]["Identifier"]);
-		net_radioService.setCharacteristic(Characteristic.ConfiguredName, this.info["net_radio"]["ConfiguredName"]);
-		net_radioService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		net_radioService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		net_radioService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of net_radio' + this.info["net_radio"]['CurrentVisibilityState']);
-			callback(null, this.info["net_radio"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		net_radioService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["net_radio"]['TargetVisibilityState']);
-			callback(null, this.info["net_radio"]['TargetVisibilityState']);
-		});
-		net_radioService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["net_radio"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["net_radio"]['ConfiguredName']);
-			this.info["net_radio"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.net_radioService = net_radioService;
-		
-		var serverService = new Service.InputSource("server", "server");
-		serverService.setCharacteristic(Characteristic.Identifier, this.info["server"]["Identifier"]);
-		serverService.setCharacteristic(Characteristic.ConfiguredName, this.info["server"]["ConfiguredName"]);
-		serverService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		serverService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		serverService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of server' + this.info["server"]['CurrentVisibilityState']);
-			callback(null, this.info["server"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		serverService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["server"]['TargetVisibilityState']);
-			callback(null, this.info["server"]['TargetVisibilityState']);
-		});
-		serverService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["server"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["server"]['ConfiguredName']);
-			this.info["server"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.serverService = serverService;
-		
-		var bluetoothService = new Service.InputSource("bluetooth", "bluetooth");
-		bluetoothService.setCharacteristic(Characteristic.Identifier, this.info["bluetooth"]["Identifier"]);
-		bluetoothService.setCharacteristic(Characteristic.ConfiguredName, this.info["bluetooth"]["ConfiguredName"]);
-		bluetoothService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		bluetoothService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		bluetoothService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of bluetooth' + this.info["bluetooth"]['CurrentVisibilityState']);
-			callback(null, this.info["bluetooth"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		bluetoothService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["bluetooth"]['TargetVisibilityState']);
-			callback(null, this.info["bluetooth"]['TargetVisibilityState']);
-		});
-		bluetoothService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["bluetooth"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["bluetooth"]['ConfiguredName']);
-			this.info["bluetooth"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.bluetoothService = bluetoothService;
-		
-		var usbService = new Service.InputSource("usb", "usb");
-		usbService.setCharacteristic(Characteristic.Identifier, this.info["usb"]["Identifier"]);
-		usbService.setCharacteristic(Characteristic.ConfiguredName, this.info["usb"]["ConfiguredName"]);
-		usbService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		usbService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		usbService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of usb' + this.info["usb"]['CurrentVisibilityState']);
-			callback(null, this.info["usb"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		usbService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["usb"]['TargetVisibilityState']);
-			callback(null, this.info["usb"]['TargetVisibilityState']);
-		});
-		usbService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["usb"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["usb"]['ConfiguredName']);
-			this.info["usb"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.usbService = usbService;
-		
-		var optical1Service = new Service.InputSource("optical1", "optical1");
-		optical1Service.setCharacteristic(Characteristic.Identifier, this.info["optical1"]["Identifier"]);
-		optical1Service.setCharacteristic(Characteristic.ConfiguredName, this.info["optical1"]["ConfiguredName"]);
-		optical1Service.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		optical1Service.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		optical1Service.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of optical1' + this.info["optical1"]['CurrentVisibilityState']);
-			callback(null, this.info["optical1"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		optical1Service.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["optical1"]['TargetVisibilityState']);
-			callback(null, this.info["optical1"]['TargetVisibilityState']);
-		});
-		optical1Service.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["optical1"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["optical1"]['ConfiguredName']);
-			this.info["optical1"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.optical1Service = optical1Service;
-		
-		var optical2Service = new Service.InputSource("optical2", "optical2");
-		optical2Service.setCharacteristic(Characteristic.Identifier, this.info["optical2"]["Identifier"]);
-		optical2Service.setCharacteristic(Characteristic.ConfiguredName, this.info["optical2"]["ConfiguredName"]);
-		optical2Service.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		optical2Service.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		optical2Service.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of optical2' + this.info["optical2"]['CurrentVisibilityState']);
-			callback(null, this.info["optical2"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		optical2Service.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["optical2"]['TargetVisibilityState']);
-			callback(null, this.info["optical2"]['TargetVisibilityState']);
-		});
-		optical2Service.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["optical2"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["optical2"]['ConfiguredName']);
-			this.info["optical2"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.optical2Service = optical2Service;
-		
-		var coaxial1Service = new Service.InputSource("coaxial1", "coaxial1");
-		coaxial1Service.setCharacteristic(Characteristic.Identifier, this.info["coaxial1"]["Identifier"]);
-		coaxial1Service.setCharacteristic(Characteristic.ConfiguredName, this.info["coaxial1"]["ConfiguredName"]);
-		coaxial1Service.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		coaxial1Service.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		coaxial1Service.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of coaxial1' + this.info["coaxial1"]['CurrentVisibilityState']);
-			callback(null, this.info["coaxial1"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		coaxial1Service.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["coaxial1"]['TargetVisibilityState']);
-			callback(null, this.info["coaxial1"]['TargetVisibilityState']);
-		});
-		coaxial1Service.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["coaxial1"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["coaxial1"]['ConfiguredName']);
-			this.info["coaxial1"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.coaxial1Service = coaxial1Service;
-		
-		var coaxial2Service = new Service.InputSource("coaxial2", "coaxial2");
-		coaxial2Service.setCharacteristic(Characteristic.Identifier, this.info["coaxial2"]["Identifier"]);
-		coaxial2Service.setCharacteristic(Characteristic.ConfiguredName, this.info["coaxial2"]["ConfiguredName"]);
-		coaxial2Service.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		coaxial2Service.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		coaxial2Service.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of coaxial2' + this.info["coaxial2"]['CurrentVisibilityState']);
-			callback(null, this.info["coaxial2"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		coaxial2Service.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["coaxial2"]['TargetVisibilityState']);
-			callback(null, this.info["coaxial2"]['TargetVisibilityState']);
-		});
-		coaxial2Service.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["coaxial2"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["coaxial2"]['ConfiguredName']);
-			this.info["coaxial2"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.coaxial2Service = coaxial2Service;
-		
-		var hdmi1Service = new Service.InputSource("hdmi1", "hdmi1");
-		hdmi1Service.setCharacteristic(Characteristic.Identifier, this.info["hdmi1"]["Identifier"]);
-		hdmi1Service.setCharacteristic(Characteristic.ConfiguredName, this.info["hdmi1"]["ConfiguredName"]);
-		hdmi1Service.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		hdmi1Service.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		hdmi1Service.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of hdmi1' + this.info["hdmi1"]['CurrentVisibilityState']);
-			callback(null, this.info["hdmi1"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		hdmi1Service.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["hdmi1"]['TargetVisibilityState']);
-			callback(null, this.info["hdmi1"]['TargetVisibilityState']);
-		});
-		hdmi1Service.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["hdmi1"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["hdmi1"]['ConfiguredName']);
-			this.info["hdmi1"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.hdmi1Service = hdmi1Service;
-		
-		var hdmi2Service = new Service.InputSource("hdmi2", "hdmi2");
-		hdmi2Service.setCharacteristic(Characteristic.Identifier, this.info["hdmi2"]["Identifier"]);
-		hdmi2Service.setCharacteristic(Characteristic.ConfiguredName, this.info["hdmi2"]["ConfiguredName"]);
-		hdmi2Service.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		hdmi2Service.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		hdmi2Service.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of hdmi2' + this.info["hdmi2"]['CurrentVisibilityState']);
-			callback(null, this.info["hdmi2"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		hdmi2Service.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["hdmi2"]['TargetVisibilityState']);
-			callback(null, this.info["hdmi2"]['TargetVisibilityState']);
-		});
-		hdmi2Service.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["hdmi2"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["hdmi2"]['ConfiguredName']);
-			this.info["hdmi2"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.hdmi2Service = hdmi2Service;
-		
-		var hdmi3Service = new Service.InputSource("hdmi3", "hdmi3");
-		hdmi3Service.setCharacteristic(Characteristic.Identifier, this.info["hdmi3"]["Identifier"]);
-		hdmi3Service.setCharacteristic(Characteristic.ConfiguredName, this.info["hdmi3"]["ConfiguredName"]);
-		hdmi3Service.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		hdmi3Service.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		hdmi3Service.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of hdmi3' + this.info["hdmi3"]['CurrentVisibilityState']);
-			callback(null, this.info["hdmi3"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		hdmi3Service.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["hdmi3"]['TargetVisibilityState']);
-			callback(null, this.info["hdmi3"]['TargetVisibilityState']);
-		});
-		hdmi3Service.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["hdmi3"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["hdmi3"]['ConfiguredName']);
-			this.info["hdmi3"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.hdmi3Service = hdmi3Service;
-		
-		var hdmi4Service = new Service.InputSource("hdmi4", "hdmi4");
-		hdmi4Service.setCharacteristic(Characteristic.Identifier, this.info["hdmi4"]["Identifier"]);
-		hdmi4Service.setCharacteristic(Characteristic.ConfiguredName, this.info["hdmi4"]["ConfiguredName"]);
-		hdmi4Service.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		hdmi4Service.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		hdmi4Service.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of hdmi4' + this.info["hdmi4"]['CurrentVisibilityState']);
-			callback(null, this.info["hdmi4"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		hdmi4Service.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["hdmi4"]['TargetVisibilityState']);
-			callback(null, this.info["hdmi4"]['TargetVisibilityState']);
-		});
-		hdmi4Service.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["hdmi4"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["hdmi4"]['ConfiguredName']);
-			this.info["hdmi4"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.hdmi4Service = hdmi4Service;
-		
-		var hdmi5Service = new Service.InputSource("hdmi5", "hdmi5");
-		hdmi5Service.setCharacteristic(Characteristic.Identifier, this.info["hdmi5"]["Identifier"]);
-		hdmi5Service.setCharacteristic(Characteristic.ConfiguredName, this.info["hdmi5"]["ConfiguredName"]);
-		hdmi5Service.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		hdmi5Service.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		hdmi5Service.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of hdmi5' + this.info["hdmi5"]['CurrentVisibilityState']);
-			callback(null, this.info["hdmi5"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		hdmi5Service.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["hdmi5"]['TargetVisibilityState']);
-			callback(null, this.info["hdmi5"]['TargetVisibilityState']);
-		});
-		hdmi5Service.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["hdmi5"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["hdmi5"]['ConfiguredName']);
-			this.info["hdmi5"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.hdmi5Service = hdmi5Service;
-		
-		var hdmi6Service = new Service.InputSource("hdmi6", "hdmi6");
-		hdmi6Service.setCharacteristic(Characteristic.Identifier, this.info["hdmi6"]["Identifier"]);
-		hdmi6Service.setCharacteristic(Characteristic.ConfiguredName, this.info["hdmi6"]["ConfiguredName"]);
-		hdmi6Service.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		hdmi6Service.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		hdmi6Service.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of hdmi6' + this.info["hdmi6"]['CurrentVisibilityState']);
-			callback(null, this.info["hdmi6"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		hdmi6Service.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["hdmi6"]['TargetVisibilityState']);
-			callback(null, this.info["hdmi6"]['TargetVisibilityState']);
-		});
-		hdmi6Service.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["hdmi6"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["hdmi6"]['ConfiguredName']);
-			this.info["hdmi6"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.hdmi6Service = hdmi6Service;
-		
-		var hdmi7Service = new Service.InputSource("hdmi7", "hdmi7");
-		hdmi7Service.setCharacteristic(Characteristic.Identifier, this.info["hdmi7"]["Identifier"]);
-		hdmi7Service.setCharacteristic(Characteristic.ConfiguredName, this.info["hdmi7"]["ConfiguredName"]);
-		hdmi7Service.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		hdmi7Service.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		hdmi7Service.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of hdmi7' + this.info["hdmi7"]['CurrentVisibilityState']);
-			callback(null, this.info["hdmi7"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		hdmi7Service.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["hdmi7"]['TargetVisibilityState']);
-			callback(null, this.info["hdmi7"]['TargetVisibilityState']);
-		});
-		hdmi7Service.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["hdmi7"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["hdmi7"]['ConfiguredName']);
-			this.info["hdmi7"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.hdmi7Service = hdmi7Service;
-		
-		var hdmi8Service = new Service.InputSource("hdmi8", "hdmi8");
-		hdmi8Service.setCharacteristic(Characteristic.Identifier, this.info["hdmi8"]["Identifier"]);
-		hdmi8Service.setCharacteristic(Characteristic.ConfiguredName, this.info["hdmi8"]["ConfiguredName"]);
-		hdmi8Service.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		hdmi8Service.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		hdmi8Service.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of hdmi8' + this.info["hdmi8"]['CurrentVisibilityState']);
-			callback(null, this.info["hdmi8"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		hdmi8Service.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["hdmi8"]['TargetVisibilityState']);
-			callback(null, this.info["hdmi8"]['TargetVisibilityState']);
-		});
-		hdmi8Service.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["hdmi8"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["hdmi8"]['ConfiguredName']);
-			this.info["hdmi8"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.hdmi8Service = hdmi8Service;
-		
-		var spotifyService = new Service.InputSource("spotify", "spotify");
-		spotifyService.setCharacteristic(Characteristic.Identifier, this.info["spotify"]["Identifier"]);
-		spotifyService.setCharacteristic(Characteristic.ConfiguredName, this.info["spotify"]["ConfiguredName"]);
-		spotifyService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		spotifyService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		spotifyService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of spotify' + this.info["spotify"]['CurrentVisibilityState']);
-			callback(null, this.info["spotify"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		spotifyService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["spotify"]['TargetVisibilityState']);
-			callback(null, this.info["spotify"]['TargetVisibilityState']);
-		});
-		spotifyService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["spotify"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["spotify"]['ConfiguredName']);
-			this.info["spotify"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.spotifyService = spotifyService;
-		
-		var deezerService = new Service.InputSource("deezer", "deezer");
-		deezerService.setCharacteristic(Characteristic.Identifier, this.info["deezer"]["Identifier"]);
-		deezerService.setCharacteristic(Characteristic.ConfiguredName, this.info["deezer"]["ConfiguredName"]);
-		deezerService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		deezerService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		deezerService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of deezer' + this.info["deezer"]['CurrentVisibilityState']);
-			callback(null, this.info["deezer"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		deezerService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["deezer"]['TargetVisibilityState']);
-			callback(null, this.info["deezer"]['TargetVisibilityState']);
-		});
-		deezerService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["deezer"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["deezer"]['ConfiguredName']);
-			this.info["deezer"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.deezerService = deezerService;
-		
-		var napsterService = new Service.InputSource("napster", "napster");
-		napsterService.setCharacteristic(Characteristic.Identifier, this.info["napster"]["Identifier"]);
-		napsterService.setCharacteristic(Characteristic.ConfiguredName, this.info["napster"]["ConfiguredName"]);
-		napsterService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		napsterService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		napsterService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of napster' + this.info["napster"]['CurrentVisibilityState']);
-			callback(null, this.info["napster"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		napsterService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["napster"]['TargetVisibilityState']);
-			callback(null, this.info["napster"]['TargetVisibilityState']);
-		});
-		napsterService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["napster"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["napster"]['ConfiguredName']);
-			this.info["napster"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.napsterService = napsterService;
-		
-		var qobuzService = new Service.InputSource("qobuz", "qobuz");
-		qobuzService.setCharacteristic(Characteristic.Identifier, this.info["qobuz"]["Identifier"]);
-		qobuzService.setCharacteristic(Characteristic.ConfiguredName, this.info["qobuz"]["ConfiguredName"]);
-		qobuzService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		qobuzService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		qobuzService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of qobuz' + this.info["qobuz"]['CurrentVisibilityState']);
-			callback(null, this.info["qobuz"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		qobuzService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["qobuz"]['TargetVisibilityState']);
-			callback(null, this.info["qobuz"]['TargetVisibilityState']);
-		});
-		qobuzService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["qobuz"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["qobuz"]['ConfiguredName']);
-			this.info["qobuz"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.qobuzService = qobuzService;
-		
-		var jukeService = new Service.InputSource("juke", "juke");
-		jukeService.setCharacteristic(Characteristic.Identifier, this.info["juke"]["Identifier"]);
-		jukeService.setCharacteristic(Characteristic.ConfiguredName, this.info["juke"]["ConfiguredName"]);
-		jukeService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		jukeService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		jukeService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of juke' + this.info["juke"]['CurrentVisibilityState']);
-			callback(null, this.info["juke"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		jukeService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["juke"]['TargetVisibilityState']);
-			callback(null, this.info["juke"]['TargetVisibilityState']);
-		});
-		jukeService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["juke"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["juke"]['ConfiguredName']);
-			this.info["juke"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.jukeService = jukeService;
-		
-		var tidalService = new Service.InputSource("tidal", "tidal");
-		tidalService.setCharacteristic(Characteristic.Identifier, this.info["tidal"]["Identifier"]);
-		tidalService.setCharacteristic(Characteristic.ConfiguredName, this.info["tidal"]["ConfiguredName"]);
-		tidalService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		tidalService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		tidalService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of tidal' + this.info["tidal"]['CurrentVisibilityState']);
-			callback(null, this.info["tidal"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		tidalService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["tidal"]['TargetVisibilityState']);
-			callback(null, this.info["tidal"]['TargetVisibilityState']);
-		});
-		tidalService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["tidal"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["tidal"]['ConfiguredName']);
-			this.info["tidal"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.tidalService = tidalService;
-		
-		var pandoraService = new Service.InputSource("pandora", "pandora");
-		pandoraService.setCharacteristic(Characteristic.Identifier, this.info["pandora"]["Identifier"]);
-		pandoraService.setCharacteristic(Characteristic.ConfiguredName, this.info["pandora"]["ConfiguredName"]);
-		pandoraService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		pandoraService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		pandoraService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of pandora' + this.info["pandora"]['CurrentVisibilityState']);
-			callback(null, this.info["pandora"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		pandoraService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["pandora"]['TargetVisibilityState']);
-			callback(null, this.info["pandora"]['TargetVisibilityState']);
-		});
-		pandoraService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["pandora"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["pandora"]['ConfiguredName']);
-			this.info["pandora"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.pandoraService = pandoraService;
-		
-		var siriusxmService = new Service.InputSource("siriusxm", "siriusxm");
-		siriusxmService.setCharacteristic(Characteristic.Identifier, this.info["siriusxm"]["Identifier"]);
-		siriusxmService.setCharacteristic(Characteristic.ConfiguredName, this.info["siriusxm"]["ConfiguredName"]);
-		siriusxmService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		siriusxmService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		siriusxmService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of siriusxm' + this.info["siriusxm"]['CurrentVisibilityState']);
-			callback(null, this.info["siriusxm"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		siriusxmService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["siriusxm"]['TargetVisibilityState']);
-			callback(null, this.info["siriusxm"]['TargetVisibilityState']);
-		});
-		siriusxmService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["siriusxm"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["siriusxm"]['ConfiguredName']);
-			this.info["siriusxm"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.siriusxmService = siriusxmService;
-		
-		var radikoService = new Service.InputSource("radiko", "radiko");
-		radikoService.setCharacteristic(Characteristic.Identifier, this.info["radiko"]["Identifier"]);
-		radikoService.setCharacteristic(Characteristic.ConfiguredName, this.info["radiko"]["ConfiguredName"]);
-		radikoService.setCharacteristic(Characteristic.IsConfigured, Characteristic.IsConfigured.CONFIGURED);
-		radikoService.setCharacteristic(Characteristic.CurrentVisibilityState, 0);
-		radikoService.getCharacteristic(Characteristic.CurrentVisibilityState).on('get', (callback) => {
-			this.log.debug('get CurrentVisibilityState of radiko' + this.info["radiko"]['CurrentVisibilityState']);
-			callback(null, this.info["radiko"]['CurrentVisibilityState']);
-		}); //0=SHOWN;1=HIDDEN
-		radikoService.getCharacteristic(Characteristic.TargetVisibilityState).on('get', (callback) => {
-			this.log.debug('get TargetVisibilityState of ' + this.info["radiko"]['TargetVisibilityState']);
-			callback(null, this.info["radiko"]['TargetVisibilityState']);
-		});
-		radikoService.getCharacteristic(Characteristic.TargetVisibilityState).on('set', (value, callback) => {
-			this.info["radiko"]['TargetVisibilityState'] = value;
-			this.log('Target Visibility State to ' + value + " " + this.info["radiko"]['ConfiguredName']);
-			this.info["radiko"]['CurrentVisibilityState'] = value;
-			callback();
-		});
-		this.radikoService = radikoService;*/
-		
 		let informationService = new Service.AccessoryInformation();
 		informationService
 			.setCharacteristic(Characteristic.Manufacturer, "homebridge-musiccast-tv")
 			.setCharacteristic(Characteristic.Model, this.modell)
 			.setCharacteristic(Characteristic.SerialNumber, "123-456-789")
 			.setCharacteristic(Characteristic.FirmwareRevision, this.version);
+		this.informationService = informationService;
 		
 		ServiceList = [];
 		ServiceList.push(informationService);
@@ -1174,15 +485,15 @@ MusicCastTV.prototype = {
 		TelevisionService
 			.setCharacteristic(Characteristic.SleepDiscoveryMode, 1);
 		TelevisionService
-			.getCharacteristic(Characteristic.Active)//läuft 
+			.getCharacteristic(Characteristic.Active)
 				.on('get', this.getActive.bind(this))
 				.on('set', this.setActive.bind(this));
 		 TelevisionService
-			.getCharacteristic(Characteristic.ActiveIdentifier)//läuft
+			.getCharacteristic(Characteristic.ActiveIdentifier)
 				.on('get', this.getActiveIdentifier.bind(this))
 				.on('set', this.setActiveIdentifier.bind(this));
 		TelevisionService
-			.getCharacteristic(Characteristic.RemoteKey)//läuft nicht
+			.getCharacteristic(Characteristic.RemoteKey)
 				.on('set', this.remoteKeyPress.bind(this));
 		/*TelevisionService
 			.getCharacteristic(Characteristic.PowerModeSelection)//fehlt
@@ -1198,6 +509,7 @@ MusicCastTV.prototype = {
 			TelevisionService.getCharacteristic(Characteristic.CurrentMediaState)
 				.updateValue(this.CurrentMediaState);
 		}, this.updateInterval);*/
+		this.TelevisionService = TelevisionService;
 		ServiceList.push(TelevisionService);
 		
 		let TelevisionSpeakerService = new Service.TelevisionSpeaker(this.name + 'SpeakerService');
@@ -1209,14 +521,15 @@ MusicCastTV.prototype = {
 			.getCharacteristic(Characteristic.VolumeSelector)//0 INCREMENT; 1 DECREMENT
 				.on('set', this.setVolumeSelector.bind(this));
 		TelevisionSpeakerService
-			.getCharacteristic(Characteristic.Mute) //unused
+			.getCharacteristic(Characteristic.Mute) //not triggered via home app
 				.on('get', this.getMute.bind(this))
 				.on('set', this.setMute.bind(this));
 		TelevisionSpeakerService
-			.getCharacteristic(Characteristic.Volume) //unused
+			.getCharacteristic(Characteristic.Volume) //not triggered via home app
 				.on('get', this.getVolume.bind(this))
 				.on('set', this.setVolume.bind(this));
 		TelevisionService.addLinkedService(TelevisionSpeakerService);
+		this.TelevisionSpeakerService = TelevisionSpeakerService;
 		ServiceList.push(TelevisionSpeakerService);
 		
 		for(var key in this.inputs) {
@@ -1228,145 +541,121 @@ MusicCastTV.prototype = {
 			
 			switch (key) {
 				case "airplay":
-				case "AirPlay":
 					this.airplayService = this.getInputService("airplay");
 					TelevisionService.addLinkedService(this.airplayService);
 					ServiceList.push(this.airplayService);
 					break;
 				case "phono":
-				case "Phono":
 					this.phonoService = this.getInputService("phono");
 					TelevisionService.addLinkedService(this.phonoService);
 					ServiceList.push(this.phonoService);
 					break;
 				case "line_cd":
-				case "LineCD":
 					this.line_cdService = this.getInputService("line_cd");
 					TelevisionService.addLinkedService(this.line_cdService);
 					ServiceList.push(this.line_cdService);
 					break;
 				case "line1":
-				case "Line1":
 					this.line1Service = this.getInputService("line1");
 					TelevisionService.addLinkedService(this.line1Service);
 					ServiceList.push(this.line1Service);
 					break;
 				case "line2":
-				case "Line2":
 					this.line2Service = this.getInputService("line2");
 					TelevisionService.addLinkedService(this.line2Service);
 					ServiceList.push(this.line2Service);
 					break;
 				case "line3":
-				case "Line3":
 					this.line3Service = this.getInputService("line3");
 					TelevisionService.addLinkedService(this.line3Service);
 					ServiceList.push(this.line3Service);
 					break;
 				case "fm":
-				case "FM":
 					this.fmService = this.getInputService("fm");
 					TelevisionService.addLinkedService(this.fmService);
 					ServiceList.push(this.fmService);
 					break;
 				case "am":
-				case "AM":
 					this.amService = this.getInputService("am");
 					TelevisionService.addLinkedService(this.amService);
 					ServiceList.push(this.amService);
 					break;
 				case "net_radio":
-				case "NetRadio":
 					this.net_radioService = this.getInputService("net_radio");
 					TelevisionService.addLinkedService(this.net_radioService);
 					ServiceList.push(this.net_radioService);
 					break;
 				case "server":
-				case "Server":
 					this.serverService = this.getInputService("server");
 					TelevisionService.addLinkedService(this.serverService);
 					ServiceList.push(this.serverService);
 					break;
 				case "bluetooth":
-				case "Bluetooth":
 					this.bluetoothService = this.getInputService("bluetooth");
 					TelevisionService.addLinkedService(this.bluetoothService);
 					ServiceList.push(this.bluetoothService);
 					break;
 				case "usb":
-				case "USB":
 					this.usbService = this.getInputService("usb");
 					TelevisionService.addLinkedService(this.usbService);
 					ServiceList.push(this.usbService);
 					break;
 				case "optical1":
-				case "Optical1":
 					this.optical1Service = this.getInputService("optical1");
 					TelevisionService.addLinkedService(this.optical1Service);
 					ServiceList.push(this.optical1Service);
 					break;
 				case "optical2":
-				case "Optical2":
 					this.optical2Service = this.getInputService("optical2");
 					TelevisionService.addLinkedService(this.optical2Service);
 					ServiceList.push(this.optical2Service);
 					break;
 				case "coaxial1":
-				case "Coaxial1":
 					this.coaxial1Service = this.getInputService("coaxial1");
 					TelevisionService.addLinkedService(this.coaxial1Service);
 					ServiceList.push(this.coaxial1Service);
 					break;
 				case "coaxial2":
-				case "Coaxial2":
 					this.coaxial2Service = this.getInputService("coaxial2");
 					TelevisionService.addLinkedService(this.coaxial2Service);
 					ServiceList.push(this.coaxial2Service);
 					break;
 				case "hdmi1":
-				case "HDMI1":
 					this.hdmi1Service = this.getInputService("hdmi1");
 					TelevisionService.addLinkedService(this.hdmi1Service);
 					ServiceList.push(this.hdmi1Service);
 					break;
 				case "hdmi2":
-				case "HDMI2":
 					this.hdmi2Service = this.getInputService("hdmi2");
 					TelevisionService.addLinkedService(this.hdmi2Service);
 					ServiceList.push(this.hdmi2Service);
 					break;
 				case "hdmi3":
-				case "HDMI3":
 					this.hdmi3Service = this.getInputService("hdmi3");
 					TelevisionService.addLinkedService(this.hdmi3Service);
 					ServiceList.push(this.hdmi3Service);
 					break;
 				case "hdmi4":
-				case "HDMI4":
 					this.hdmi4Service = this.getInputService("hdmi4");
 					TelevisionService.addLinkedService(this.hdmi4Service);
 					ServiceList.push(this.hdmi4Service);
 					break;
 				case "hdmi5":
-				case "HDMI5":
 					this.hdmi5Service = this.getInputService("hdmi5");
 					TelevisionService.addLinkedService(this.hdmi5Service);
 					ServiceList.push(this.hdmi5Service);
 					break;
 				case "hdmi6":
-				case "HDMI6":
 					this.hdmi6Service = this.getInputService("hdmi6");
 					TelevisionService.addLinkedService(this.hdmi6Service);
 					ServiceList.push(this.hdmi6Service);
 					break;
 				case "hdmi7":
-				case "HDMI7":
 					this.hdmi7Service = this.getInputService("hdmi7");
 					TelevisionService.addLinkedService(this.hdmi7Service);
 					ServiceList.push(this.hdmi7Service);
 					break;
 				case "hdmi8":
-				case "HDMI8":
 					this.hdmi8Service = this.getInputService("hdmi8");
 					TelevisionService.addLinkedService(this.hdmi8Service);
 					ServiceList.push(this.hdmi8Service);
@@ -1382,43 +671,36 @@ MusicCastTV.prototype = {
 					ServiceList.push(this.aux2Service);
 					break;
 				case "spotify":
-				case "Spotify":
 					this.spotifyService = this.getInputService("spotify");
 					TelevisionService.addLinkedService(this.spotifyService);
 					ServiceList.push(this.spotifyService);
 					break;
 				case "deezer":
-				case "Deezer":
 					this.deezerService = this.getInputService("deezer");
 					TelevisionService.addLinkedService(this.deezerService);
 					ServiceList.push(this.deezerService);
 					break;
 				case "napster":
-				case "Napster":
 					this.napsterService = this.getInputService("napster");
 					TelevisionService.addLinkedService(this.napsterService);
 					ServiceList.push(this.napsterService);
 					break;
 				case "qobuz":
-				case "Qobuz":
 					this.qobuzService = this.getInputService("qobuz");
 					TelevisionService.addLinkedService(this.qobuzService);
 					ServiceList.push(this.qobuzService);
 					break;
 				case "juke":
-				case "Juke":
 					this.jukeService = this.getInputService("juke");
 					TelevisionService.addLinkedService(this.jukeService);
 					ServiceList.push(this.jukeService);
 					break;
 				case "tidal":
-				case "Tidal":
 					this.tidalService = this.getInputService("tidal");
 					TelevisionService.addLinkedService(this.tidalService);
 					ServiceList.push(this.tidalService);
 					break;
 				case "pandora":
-				case "Pandora":
 					this.pandoraService = this.getInputService("pandora");
 					TelevisionService.addLinkedService(this.pandoraService);
 					ServiceList.push(this.pandoraService);
@@ -1449,9 +731,6 @@ MusicCastTV.prototype = {
 			ServiceList.push(eval("InputService" + i));
 		};*/
 		
-		this.TelevisionService = TelevisionService;
-		this.TelevisionSpeakerService = TelevisionSpeakerService;
-		this.informationService = informationService;
 		return ServiceList;
 	}
 }
