@@ -16,6 +16,7 @@ function MusicCastTV(log, config) {
 	this.modell = config["modell"] || "MusicCast TV";
 	this.volume = config["volume"];
 	this.maxVol = config["maxVol"];
+	this.ActiveIdentifier = config["identifier"] || 1;
 	var vol;
 	that = this;
 	request({
@@ -34,17 +35,20 @@ function MusicCastTV(log, config) {
 		that.log.debug("body: " + body)
 		if(body) {
 			att=JSON.parse(body);
-			that.log.debug('HTTP GetStatus result: volume = ' + att.volume);
+			that.log.debug('HTTP getStatus result: volume = ' + att.volume);
 			that.volume = config["volume"] || att.volume;
-			that.log.debug('HTTP GetStatus result: max volume = ' + att.max_volume);
+			that.log.debug('HTTP getStatus result: max volume = ' + att.max_volume);
 			that.maxVol = config["maxVol"] || att.max_volume;
 			that.log("volume: " + that.volume + " maxVol: " + that.maxVol);
-			that.log("Input: " + att.input + " String: " + that.getInputFromString(att.input));
+			tmpInput = that.getInputFromString(att.input);
+			that.log("Input: " + att.input + " String: " + tmpInput);
+			if(tmpInput != "") {
+				that.ActiveIdentifier = config["identifier"] || that.info[tmpInput]["Identifier"];
+			}
 		}
 	});
 	this.inputs =  config["inputs"] || {"airplay": "1. 'inputs' missing", "bluetooth": "2. in config.json", "spotify": "3. please modify"};
 	this.active = config["active"] || config["power"] || 0;
-	this.ActiveIdentifier = config["identifier"] || 1;
 	this.powerOnInput = config["powerOnInput"];
 	this.mute = 1;
 	//this.brightness = config["brightness"] || 100;
@@ -252,11 +256,35 @@ MusicCastTV.prototype = {
 		});
 		return tmpInputService;
 	},
-	getHttpActive: function() {
-	},
 	getHttpInput: function() {
-	},
-	getHttpVolume: function() {
+		that = this;
+		request({
+			method: 'GET',
+			url: 'http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/getStatus',
+			headers: {
+				'X-AppName': 'MusicCast/1.0',
+				'X-AppPort': '41100',
+			},
+		}, 
+		function (error, response, body) {
+			if (error) {
+				that.log.debug('HTTP get error');
+				that.log(error.message);
+				return "error";
+			} else if(body) {
+				that.log.debug("body: " + body)
+				att=JSON.parse(body);
+				that.volume = att.volume;
+				that.maxVol = att.max_volume;
+				that.log("volume: " + that.volume + " maxVol: " + that.maxVol);
+				tmpInput = that.getInputFromString(att.input);
+				that.log("Input: " + att.input + " String: " + tmpInput);
+				if(tmpInput != "") {
+					that.ActiveIdentifier = that.info[tmpInput]["Identifier"];
+				}
+				return "updated";
+			}
+		});
 	},
 	getActive: function(callback) {
 		const that = this;
@@ -276,7 +304,7 @@ MusicCastTV.prototype = {
 				return callback(error);
 			}
 			att=JSON.parse(body);
-			that.log.debug('HTTP GetStatus result: ' + att.power);
+			that.log.debug('HTTP getStatus result: ' + att.power);
 			that.active = (att.power=='on');
 			return callback(null, (att.power=='on'));
 		});
@@ -304,17 +332,17 @@ MusicCastTV.prototype = {
 		callback();
 	},
 	getActiveIdentifier: function(callback) {
+		tmp = this.getHttpInput();
 		this.log.debug("get Active Identifier: " + this.ActiveIdentifier);
 		callback(null, this.ActiveIdentifier);
 	},
 	setActiveIdentifier: function(value, callback) {
 		const that = this;
 		for(var key in this.info) {
-		//this.log.debug(key);
 			if (this.info[key]["Identifier"] == value) {
 				var newInput = this.info[key]["Command"];
 				var tempInput = newInput;
-				this.log("Switch to " + newInput);
+				this.log("Switch to " + value + ": " + newInput);
 			}
 		}
 		if (tempInput=="am" || tempInput=="fm" || tempInput=="dab") {
@@ -402,8 +430,10 @@ MusicCastTV.prototype = {
 		callback();
 	},
 	getVolume: function(callback) {
-		const that = this;
-		this.log.debug("get Volume of " + this.name + ": " + this.volume);
+		tmp = this.getHttpInput();
+		this.log.debug("get Volume: " + this.volume);
+		return callback(null, this.volume);
+		/*const that = this;
 		request({
 		method: 'GET',
 		url: 'http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/getStatus',
@@ -422,7 +452,7 @@ MusicCastTV.prototype = {
 			that.log('HTTP GetStatus result: Volume = ' + att.volume);
 			//that.volume = (att.volume * 100 / that.maxVol);
 			return callback(null, att.volume);
-		});
+		});*/
 	},
 	setVolume: function(value, callback) {
 		const that = this;
