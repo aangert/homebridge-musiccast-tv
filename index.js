@@ -35,9 +35,7 @@ function MusicCastTV(log, config) {
 		that.log.debug("body: " + body)
 		if(body) {
 			att=JSON.parse(body);
-			that.log.debug('HTTP getStatus result: volume = ' + att.volume);
 			that.volume = config["volume"] || att.volume;
-			that.log.debug('HTTP getStatus result: max volume = ' + att.max_volume);
 			that.maxVol = config["maxVol"] || att.max_volume;
 			that.log("volume: " + that.volume + " maxVol: " + that.maxVol);
 			tmpInput = that.getInputFromString(att.input);
@@ -59,7 +57,7 @@ function MusicCastTV(log, config) {
 		"line_cd": {"Identifier": 2, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "line_cd"}, 
 		"fm": {"Identifier": 3, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "fm"}, 
 		"am": {"Identifier": 4, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "am"}, 
-		"dab": {"Identifier": 5, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"dab": {"Identifier": 5, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "dab"}, 
 		"server": {"Identifier": 6, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "server"}, 
 		"phono": {"Identifier": 7, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "phono"}, 
 		"usb": {"Identifier": 8, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "usb"}, 
@@ -143,6 +141,9 @@ MusicCastTV.prototype = {
 			case "am":
 			case "AM":
 				return "am";
+			case "dab":
+			case "DAB":
+				return "dab";
 			case "net_radio":
 			case "NetRadio":
 				return "net_radio";
@@ -270,7 +271,7 @@ MusicCastTV.prototype = {
 			if (error) {
 				that.log.debug('HTTP get error');
 				that.log(error.message);
-				return "error";
+				return error;
 			} else if(body) {
 				that.log.debug("body: " + body)
 				att=JSON.parse(body);
@@ -281,6 +282,8 @@ MusicCastTV.prototype = {
 				that.log("Input: " + att.input + " String: " + tmpInput);
 				if(tmpInput != "") {
 					that.ActiveIdentifier = that.info[tmpInput]["Identifier"];
+					/*that.TelevisionService.getCharacteristic(Characteristic.ActiveIdentifier)
+						.updateValue(that.ActiveIdentifier);*/
 				}
 				return "updated";
 			}
@@ -326,15 +329,20 @@ MusicCastTV.prototype = {
 		})
 		this.log("Active to " + value);
 		if(this.powerOnInput&&value) {
-			this.log("powerOnInput: " + this.powerOnInput + "; String: " + this.getInputFromString(this.powerOnInput));
-			// turn on powerOnInput
+			tmpInpit = this.getInputFromString(this.powerOnInput);
+			this.log("powerOnInput: " + this.powerOnInput + "; String: " + tmpInput);
+			//setActiveIdentifier(this.info[tmpInput]["Identifier"], callback);//turn on powerOnInput
 		}
 		callback();
 	},
 	getActiveIdentifier: function(callback) {
 		tmp = this.getHttpInput();
-		this.log.debug("get Active Identifier: " + this.ActiveIdentifier);
-		callback(null, this.ActiveIdentifier);
+		if(tmp=="updated") {
+			this.log.debug("get Active Identifier: " + this.ActiveIdentifier);
+			callback(null, this.ActiveIdentifier);
+		} else {
+			callback(tmp);
+		}
 	},
 	setActiveIdentifier: function(value, callback) {
 		const that = this;
@@ -391,9 +399,11 @@ MusicCastTV.prototype = {
 		switch (value) {
 			case 4:
 				this.log("remoteKeyPress UP");
+				setVolumeSelector(0, callback);
 				break;
 			case 5:
 				this.log("remoteKeyPress DOWN");
+				setVolumeSelector(1, callback);
 				break;
 			case 6:
 				this.log("remoteKeyPress LEFT");
@@ -402,7 +412,7 @@ MusicCastTV.prototype = {
 				this.log("remoteKeyPress RIGHT");
 				break;
 			case 8:
-				this.log("remoteKeyPress OK/MITTE");
+				this.log("remoteKeyPress OK");
 				break;
 			case 9:
 				this.log("remoteKeyPress zurück");
@@ -432,27 +442,7 @@ MusicCastTV.prototype = {
 	getVolume: function(callback) {
 		tmp = this.getHttpInput();
 		this.log.debug("get Volume: " + this.volume);
-		return callback(null, this.volume);
-		/*const that = this;
-		request({
-		method: 'GET',
-		url: 'http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/getStatus',
-		headers: {
-			'X-AppName': 'MusicCast/1.0',
-			'X-AppPort': '41100',
-		},
-		}, 
-		function (error, response, body) {
-			if (error) {
-				that.log.debug('HTTP get error');
-				that.log(error.message);
-				return callback(error);
-			}
-			att=JSON.parse(body);
-			that.log('HTTP GetStatus result: Volume = ' + att.volume);
-			//that.volume = (att.volume * 100 / that.maxVol);
-			return callback(null, att.volume);
-		});*/
+		callback(null, this.volume);
 	},
 	setVolume: function(value, callback) {
 		const that = this;
@@ -487,8 +477,6 @@ MusicCastTV.prototype = {
 	},
 	
 	getServices: function() {
-		const that = this;
-		
 		let informationService = new Service.AccessoryInformation();
 		informationService
 			.setCharacteristic(Characteristic.Manufacturer, "homebridge-musiccast-tv")
@@ -500,6 +488,7 @@ MusicCastTV.prototype = {
 		ServiceList = [];
 		ServiceList.push(informationService);
 		
+		const that = this;
 		request({
 		url: 'http://' + this.ip + '/YamahaExtendedControl/v1/system/getFeatures',
 	        method: 'GET',
@@ -616,6 +605,11 @@ MusicCastTV.prototype = {
 					this.amService = this.getInputService("am");
 					TelevisionService.addLinkedService(this.amService);
 					ServiceList.push(this.amService);
+					break;
+				case "dab":
+					this.dabService = this.getInputService("dab");
+					TelevisionService.addLinkedService(this.dabService);
+					ServiceList.push(this.dabService);
 					break;
 				case "net_radio":
 					this.net_radioService = this.getInputService("net_radio");

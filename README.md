@@ -60,11 +60,8 @@ Currently supported inputs:
 | Input Name | Implemented |
 | ---------- | ----------- |
 | cd | no |
-| tuner | no |
 | multi_ch | no |
 | phono | yes |
-| fm | yes |
-| am | yes |
 | line_cd | yes |
 | line1 | yes |
 | line2 | yes |
@@ -88,6 +85,10 @@ Currently supported inputs:
 |  |  |
 | mc_link | no |
 | main_sync | no |
+| **tuner** |
+| fm | yes |
+| am | yes |
+| dab | yes |
 | **streaming services** |
 | spotify | yes |
 | deezer | yes |
