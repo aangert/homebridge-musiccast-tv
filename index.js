@@ -1,3 +1,4 @@
+
 var Service, Characteristic;
 const request = require('request');
 const url = require('url');
@@ -29,8 +30,7 @@ function MusicCastTV(log, config) {
 	}, 
 	function (error, response, body) {
 		if (error) {
-			that.log.debug('HTTP get error');
-			that.log(error.message);
+			that.log.error(error.message);
 		}
 		that.log.debug("body: " + body)
 		if(body) {
@@ -42,6 +42,7 @@ function MusicCastTV(log, config) {
 			that.log("Input: " + att.input + " String: " + tmpInput);
 			if(tmpInput != "") {
 				that.ActiveIdentifier = config["identifier"] || that.info[tmpInput]["Identifier"];
+				that.log(that.ActiveIdentifier);
 			}
 		}
 	});
@@ -269,11 +270,11 @@ MusicCastTV.prototype = {
 		}, 
 		function (error, response, body) {
 			if (error) {
-				that.log.debug('HTTP get error');
-				that.log(error.message);
+				that.log.debug('getHttpInput get error');
+				that.log.error(error.message);
 				return error;
 			} else if(body) {
-				that.log.debug("body: " + body)
+				that.log.debug("HttpInput body: " + body)
 				att=JSON.parse(body);
 				that.volume = att.volume;
 				that.maxVol = att.max_volume;
@@ -282,10 +283,12 @@ MusicCastTV.prototype = {
 				that.log("Input: " + att.input + " String: " + tmpInput);
 				if(tmpInput != "") {
 					that.ActiveIdentifier = that.info[tmpInput]["Identifier"];
-					/*that.TelevisionService.getCharacteristic(Characteristic.ActiveIdentifier)
-						.updateValue(that.ActiveIdentifier);*/
+					that.TelevisionService.getCharacteristic(Characteristic.ActiveIdentifier)
+						.updateValue(that.ActiveIdentifier);
 				}
 				return "updated";
+			} else{
+				that.log(error + body)
 			}
 		});
 	},
@@ -302,8 +305,8 @@ MusicCastTV.prototype = {
 		}, 
 		function (error, response, body) {
 			if (error) {
-				that.log.debug('HTTP get error');
-				that.log(error.message);
+				that.log.debug('getActive error');
+				that.log.error(error.message);
 				return callback(error);
 			}
 			att=JSON.parse(body);
@@ -323,63 +326,60 @@ MusicCastTV.prototype = {
 		function (error, response) {
 			if (error) {
 				that.log.debug('http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/setPower?power=' + (value ? 'on' : 'standby'));
-				that.log(error.message);
+				that.log.error(error.message);
 				return callback(error);
 			}
 		})
 		this.log("Active to " + value);
 		if(this.powerOnInput&&value) {
-			tmpInpit = this.getInputFromString(this.powerOnInput);
+			tmpInput = this.getInputFromString(this.powerOnInput);
 			this.log("powerOnInput: " + this.powerOnInput + "; String: " + tmpInput);
-			//setActiveIdentifier(this.info[tmpInput]["Identifier"], callback);//turn on powerOnInput
+			//setActiveIdentifier(this.info[tmpInput]["Identifier"], callback); //turn on powerOnInput
 		}
 		callback();
 	},
 	getActiveIdentifier: function(callback) {
 		tmp = this.getHttpInput();
-		if(tmp=="updated") {
-			this.log.debug("get Active Identifier: " + this.ActiveIdentifier);
-			callback(null, this.ActiveIdentifier);
-		} else {
-			callback(tmp);
-		}
+		this.log("getActiveIdentifier: " + tmp);
+		this.log.debug("get Active Identifier: " + this.ActiveIdentifier);
+		callback(null, this.ActiveIdentifier);
 	},
 	setActiveIdentifier: function(value, callback) {
 		const that = this;
 		for(var key in this.info) {
 			if (this.info[key]["Identifier"] == value) {
 				var newInput = this.info[key]["Command"];
-				var tempInput = newInput;
+				var tmpInput = newInput;
 				this.log("Switch to " + value + ": " + newInput);
 			}
 		}
-		if (tempInput=="am" || tempInput=="fm" || tempInput=="dab") {
+		if (tmpInput=="am" || tmpInput=="fm" || tmpInput=="dab") {
 			newInput = "tuner";
 		}
 		this.log.debug("ActiveIdentifier to " + value);
 		request({
-		url: 'http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/setInput?input=' + newInput,
-		method: 'GET',
-		body: ""
+			url: 'http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/setInput?input=' + newInput,
+			method: 'GET',
+			body: ""
 		},
 		function (error, response) {
 			if (error) {
-			that.log.debug('http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/setInput?input=' + newInput);
-			that.log(error.message);
-			return callback(error);
+				that.log.debug('http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/setInput?input=' + newInput);
+				that.log(error.message);
+				return callback(error);
 			}
 		})
-		if (tempInput=="am" || tempInput=="fm" || tempInput=="dab") {
+		if (tmpInput=="am" || tmpInput=="fm" || tmpInput=="dab") {
 			request({
-			url: 'http://' + this.ip + '/YamahaExtendedControl/v1/tuner/setBand?band=' + tempInput,
-			method: 'GET',
-			body: ""
+				url: 'http://' + this.ip + '/YamahaExtendedControl/v1/tuner/setBand?band=' + tmpInput,
+				method: 'GET',
+				body: ""
 			},
 			function (error, response) {
 				if (error) {
-				that.log.debug('http://' + this.ip + '/YamahaExtendedControl/v1/tuner/setBand?band=' + tempInput);
-				that.log(error.message);
-				return callback(error);
+					that.log.debug('http://' + this.ip + '/YamahaExtendedControl/v1/tuner/setBand?band=' + tmpInput);
+					that.log(error.message);
+					return callback(error);
 				}
 			})
 		}
@@ -415,7 +415,7 @@ MusicCastTV.prototype = {
 				this.log("remoteKeyPress OK");
 				break;
 			case 9:
-				this.log("remoteKeyPress zurück");
+				this.log("remoteKeyPress BACK");
 				break;
 			case 11:
 				this.log("remoteKeyPress Play/Pause");
@@ -468,9 +468,11 @@ MusicCastTV.prototype = {
 		callback();
 	},
 	setVolumeSelector: function(value, callback) {
+		this.getHttpInput();
 		this.log.debug("VolumeSelector: " + value + ", current Volume: " + this.volume);
 		if (value == 0) {
 			this.setVolume(this.volume+1, callback);
+			//setTimeout(this.setVolume, 1000, this.volume+1, callback);
 		}else if (value == 1){
 			this.setVolume(this.volume-1, callback);
 		}
@@ -499,11 +501,13 @@ MusicCastTV.prototype = {
 		},
 		function (error, response, body) {
 			if (error) {
-        			that.log.debug('HTTP get error');
-        			that.log(error.message);
+        			that.log.debug('getServices HTTP error');
+        			that.log.error(error.message);
 			} else {
-				that.log.debug("features: " + body);
 				that.features=JSON.parse(body);
+				that.log.debug("func_list: " + JSON.stringify(that.features.system.func_list) + 
+					", zone_num: " + JSON.stringify(that.features.system.zone_num));
+				that.log.debug("zone: " + JSON.stringify(that.features.zone));
 			}
 		});
 		
