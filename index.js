@@ -1,4 +1,3 @@
-
 var Service, Characteristic;
 const request = require('request');
 const url = require('url');
@@ -14,19 +13,19 @@ function MusicCastTV(log, config) {
 	this.name = config["name"];
 	this.ip = config["ip"];
 	this.zone = config["zone"] || "main";
-	this.modell = config["modell"] || "MusicCast TV";
+	this.model = config["model"] || config["modell"] || "MusicCast TV";
 	this.volume = config["volume"];
 	this.maxVol = config["maxVol"];
 	this.ActiveIdentifier = config["identifier"] || 1;
 	var vol;
 	that = this;
 	request({
-	method: 'GET',
-	url: 'http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/getStatus',
-	headers: {
-		'X-AppName': 'MusicCast/1.0',
-		'X-AppPort': '41100',
-	},
+		method: 'GET',
+		url: 'http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/getStatus',
+		headers: {
+			'X-AppName': 'MusicCast/1.0',
+			'X-AppPort': '41100',
+		},
 	}, 
 	function (error, response, body) {
 		if (error) {
@@ -39,10 +38,9 @@ function MusicCastTV(log, config) {
 			that.maxVol = config["maxVol"] || att.max_volume;
 			that.log("volume: " + that.volume + " maxVol: " + that.maxVol);
 			tmpInput = that.getInputFromString(att.input);
-			that.log("Input: " + att.input + " String: " + tmpInput);
+			that.log("Input: " + tmpInput);
 			if(tmpInput != "") {
 				that.ActiveIdentifier = config["identifier"] || that.info[tmpInput]["Identifier"];
-				that.log(that.ActiveIdentifier);
 			}
 		}
 	});
@@ -280,7 +278,7 @@ MusicCastTV.prototype = {
 				that.maxVol = att.max_volume;
 				that.log("volume: " + that.volume + " maxVol: " + that.maxVol);
 				tmpInput = that.getInputFromString(att.input);
-				that.log("Input: " + att.input + " String: " + tmpInput);
+				that.log("Input: " + tmpInput);
 				if(tmpInput != "") {
 					that.ActiveIdentifier = that.info[tmpInput]["Identifier"];
 					that.TelevisionService.getCharacteristic(Characteristic.ActiveIdentifier)
@@ -288,7 +286,7 @@ MusicCastTV.prototype = {
 				}
 				return "updated";
 			} else{
-				that.log(error + body)
+				that.log(error + "; body: " + body)
 			}
 		});
 	},
@@ -308,11 +306,14 @@ MusicCastTV.prototype = {
 				that.log.debug('getActive error');
 				that.log.error(error.message);
 				return callback(error);
+			} else{
+				att=JSON.parse(body);
+				that.log.debug('HTTP getStatus result: ' + att.power);
+				that.active = (att.power=='on');
+				that.TelevisionService.getCharacteristic(Characteristic.Active)
+					.updateValue(that.active);
+				return callback(null, (att.power=='on'));
 			}
-			att=JSON.parse(body);
-			that.log.debug('HTTP getStatus result: ' + att.power);
-			that.active = (att.power=='on');
-			return callback(null, (att.power=='on'));
 		});
 	},
 	setActive: function(value, callback) {
@@ -327,20 +328,22 @@ MusicCastTV.prototype = {
 			if (error) {
 				that.log.debug('http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/setPower?power=' + (value ? 'on' : 'standby'));
 				that.log.error(error.message);
-				return callback(error);
+				return error;
 			}
 		})
 		this.log("Active to " + value);
-		if(this.powerOnInput&&value) {
+		if(this.powerOnInput&&value) {// missing: filter for state change
 			tmpInput = this.getInputFromString(this.powerOnInput);
-			this.log("powerOnInput: " + this.powerOnInput + "; String: " + tmpInput);
-			//setActiveIdentifier(this.info[tmpInput]["Identifier"], callback); //turn on powerOnInput
+			this.log("powerOnInput: " + tmpInput);
+			this.setActiveIdentifier(this.info[tmpInput]["Identifier"], callback); //turn on powerOnInput
+			that.TelevisionService.getCharacteristic(Characteristic.ActiveIdentifier)
+						.updateValue(this.info[tmpInput]["Identifier"]);
+		} else{
+			callback();
 		}
-		callback();
 	},
 	getActiveIdentifier: function(callback) {
 		tmp = this.getHttpInput();
-		this.log("getActiveIdentifier: " + tmp);
 		this.log.debug("get Active Identifier: " + this.ActiveIdentifier);
 		callback(null, this.ActiveIdentifier);
 	},
@@ -365,7 +368,7 @@ MusicCastTV.prototype = {
 		function (error, response) {
 			if (error) {
 				that.log.debug('http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/setInput?input=' + newInput);
-				that.log(error.message);
+				that.log.error(error.message);
 				return callback(error);
 			}
 		})
@@ -378,7 +381,7 @@ MusicCastTV.prototype = {
 			function (error, response) {
 				if (error) {
 					that.log.debug('http://' + this.ip + '/YamahaExtendedControl/v1/tuner/setBand?band=' + tmpInput);
-					that.log(error.message);
+					that.log.error(error.message);
 					return callback(error);
 				}
 			})
@@ -399,24 +402,24 @@ MusicCastTV.prototype = {
 		switch (value) {
 			case 4:
 				this.log("remoteKeyPress UP");
-				setVolumeSelector(0, callback);
+				this.setVolumeSelector(0, callback);
 				break;
 			case 5:
 				this.log("remoteKeyPress DOWN");
-				setVolumeSelector(1, callback);
+				this.setVolumeSelector(1, callback);
 				break;
 			case 6:
 				this.log("remoteKeyPress LEFT");
-				break;
+				return callback();
 			case 7:
 				this.log("remoteKeyPress RIGHT");
-				break;
+				return callback();
 			case 8:
 				this.log("remoteKeyPress OK");
-				break;
+				return callback();
 			case 9:
 				this.log("remoteKeyPress BACK");
-				break;
+				return callback();
 			case 11:
 				this.log("remoteKeyPress Play/Pause");
 				//CurrentMediaState und TargetMediaState verändern
@@ -429,15 +432,14 @@ MusicCastTV.prototype = {
 					setTargetMediaState(0, callback);
 					//this.TargetMediaState = 0;
 				}
-				break;
+				return callback();
 			case 15:
 				this.log("remoteKeyPress i");
-				break;
+				return callback();
 			default:
 				this.log("remoteKeyPress " + value);
-				break;
+				return callback();
 		}
-		callback();
 	},
 	getVolume: function(callback) {
 		tmp = this.getHttpInput();
@@ -458,9 +460,9 @@ MusicCastTV.prototype = {
 		},
 		function (error, response) {
 			if (error) {
-			that.log.debug('http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/setVolume?volume=' + value);
-			that.log(error.message);
-			return callback(error);
+				that.log.debug('http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/setVolume?volume=' + value);
+				that.log.error(error.message);
+				return error;
 			}
 		})
 		this.volume = value;
@@ -468,7 +470,7 @@ MusicCastTV.prototype = {
 		callback();
 	},
 	setVolumeSelector: function(value, callback) {
-		this.getHttpInput();
+		//this.getHttpInput();
 		this.log.debug("VolumeSelector: " + value + ", current Volume: " + this.volume);
 		if (value == 0) {
 			this.setVolume(this.volume+1, callback);
@@ -482,7 +484,7 @@ MusicCastTV.prototype = {
 		let informationService = new Service.AccessoryInformation();
 		informationService
 			.setCharacteristic(Characteristic.Manufacturer, "homebridge-musiccast-tv")
-			.setCharacteristic(Characteristic.Model, this.modell)
+			.setCharacteristic(Characteristic.Model, this.model)
 			.setCharacteristic(Characteristic.SerialNumber, "123-456-789")
 			.setCharacteristic(Characteristic.FirmwareRevision, this.version);
 		this.informationService = informationService;
@@ -528,7 +530,7 @@ MusicCastTV.prototype = {
 			.getCharacteristic(Characteristic.RemoteKey)
 				.on('set', this.remoteKeyPress.bind(this));
 		/*TelevisionService
-			.getCharacteristic(Characteristic.PowerModeSelection)//fehlt
+			.getCharacteristic(Characteristic.PowerModeSelection)//unused
 				.on('set', this.setPowerModeSelection.bind(this));//0=Show Menu
 		TelevisionService
 			.getCharacteristic(Characteristic.CurrentMediaState)
@@ -695,6 +697,11 @@ MusicCastTV.prototype = {
 					TelevisionService.addLinkedService(this.hdmi8Service);
 					ServiceList.push(this.hdmi8Service);
 					break;
+				case "aux":
+					this.aux1Service = this.getInputService("aux");
+					TelevisionService.addLinkedService(this.auxService);
+					ServiceList.push(this.auxService);
+					break;
 				case "aux1":
 					this.aux1Service = this.getInputService("aux1");
 					TelevisionService.addLinkedService(this.aux1Service);
@@ -704,6 +711,11 @@ MusicCastTV.prototype = {
 					this.aux2Service = this.getInputService("aux2");
 					TelevisionService.addLinkedService(this.aux2Service);
 					ServiceList.push(this.aux2Service);
+					break;
+				case "av1":
+					this.aux1Service = this.getInputService("av1");
+					TelevisionService.addLinkedService(this.av1Service);
+					ServiceList.push(this.av1Service);
 					break;
 				case "spotify":
 					this.spotifyService = this.getInputService("spotify");

@@ -51,8 +51,11 @@ config arguments:
 | inputs | {"fm": "radio", "line_cd": "CD", "airplay": "AirPlay"} | one key:value pair for each input you want to use. You can hide inputs by removing the checkbox in your HomeKit app or by removing it here. | yes |
 | volume | 100 | initial Volume; automatically detected | no |
 | maxVol | 161 | maxVol from getFeatures.json; automatically detected | no |
-| modell | "Yamaha R-N602" | device modell shown in homebridge | no |
-| identifier | 38 | used to set initial input after homebridge restart; values from [index.js line 46](https://github.com/DoctorNSA/homebridge-musiccast-tv/blob/0232cc3b21ced466049eef451e43443047d2ed00/index.js#L46) | no |
+| model | "Yamaha R-N602" | device model shown in homebridge | no |
+| powerOnInput | "line_cd" | input automatically switched to at powerOn | no |
+<!--
+| identifier | 38 | used to set initial input after homebridge restart; values from [index.js line 57](https://github.com/DoctorNSA/homebridge-musiccast-tv/blob/3327b51757484fe480fc20c0e62199163b4570bb/index.js#L57) | no |
+-->
 
 
 Currently supported inputs:
@@ -76,7 +79,7 @@ Currently supported inputs:
 | coaxial1 | yes |
 | coaxial2 | yes |
 | hdmi[1-8] | yes |
-| aux | no |
+| aux | yes |
 | aux1 | yes |
 | aux2 | yes |
 | av[1-7] | no |
@@ -121,5 +124,5 @@ hdmi[1-8] summarizes hdmi1, hdmi2, ..., hdmi8
  - [x] automatically detect volume
  - [x] automatically detect maxVolume
  - [x] automatically detect current input
- - [ ] turn on optional input from config.json after power on
+ - [x] turn on optional input from config.json after power on
  - [ ] 
