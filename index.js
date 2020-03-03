@@ -40,7 +40,11 @@ function MusicCastTV(log, config) {
 			tmpInput = that.getInputFromString(att.input);
 			that.log("Input: " + tmpInput);
 			if(tmpInput != "") {
-				that.ActiveIdentifier = config["identifier"] || that.info[tmpInput]["Identifier"];
+				if(tmpInput=="tuner") {
+					that.getBand();
+				} else{
+					that.ActiveIdentifier = config["identifier"] || that.info[tmpInput]["Identifier"];
+				}
 			}
 		}
 	});
@@ -49,7 +53,7 @@ function MusicCastTV(log, config) {
 	this.powerOnInput = config["powerOnInput"];
 	this.mute = 1;
 	//this.brightness = config["brightness"] || 100;
-	//this.updateInterval = 1000;
+	this.updateInterval = 1000;
 	this.version = require("./package.json").version;
 	this.features = {};
 	this.info = {"airplay": {"Identifier": 1, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "airplay"}, 
@@ -116,6 +120,8 @@ MusicCastTV.prototype = {
 	},
 	getInputFromString: function(name) {
 		switch(name) {
+			case "tuner":
+				return "tuner"
 			case "airplay":
 			case "AirPlay":
 				return "airplay";
@@ -256,7 +262,36 @@ MusicCastTV.prototype = {
 		});
 		return tmpInputService;
 	},
+	getBand: function() {
+		that = this;
+		request({
+			method: 'GET',
+			url: 'http://' + this.ip + '/YamahaExtendedControl/v1/tuner/getPlayInfo',
+			headers: {
+				'X-AppName': 'MusicCast/1.0',
+				'X-AppPort': '41100',
+			},
+		}, 
+		function (error, response, body) {
+			if (error) {
+				that.log.debug('getBand get error');
+				that.log.error(error.message);
+				return error;
+			} else if(body) {
+				that.log.debug("getBand body: " + body)
+				att = JSON.parse(body);
+				tmpInput = that.getInputFromString(att.band);
+				that.log("Input: " + tmpInput);
+				if(tmpInput != "") {
+					that.ActiveIdentifier = that.info[tmpInput]["Identifier"];
+					that.TelevisionService.getCharacteristic(Characteristic.ActiveIdentifier)
+						.updateValue(that.ActiveIdentifier);
+				}
+			}
+		});
+	},
 	getHttpInput: function() {
+		this.tmp="";
 		that = this;
 		request({
 			method: 'GET',
@@ -271,45 +306,58 @@ MusicCastTV.prototype = {
 				that.log.debug('getHttpInput get error');
 				that.log.error(error.message);
 				return error;
+				that.tmp = "error";
 			} else if(body) {
 				that.log.debug("HttpInput body: " + body)
-				att=JSON.parse(body);
+				att = JSON.parse(body);
+				that.active = (att.power=='on');
 				that.volume = att.volume;
 				that.maxVol = att.max_volume;
-				that.log("volume: " + that.volume + " maxVol: " + that.maxVol);
+				that.log.debug("volume: " + that.volume + " maxVol: " + that.maxVol);
 				tmpInput = that.getInputFromString(att.input);
-				that.log("Input: " + tmpInput);
 				if(tmpInput != "") {
-					that.ActiveIdentifier = that.info[tmpInput]["Identifier"];
-					that.TelevisionService.getCharacteristic(Characteristic.ActiveIdentifier)
-						.updateValue(that.ActiveIdentifier);
+					if(tmpInput=="tuner") {
+						that.getBand();
+					} else{
+						that.log("Input: " + tmpInput);
+						that.ActiveIdentifier = that.info[tmpInput]["Identifier"];
+						that.TelevisionService.getCharacteristic(Characteristic.Active)
+							.updateValue(that.active);
+						that.TelevisionService.getCharacteristic(Characteristic.ActiveIdentifier)
+							.updateValue(that.ActiveIdentifier);
+					}
 				}
-				return "updated";
+				that.tmp = "updated";
 			} else{
 				that.log(error + "; body: " + body)
 			}
 		});
 	},
 	getActive: function(callback) {
+		this.tmp = "";
 		const that = this;
 		this.log.debug("get Active of " + this.name + ": " + this.active);
 		request({
-		method: 'GET',
-		url: 'http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/getStatus',
-		headers: {
-			'X-AppName': 'MusicCast/1.0',
-			'X-AppPort': '41100',
-		},
+			method: 'GET',
+			url: 'http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/getStatus',
+			headers: {
+				'X-AppName': 'MusicCast/1.0',
+				'X-AppPort': '41100',
+			},
 		}, 
 		function (error, response, body) {
 			if (error) {
 				that.log.debug('getActive error');
 				that.log.error(error.message);
+				that.tmp = "error";
 				return callback(error);
 			} else{
 				att=JSON.parse(body);
 				that.log.debug('HTTP getStatus result: ' + att.power);
 				that.active = (att.power=='on');
+				that.TelevisionService.getCharacteristic(Characteristic.Active)
+					.updateValue((att.power=='on'));
+				that.tmp = "success";
 				that.TelevisionService.getCharacteristic(Characteristic.Active)
 					.updateValue(that.active);
 				return callback(null, (att.power=='on'));
@@ -320,9 +368,9 @@ MusicCastTV.prototype = {
 		const that = this;
 		this.active = value;
 		request({
-		url: 'http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/setPower?power=' + (value ? 'on' : 'standby'),
-		method: 'GET',
-		body: ""
+			url: 'http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/setPower?power=' + (value ? 'on' : 'standby'),
+			method: 'GET',
+			body: ""
 		},
 		function (error, response) {
 			if (error) {
@@ -343,7 +391,12 @@ MusicCastTV.prototype = {
 		}
 	},
 	getActiveIdentifier: function(callback) {
-		tmp = this.getHttpInput();
+		this.getHttpInput();
+		setTimeout(() => {
+			this.TelevisionService.getCharacteristic(Characteristic.ActiveIdentifier)
+				.updateValue(this.ActiveIdentifier);
+		}, this.updateInterval);
+		//while(this.tmp=="");
 		this.log.debug("get Active Identifier: " + this.ActiveIdentifier);
 		callback(null, this.ActiveIdentifier);
 	},
@@ -529,6 +582,13 @@ MusicCastTV.prototype = {
 		TelevisionService
 			.getCharacteristic(Characteristic.RemoteKey)
 				.on('set', this.remoteKeyPress.bind(this));
+		setInterval(() => {
+			this.getHttpInput();
+			TelevisionService.getCharacteristic(Characteristic.Active)
+				.updateValue(this.active);
+			TelevisionService.getCharacteristic(Characteristic.ActiveIdentifier)
+				.updateValue(this.ActiveIdentifier);
+		}, this.updateInterval);
 		/*TelevisionService
 			.getCharacteristic(Characteristic.PowerModeSelection)//unused
 				.on('set', this.setPowerModeSelection.bind(this));//0=Show Menu
