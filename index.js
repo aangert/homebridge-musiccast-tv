@@ -17,7 +17,6 @@ function MusicCastTV(log, config) {
 	this.volume = config["volume"];
 	this.maxVol = config["maxVol"];
 	this.ActiveIdentifier = config["identifier"] || 1;
-	var vol;
 	that = this;
 	request({
 		method: 'GET',
@@ -53,7 +52,7 @@ function MusicCastTV(log, config) {
 	this.powerOnInput = config["powerOnInput"];
 	this.mute = 1;
 	//this.brightness = config["brightness"] || 100;
-	this.updateInterval = 1000;
+	this.updateInterval = config["updateInterval"] || 1000;
 	this.version = require("./package.json").version;
 	this.features = {};
 	this.info = {"airplay": {"Identifier": 1, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "airplay"}, 
@@ -81,27 +80,27 @@ function MusicCastTV(log, config) {
 		"hdmi6": {"Identifier": 23, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi6"}, 
 		"hdmi7": {"Identifier": 24, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi7"}, 
 		"hdmi8": {"Identifier": 25, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi8"}, 
-		"aux": {"Identifier": 26, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"aux": {"Identifier": 26, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "aux"}, 
 		"aux1": {"Identifier": 27, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "aux1"}, 
 		"aux2": {"Identifier": 28, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "aux2"}, 
-		"av1": {"Identifier": 29, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"av1": {"Identifier": 29, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "av1"}, 
 		"av2": {"Identifier": 30, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"av3": {"Identifier": 31, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"av4": {"Identifier": 32, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"av5": {"Identifier": 33, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"av6": {"Identifier": 34, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"av7": {"Identifier": 35, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"mc_link": {"Identifier": 36, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"main_sync": {"Identifier": 37, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"spotify": {"Identifier": 38, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "spotify"}, 
-		"deezer": {"Identifier": 39, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "deezer"}, 
-		"napster": {"Identifier": 40, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "napster"}, 
-		"qobuz": {"Identifier": 41, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "qobuz"}, 
-		"juke": {"Identifier": 42, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "juke"}, 
-		"tidal": {"Identifier": 43, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "tidal"}, 
-		"pandora": {"Identifier": 44, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "pandora"}, 
-		"siriusxm": {"Identifier": 45, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "siriusxm"}, 
-		"radiko": {"Identifier": 46, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "radiko"}};
+		"mc_link": {"Identifier": 46, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"main_sync": {"Identifier": 47, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"spotify": {"Identifier": 48, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "spotify"}, 
+		"deezer": {"Identifier": 49, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "deezer"}, 
+		"napster": {"Identifier": 50, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "napster"}, 
+		"qobuz": {"Identifier": 51, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "qobuz"}, 
+		"juke": {"Identifier": 52, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "juke"}, 
+		"tidal": {"Identifier": 53, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "tidal"}, 
+		"pandora": {"Identifier": 54, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "pandora"}, 
+		"siriusxm": {"Identifier": 55, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "siriusxm"}, 
+		"radiko": {"Identifier": 56, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "radiko"}};
 	this.log.debug(config);
 	for(var key in this.inputs) {
 		this.log.debug("updating name for " + key);
@@ -115,7 +114,7 @@ function MusicCastTV(log, config) {
 
 MusicCastTV.prototype = {
 	identify: function(callback) {
-		this.log("Identify " + this.name);
+		this.log("Identify MusicCast TV '" + this.name + "'");
 		callback();
 	},
 	getInputFromString: function(name) {
@@ -197,12 +196,36 @@ MusicCastTV.prototype = {
 			case "hdmi8":
 			case "HDMI8":
 				return "hdmi8";
+			case "aux":
+			case "AUX":
+				return "aux";
 			case "aux1":
 			case "AUX1":
 				return "aux1";
 			case "aux2":
 			case "AUX2":
 				return "aux2";
+			case "av1":
+			case "AV1":
+				return "av1";
+			case "av2":
+			case "AV2":
+				return "av2";
+			case "av3":
+			case "AV3":
+				return "av3";
+			case "av4":
+			case "AV4":
+				return "av4";
+			case "av5":
+			case "AV5":
+				return "av5";
+			case "av6":
+			case "AV6":
+				return "av6";
+			case "av7":
+			case "AV7":
+				return "av7";
 			case "mc_link":
 				return "mc_link";
 			case "main_sync":
@@ -281,7 +304,7 @@ MusicCastTV.prototype = {
 				that.log.debug("getBand body: " + body)
 				att = JSON.parse(body);
 				tmpInput = that.getInputFromString(att.band);
-				that.log("Input: " + tmpInput);
+				that.log.debug("Input: " + tmpInput);
 				if(tmpInput != "") {
 					that.ActiveIdentifier = that.info[tmpInput]["Identifier"];
 					that.TelevisionService.getCharacteristic(Characteristic.ActiveIdentifier)
@@ -319,7 +342,7 @@ MusicCastTV.prototype = {
 					if(tmpInput=="tuner") {
 						that.getBand();
 					} else{
-						that.log("Input: " + tmpInput);
+						that.log.debug("Input: " + tmpInput);
 						that.ActiveIdentifier = that.info[tmpInput]["Identifier"];
 						that.TelevisionService.getCharacteristic(Characteristic.Active)
 							.updateValue(that.active);
@@ -507,9 +530,9 @@ MusicCastTV.prototype = {
 			return;
 		}
 		request({
-		url: 'http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/setVolume?volume=' + value,
-		method: 'GET',
-		body: ""
+			url: 'http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/setVolume?volume=' + value,
+			method: 'GET',
+			body: ""
 		},
 		function (error, response) {
 			if (error) {
@@ -777,6 +800,16 @@ MusicCastTV.prototype = {
 					TelevisionService.addLinkedService(this.av1Service);
 					ServiceList.push(this.av1Service);
 					break;
+				case "mc_link":
+					this.mc_linkService = this.getInputService("mc_link");
+					TelevisionService.addLinkedService(this.mc_linkService);
+					ServiceList.push(this.mc_linkService);
+					break;
+				case "main_sync":
+					this.main_syncService = this.getInputService("main_sync");
+					TelevisionService.addLinkedService(this.main_syncService);
+					ServiceList.push(this.main_syncService);
+					break;
 				case "spotify":
 					this.spotifyService = this.getInputService("spotify");
 					TelevisionService.addLinkedService(this.spotifyService);
@@ -825,7 +858,7 @@ MusicCastTV.prototype = {
 				default:
 					this.log("input " + key + " not found");
 					this.log("please file a feature request and include this log");
-					this.log("features: " + this.features);
+					this.log("zone features: " + this.features.zone);
 			}
 		}
 		/*	eval("var InputService" + i + " = new Service.InputSource(key, key)");
