@@ -53,6 +53,7 @@ config arguments:
 | maxVol | 161 | maxVol from getFeatures.json; automatically detected | no |
 | model | "Yamaha R-N602" | device model shown in homebridge | no |
 | powerOnInput | "line_cd" | input automatically switched to at powerOn | no |
+| updateInterval | 1000 | time between updates im ms | no |
 <!--
 | identifier | 38 | used to set initial input after homebridge restart; values from [index.js line 57](https://github.com/DoctorNSA/homebridge-musiccast-tv/blob/3327b51757484fe480fc20c0e62199163b4570bb/index.js#L57) | no |
 -->
@@ -94,6 +95,7 @@ Currently supported inputs:
 | dab | yes |
 | **streaming services** |
 | spotify | yes |
+| amazon_music | no |
 | deezer | yes |
 | napster | yes |
 | qobuz | yes |
