@@ -48,7 +48,7 @@ function MusicCastTV(log, config) {
 		}
 	});
 	this.inputs =  config["inputs"] || {"airplay": "1. 'inputs' missing", "bluetooth": "2. in config.json", "spotify": "3. please modify"};
-	this.active = config["active"] || config["power"] || 0;
+	this.active = config["active"] || 0;
 	this.powerOnInput = config["powerOnInput"];
 	this.mute = 1;
 	//this.brightness = config["brightness"] || 100;
@@ -90,16 +90,18 @@ function MusicCastTV(log, config) {
 		"av5": {"Identifier": 33, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"av6": {"Identifier": 34, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"av7": {"Identifier": 35, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"cd": {"Identifier": 36, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"mc_link": {"Identifier": 46, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"main_sync": {"Identifier": 47, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"spotify": {"Identifier": 48, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "spotify"}, 
-		"deezer": {"Identifier": 49, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "deezer"}, 
-		"napster": {"Identifier": 50, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "napster"}, 
-		"qobuz": {"Identifier": 51, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "qobuz"}, 
-		"juke": {"Identifier": 52, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "juke"}, 
-		"tidal": {"Identifier": 53, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "tidal"}, 
-		"pandora": {"Identifier": 54, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "pandora"}, 
-		"siriusxm": {"Identifier": 55, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "siriusxm"}, 
+		"amazon_music": {"Identifier": 49, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"deezer": {"Identifier": 50, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "deezer"}, 
+		"napster": {"Identifier": 51, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "napster"}, 
+		"qobuz": {"Identifier": 52, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "qobuz"}, 
+		"juke": {"Identifier": 53, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "juke"}, 
+		"tidal": {"Identifier": 54, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "tidal"}, 
+		"pandora": {"Identifier": 55, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "pandora"}, 
+		"siriusxm": {"Identifier": 56, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "siriusxm"}, 
 		"radiko": {"Identifier": 56, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "radiko"}};
 	this.log.debug(config);
 	for(var key in this.inputs) {
@@ -226,6 +228,9 @@ MusicCastTV.prototype = {
 			case "av7":
 			case "AV7":
 				return "av7";
+			case "cd":
+			case "CD":
+				return "cd";
 			case "mc_link":
 				return "mc_link";
 			case "main_sync":
@@ -234,6 +239,9 @@ MusicCastTV.prototype = {
 			case "spotify":
 			case "Spotify":
 				return "spotify";
+			case "amazon_music":
+			case "Amazon":
+				return "amazon_music";
 			case "deezer":
 			case "Deezer":
 				return "deezer";
