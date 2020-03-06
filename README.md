@@ -127,4 +127,3 @@ hdmi[1-8] summarizes hdmi1, hdmi2, ..., hdmi8
  - [x] automatically detect maxVolume
  - [x] automatically detect current input
  - [x] turn on optional input from config.json after power on
- - [ ] 
