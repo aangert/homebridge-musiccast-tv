@@ -50,6 +50,7 @@ function MusicCastTV(log, config) {
 	this.inputs =  config["inputs"] || {"airplay": "1. 'inputs' missing", "bluetooth": "2. in config.json", "spotify": "3. please modify"};
 	this.active = config["active"] || 0;
 	this.powerOnInput = config["powerOnInput"];
+	this.powerOnVolume = config["powerOnVolume"];
 	this.mute = 1;
 	//this.brightness = config["brightness"] || 100;
 	this.updateInterval = config["updateInterval"] || 1000;
@@ -72,25 +73,28 @@ function MusicCastTV(log, config) {
 		"optical2": {"Identifier": 15, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "optical2"}, 
 		"coaxial1": {"Identifier": 16, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "coaxial1"}, 
 		"coaxial2": {"Identifier": 17, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "coaxial2"}, 
-		"hdmi1": {"Identifier": 18, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi1"}, 
-		"hdmi2": {"Identifier": 19, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi2"}, 
-		"hdmi3": {"Identifier": 20, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi3"}, 
-		"hdmi4": {"Identifier": 21, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi4"}, 
-		"hdmi5": {"Identifier": 22, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi5"}, 
-		"hdmi6": {"Identifier": 23, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi6"}, 
-		"hdmi7": {"Identifier": 24, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi7"}, 
-		"hdmi8": {"Identifier": 25, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi8"}, 
-		"aux": {"Identifier": 26, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "aux"}, 
-		"aux1": {"Identifier": 27, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "aux1"}, 
-		"aux2": {"Identifier": 28, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "aux2"}, 
-		"av1": {"Identifier": 29, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "av1"}, 
-		"av2": {"Identifier": 30, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"av3": {"Identifier": 31, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"av4": {"Identifier": 32, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"av5": {"Identifier": 33, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"av6": {"Identifier": 34, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"av7": {"Identifier": 35, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"cd": {"Identifier": 36, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"hdmi": {"Identifier": 18, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi"}, 
+		"hdmi1": {"Identifier": 19, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi1"}, 
+		"hdmi2": {"Identifier": 20, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi2"}, 
+		"hdmi3": {"Identifier": 21, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi3"}, 
+		"hdmi4": {"Identifier": 22, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi4"}, 
+		"hdmi5": {"Identifier": 23, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi5"}, 
+		"hdmi6": {"Identifier": 24, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi6"}, 
+		"hdmi7": {"Identifier": 25, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi7"}, 
+		"hdmi8": {"Identifier": 26, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi8"}, 
+		"aux": {"Identifier": 27, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "aux"}, 
+		"aux1": {"Identifier": 28, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "aux1"}, 
+		"aux2": {"Identifier": 29, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "aux2"}, 
+		"av1": {"Identifier": 30, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "av1"}, 
+		"av2": {"Identifier": 31, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"av3": {"Identifier": 32, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"av4": {"Identifier": 33, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"av5": {"Identifier": 34, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"av6": {"Identifier": 35, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"av7": {"Identifier": 36, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"cd": {"Identifier": 37, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "cd"}, 
+		"tv": {"Identifier": 38, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "tv"}, 
+		"analog": {"Identifier": 39, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "analog"}, 
 		"mc_link": {"Identifier": 46, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"main_sync": {"Identifier": 47, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"spotify": {"Identifier": 48, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "spotify"}, 
@@ -174,6 +178,9 @@ MusicCastTV.prototype = {
 			case "coaxial2":
 			case "Coaxial2":
 				return "coaxial2";
+			case "hdmi":
+			case "HDMI":
+				return "hdmi";
 			case "hdmi1":
 			case "HDMI1":
 				return "hdmi1";
@@ -231,6 +238,12 @@ MusicCastTV.prototype = {
 			case "cd":
 			case "CD":
 				return "cd";
+			case "tv":
+			case "TV":
+				return "tv";
+			case "analog":
+			case "Analog":
+				return "analog";
 			case "mc_link":
 				return "mc_link";
 			case "main_sync":
@@ -748,6 +761,11 @@ MusicCastTV.prototype = {
 					TelevisionService.addLinkedService(this.coaxial2Service);
 					ServiceList.push(this.coaxial2Service);
 					break;
+				case "hdmi":
+					this.hdmiService = this.getInputService("hdmi");
+					TelevisionService.addLinkedService(this.hdmiService);
+					ServiceList.push(this.hdmiService);
+					break;
 				case "hdmi1":
 					this.hdmi1Service = this.getInputService("hdmi1");
 					TelevisionService.addLinkedService(this.hdmi1Service);
@@ -807,6 +825,21 @@ MusicCastTV.prototype = {
 					this.aux1Service = this.getInputService("av1");
 					TelevisionService.addLinkedService(this.av1Service);
 					ServiceList.push(this.av1Service);
+					break;
+				case "cd":
+					this.cdService = this.getInputService("cd");
+					TelevisionService.addLinkedService(this.cdService);
+					ServiceList.push(this.cdService);
+					break;
+				case "tv":
+					this.tvService = this.getInputService("tv");
+					TelevisionService.addLinkedService(this.tvService);
+					ServiceList.push(this.tvService);
+					break;
+				case "analog":
+					this.analogService = this.getInputService("analog");
+					TelevisionService.addLinkedService(this.analogService);
+					ServiceList.push(this.analogService);
 					break;
 				case "mc_link":
 					this.mc_linkService = this.getInputService("mc_link");
