@@ -65,6 +65,7 @@ Currently supported inputs:
 | ---------- | ----------- |
 | cd | no |
 | multi_ch | no |
+| tv | no |
 | phono | yes |
 | line_cd | yes |
 | line1 | yes |
@@ -79,6 +80,7 @@ Currently supported inputs:
 | optical2 | yes |
 | coaxial1 | yes |
 | coaxial2 | yes |
+| hdmi | no |
 | hdmi[1-8] | yes |
 | aux | yes |
 | aux1 | yes |
