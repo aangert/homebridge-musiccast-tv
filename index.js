@@ -95,6 +95,7 @@ function MusicCastTV(log, config) {
 		"cd": {"Identifier": 37, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "cd"}, 
 		"tv": {"Identifier": 38, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "tv"}, 
 		"analog": {"Identifier": 39, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "analog"}, 
+		"multi_ch": {"Identifier": 40, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "multi_ch"}, 
 		"mc_link": {"Identifier": 46, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"main_sync": {"Identifier": 47, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"spotify": {"Identifier": 48, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "spotify"}, 
@@ -244,6 +245,9 @@ MusicCastTV.prototype = {
 			case "analog":
 			case "Analog":
 				return "analog";
+			case "multi_ch":
+			case "MultiCh":
+				return "multi_ch";
 			case "mc_link":
 				return "mc_link";
 			case "main_sync":
@@ -840,6 +844,11 @@ MusicCastTV.prototype = {
 					this.analogService = this.getInputService("analog");
 					TelevisionService.addLinkedService(this.analogService);
 					ServiceList.push(this.analogService);
+					break;
+				case "multi_ch":
+					this.multi_chService = this.getInputService("multi_ch");
+					TelevisionService.addLinkedService(this.multi_chService);
+					ServiceList.push(this.multi_chService);
 					break;
 				case "mc_link":
 					this.mc_linkService = this.getInputService("mc_link");

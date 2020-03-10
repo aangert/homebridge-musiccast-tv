@@ -63,9 +63,6 @@ Currently supported inputs:
 
 | Input Name | Implemented |
 | ---------- | ----------- |
-| cd | no |
-| multi_ch | no |
-| tv | no |
 | phono | yes |
 | line_cd | yes |
 | line1 | yes |
@@ -86,7 +83,10 @@ Currently supported inputs:
 | aux1 | yes |
 | aux2 | yes |
 | av[1-7] | no |
-| analog | no |
+| cd | yes |
+| tv | yes |
+| analog | yes |
+| multi_ch | yes |
 | audio[1-4] | no |
 |  |  |
 | mc_link | no |
