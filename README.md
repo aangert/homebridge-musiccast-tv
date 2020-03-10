@@ -49,11 +49,12 @@ config arguments:
 | ip | 192.168.178.29 | ip address for your MusicCast device | yes |
 | zone | "zone2" | MusicCast zone from getFeatures.json, default: "main" | no |
 | inputs | {"fm": "radio", "line_cd": "CD", "airplay": "AirPlay"} | one key:value pair for each input you want to use. You can hide inputs by removing the checkbox in your HomeKit app or by removing it here. | yes |
-| volume | 100 | initial Volume; automatically detected | no |
-| maxVol | 161 | maxVol from getFeatures.json; automatically detected | no |
 | model | "Yamaha R-N602" | device model shown in homebridge | no |
 | powerOnInput | "line_cd" | input automatically switched to at powerOn | no |
+| powerOnVolume | 60 | Volume your device is set to at powerOn | no |
 | updateInterval | 1000 | time between updates im ms | no |
+| volume | 100 | initial Volume; automatically detected | no |
+| maxVol | 161 | maxVol from getFeatures.json; automatically detected | no |
 <!--
 | identifier | 38 | used to set initial input after homebridge restart; values from [index.js line 57](https://github.com/DoctorNSA/homebridge-musiccast-tv/blob/3327b51757484fe480fc20c0e62199163b4570bb/index.js#L57) | no |
 -->
@@ -77,7 +78,7 @@ Currently supported inputs:
 | optical2 | yes |
 | coaxial1 | yes |
 | coaxial2 | yes |
-| hdmi | no |
+| hdmi | yes |
 | hdmi[1-8] | yes |
 | aux | yes |
 | aux1 | yes |
@@ -121,6 +122,14 @@ hdmi[1-8] summarizes hdmi1, hdmi2, ..., hdmi8
 ### Input appears as additional tile
  - remove and repair Homebridge
  - restart Homebridge
+
+### issues with more than one TV per bridge
+If you have more than one TV per Homebridge instance there might be some issues
+- only one TV appears in the TV widget
+- one or multiple TVs have problems syncing to Homebridge
+- one or more TVs are flashing in the Home app
+
+To fix these Issues make sure there is just one TV per bridge. You can run [multiple Homebridge Instances](https://github.com/nfarina/homebridge/wiki/Install-Homebridge-on-Raspbian#multiple-instances) per device. 
 
 
 ## TODO
