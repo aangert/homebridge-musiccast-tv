@@ -428,12 +428,18 @@ MusicCastTV.prototype = {
 			}
 		})
 		this.log("Active to " + value);
-		if(this.powerOnInput&&value) {// missing: filter for state change
-			tmpInput = this.getInputFromString(this.powerOnInput);
-			this.log("powerOnInput: " + tmpInput);
-			this.setActiveIdentifier(this.info[tmpInput]["Identifier"], callback); //turn on powerOnInput
-			that.TelevisionService.getCharacteristic(Characteristic.ActiveIdentifier)
-						.updateValue(this.info[tmpInput]["Identifier"]);
+		if(value&&(this.powerOnInput||this.powerOnVolume)) {
+			if(this.powerOnInput&&value) { // missing: filter for state change
+				tmpInput = this.getInputFromString(this.powerOnInput);
+				this.log("powerOnInput: " + tmpInput);
+				this.setActiveIdentifier(this.info[tmpInput]["Identifier"], callback); //turn on powerOnInput
+				that.TelevisionService.getCharacteristic(Characteristic.ActiveIdentifier)
+							.updateValue(this.info[tmpInput]["Identifier"]);
+			}
+			if(this.powerOnVolume&&value) { // missing: filter for state change
+				this.log("powerOnVolume: " + this.powerOnVolume);
+				this.setVolume(this.powerOnVolume, callback);
+			}
 		} else{
 			callback();
 		}
