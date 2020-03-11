@@ -99,7 +99,7 @@ function MusicCastTV(log, config) {
 		"mc_link": {"Identifier": 46, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"main_sync": {"Identifier": 47, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"spotify": {"Identifier": 48, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "spotify"}, 
-		"amazon_music": {"Identifier": 49, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"amazon_music": {"Identifier": 49, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "amazon_music"}, 
 		"deezer": {"Identifier": 50, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "deezer"}, 
 		"napster": {"Identifier": 51, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "napster"}, 
 		"qobuz": {"Identifier": 52, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "qobuz"}, 
@@ -323,7 +323,7 @@ MusicCastTV.prototype = {
 		function (error, response, body) {
 			if (error) {
 				that.log.debug('getBand get error');
-				that.log.error(error.message);
+				that.log.debug(error.message);
 				return error;
 			} else if(body) {
 				that.log.debug("getBand body: " + body)
@@ -352,9 +352,9 @@ MusicCastTV.prototype = {
 		function (error, response, body) {
 			if (error) {
 				that.log.debug('getHttpInput get error');
-				that.log.error(error.message);
-				return error;
+				that.log.debug(error.message);
 				that.tmp = "error";
+				return error;
 			} else if(body) {
 				that.log.debug("HttpInput body: " + body)
 				att = JSON.parse(body);
@@ -644,7 +644,7 @@ MusicCastTV.prototype = {
 				.updateValue(this.ActiveIdentifier);
 		}, this.updateInterval);
 		/*TelevisionService
-			.getCharacteristic(Characteristic.PowerModeSelection)//unused
+			.getCharacteristic(Characteristic.PowerModeSelection)//used to send a command that opens setting on TV
 				.on('set', this.setPowerModeSelection.bind(this));//0=Show Menu
 		TelevisionService
 			.getCharacteristic(Characteristic.CurrentMediaState)
@@ -871,6 +871,11 @@ MusicCastTV.prototype = {
 					TelevisionService.addLinkedService(this.spotifyService);
 					ServiceList.push(this.spotifyService);
 					break;
+				case "amazon_music":
+					this.amazon_musicService = this.getInputService("amazon_music");
+					TelevisionService.addLinkedService(this.amazon_musicService);
+					ServiceList.push(this.amazon_musicService);
+					break;
 				case "deezer":
 					this.deezerService = this.getInputService("deezer");
 					TelevisionService.addLinkedService(this.deezerService);
@@ -912,19 +917,16 @@ MusicCastTV.prototype = {
 					ServiceList.push(this.radikoService);
 					break;
 				default:
-					this.log("input " + key + " not found");
+					this.log.error("input " + key + " not found");
 					this.log("please file a feature request and include this log");
 					this.log("zone features: " + this.features.zone);
 			}
 		}
-		/*	eval("var InputService" + i + " = new Service.InputSource(key, key)");
-			//eval("InputService" + i + ".setCharacteristic(Characteristic.InputSourceType, this.inputs[key]['InputSourceType'])");
+		/*	eval("InputService" + i + ".setCharacteristic(Characteristic.InputSourceType, this.inputs[key]['InputSourceType'])");
 				//0=OTHER;1=HOME_SCREEN;2=TUNER;3=HDMI; 4=COMPOSITE_VIDEO;5=S_VIDEO;
 				//6=COMPONENT_VIDEO;7=DVI;8=AIRPLAY;9=USB;10=APPLICATION;
-			//eval("InputService" + i + ".setCharacteristic(Characteristic.InputDeviceType, this.inputs[key]['InputDeviceType'])");
+			eval("InputService" + i + ".setCharacteristic(Characteristic.InputDeviceType, this.inputs[key]['InputDeviceType'])");
 				//0=OTHER;1=TV;2=RECORDING;3=TUNER;4=PLAYBACK;5=AUDIO_SYSTEM;
-			TelevisionService.addLinkedService(eval("InputService" + i));
-			ServiceList.push(eval("InputService" + i));
 		};*/
 		
 		return ServiceList;
