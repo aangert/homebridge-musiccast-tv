@@ -98,7 +98,7 @@ Currently supported inputs:
 | dab | yes |
 | **streaming services** |
 | spotify | yes |
-| amazon_music | no |
+| amazon_music | yes |
 | deezer | yes |
 | napster | yes |
 | qobuz | yes |
@@ -123,18 +123,17 @@ hdmi[1-8] summarizes hdmi1, hdmi2, ..., hdmi8
  - remove and repair Homebridge
  - restart Homebridge
 
-### issues with more than one TV per bridge
-If you have more than one TV per Homebridge instance there might be some issues
+### Issues with more than one TV per bridge
+If you have more than one TV per Homebridge instance you might experience some of the following issues: 
 - only one TV appears in the TV widget
 - one or multiple TVs have problems syncing to Homebridge
 - one or more TVs are flashing in the Home app
 
-To fix these Issues make sure there is just one TV per bridge. You can run [multiple Homebridge Instances](https://github.com/nfarina/homebridge/wiki/Install-Homebridge-on-Raspbian#multiple-instances) per device. 
+To fix these Issues make sure there is just one TV per Homebridge instance. You can run [multiple Homebridge instances](https://github.com/nfarina/homebridge/wiki/Install-Homebridge-on-Raspbian#multiple-instances) per device. 
 
 
 ## TODO
  - [ ] prepare one InputService for each remaining input
- - [x] automatically detect volume
- - [x] automatically detect maxVolume
- - [x] automatically detect current input
+ - [x] automatically detect volume, maxVolume and input
  - [x] turn on optional input from config.json after power on
+ - [x] add an option to set the Volume to a fixed level after turning on the device via HomeKit
