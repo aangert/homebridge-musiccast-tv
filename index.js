@@ -96,7 +96,7 @@ function MusicCastTV(log, config) {
 		"tv": {"Identifier": 38, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "tv"}, 
 		"analog": {"Identifier": 39, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "analog"}, 
 		"multi_ch": {"Identifier": 40, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "multi_ch"}, 
-		"mc_link": {"Identifier": 46, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"mc_link": {"Identifier": 46, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "mc_link"}, 
 		"main_sync": {"Identifier": 47, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"spotify": {"Identifier": 48, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "spotify"}, 
 		"amazon_music": {"Identifier": 49, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "amazon_music"}, 
@@ -428,15 +428,15 @@ MusicCastTV.prototype = {
 			}
 		})
 		this.log("Active to " + value);
-		if(value&&(this.powerOnInput||this.powerOnVolume)) {
-			if(this.powerOnInput&&value) { // missing: filter for state change
+		if(value&&(this.powerOnInput||this.powerOnVolume)) { // missing: filter for state change
+			if(this.powerOnInput&&value) {
 				tmpInput = this.getInputFromString(this.powerOnInput);
 				this.log("powerOnInput: " + tmpInput);
 				this.setActiveIdentifier(this.info[tmpInput]["Identifier"], callback); //turn on powerOnInput
 				that.TelevisionService.getCharacteristic(Characteristic.ActiveIdentifier)
-							.updateValue(this.info[tmpInput]["Identifier"]);
+					.updateValue(this.info[tmpInput]["Identifier"]);
 			}
-			if(this.powerOnVolume&&value) { // missing: filter for state change
+			if(this.powerOnVolume&&value) {
 				this.log("powerOnVolume: " + this.powerOnVolume);
 				this.setVolume(this.powerOnVolume, callback);
 			}
@@ -450,8 +450,7 @@ MusicCastTV.prototype = {
 			this.TelevisionService.getCharacteristic(Characteristic.ActiveIdentifier)
 				.updateValue(this.ActiveIdentifier);
 		}, this.updateInterval);
-		//while(this.tmp=="");
-		this.log.debug("get Active Identifier: " + this.ActiveIdentifier);
+		this.log("get Active Identifier: " + this.ActiveIdentifier);
 		callback(null, this.ActiveIdentifier);
 	},
 	setActiveIdentifier: function(value, callback) {
@@ -531,14 +530,14 @@ MusicCastTV.prototype = {
 				this.log("remoteKeyPress Play/Pause");
 				//CurrentMediaState und TargetMediaState verändern
 				//0=PLAY;1=PAUSE;2=STOP
-				if (this.CurrentMediaState == 0) {
-					setTargetMediaState(1, callback);
+				/*if (this.CurrentMediaState == 0) {
+					this.setTargetMediaState(1, callback);
 					//this.TargetMediaState = 1;
 				}
 				if (this.CurrentMediaState == 1) {
-					setTargetMediaState(0, callback);
+					this.setTargetMediaState(0, callback);
 					//this.TargetMediaState = 0;
-				}
+				}*/
 				return callback();
 			case 15:
 				this.log("remoteKeyPress i");
@@ -601,12 +600,12 @@ MusicCastTV.prototype = {
 		
 		const that = this;
 		request({
-		url: 'http://' + this.ip + '/YamahaExtendedControl/v1/system/getFeatures',
-	        method: 'GET',
-		headers: {
-			'X-AppName': 'MusicCast/1.0',
-			'X-AppPort': '41100',
-		}
+			url: 'http://' + this.ip + '/YamahaExtendedControl/v1/system/getFeatures',
+		        method: 'GET',
+			headers: {
+				'X-AppName': 'MusicCast/1.0',
+				'X-AppPort': '41100',
+			}
 		},
 		function (error, response, body) {
 			if (error) {
@@ -683,7 +682,6 @@ MusicCastTV.prototype = {
 		for(var key in this.inputs) {
 			this.log.debug("processing input " + key);
 			tmpInput = this.getInputFromString(key);
-			//tmpService = this.getInputService(tmpInput)
 			
 			switch (tmpInput) {
 				case "airplay":
@@ -861,11 +859,11 @@ MusicCastTV.prototype = {
 					TelevisionService.addLinkedService(this.mc_linkService);
 					ServiceList.push(this.mc_linkService);
 					break;
-				case "main_sync":
+				/*case "main_sync":
 					this.main_syncService = this.getInputService("main_sync");
 					TelevisionService.addLinkedService(this.main_syncService);
 					ServiceList.push(this.main_syncService);
-					break;
+					break;*/
 				case "spotify":
 					this.spotifyService = this.getInputService("spotify");
 					TelevisionService.addLinkedService(this.spotifyService);
@@ -922,11 +920,11 @@ MusicCastTV.prototype = {
 					this.log("zone features: " + this.features.zone);
 			}
 		}
-		/*	eval("InputService" + i + ".setCharacteristic(Characteristic.InputSourceType, this.inputs[key]['InputSourceType'])");
-				//0=OTHER;1=HOME_SCREEN;2=TUNER;3=HDMI; 4=COMPOSITE_VIDEO;5=S_VIDEO;
-				//6=COMPONENT_VIDEO;7=DVI;8=AIRPLAY;9=USB;10=APPLICATION;
-			eval("InputService" + i + ".setCharacteristic(Characteristic.InputDeviceType, this.inputs[key]['InputDeviceType'])");
-				//0=OTHER;1=TV;2=RECORDING;3=TUNER;4=PLAYBACK;5=AUDIO_SYSTEM;
+		/*eval("InputService" + i + ".setCharacteristic(Characteristic.InputSourceType, this.inputs[key]['InputSourceType'])");
+			//0=OTHER;1=HOME_SCREEN;2=TUNER;3=HDMI; 4=COMPOSITE_VIDEO;5=S_VIDEO;
+			//6=COMPONENT_VIDEO;7=DVI;8=AIRPLAY;9=USB;10=APPLICATION;
+		eval("InputService" + i + ".setCharacteristic(Characteristic.InputDeviceType, this.inputs[key]['InputDeviceType'])");
+			//0=OTHER;1=TV;2=RECORDING;3=TUNER;4=PLAYBACK;5=AUDIO_SYSTEM;
 		};*/
 		
 		return ServiceList;
