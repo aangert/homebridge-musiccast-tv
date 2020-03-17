@@ -28,7 +28,7 @@ It supports any number of inputs and volume control via the Apple TV Remote widg
 
 ## Installation
 
-### Install [Homebridge](https://github.com/nfarina/homebridge)
+### Install [Homebridge](https://github.com/homebridge/homebridge)
 
 ```shell
 sudo npm install -g homebridge
@@ -117,6 +117,7 @@ hdmi[1-8] summarizes hdmi1, hdmi2, ..., hdmi8
  - check your log file for error messages
  - run in debug mode using "homebridge -D" and file an issue
 
+
 ## Common issues
 
 ### Input appears as additional tile
@@ -129,7 +130,7 @@ If you have more than one TV per Homebridge instance you might experience some o
 - one or multiple TVs have problems syncing to Homebridge
 - one or more TVs are flashing in the Home app
 
-To fix these Issues make sure there is just one TV per Homebridge instance. You can run [multiple Homebridge instances](https://github.com/nfarina/homebridge/wiki/Install-Homebridge-on-Raspbian#multiple-instances) per device. 
+To fix these Issues make sure there is just one TV per Homebridge instance. You can run [multiple Homebridge instances](https://github.com/homebridge/homebridge/wiki/Install-Homebridge-on-Raspbian#multiple-instances) per device. 
 
 
 ## TODO
