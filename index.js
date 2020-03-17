@@ -86,12 +86,12 @@ function MusicCastTV(log, config) {
 		"aux1": {"Identifier": 28, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "aux1"}, 
 		"aux2": {"Identifier": 29, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "aux2"}, 
 		"av1": {"Identifier": 30, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "av1"}, 
-		"av2": {"Identifier": 31, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"av3": {"Identifier": 32, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"av4": {"Identifier": 33, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"av5": {"Identifier": 34, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"av6": {"Identifier": 35, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"av7": {"Identifier": 36, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"av2": {"Identifier": 31, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "av2"}, 
+		"av3": {"Identifier": 32, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "av3"}, 
+		"av4": {"Identifier": 33, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "av4"}, 
+		"av5": {"Identifier": 34, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "av5"}, 
+		"av6": {"Identifier": 35, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "av6"}, 
+		"av7": {"Identifier": 36, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "av7"}, 
 		"cd": {"Identifier": 37, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "cd"}, 
 		"tv": {"Identifier": 38, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "tv"}, 
 		"analog": {"Identifier": 39, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "analog"}, 
@@ -815,7 +815,7 @@ MusicCastTV.prototype = {
 					ServiceList.push(this.hdmi8Service);
 					break;
 				case "aux":
-					this.aux1Service = this.getInputService("aux");
+					this.auxService = this.getInputService("aux");
 					TelevisionService.addLinkedService(this.auxService);
 					ServiceList.push(this.auxService);
 					break;
@@ -830,9 +830,39 @@ MusicCastTV.prototype = {
 					ServiceList.push(this.aux2Service);
 					break;
 				case "av1":
-					this.aux1Service = this.getInputService("av1");
+					this.av1Service = this.getInputService("av1");
 					TelevisionService.addLinkedService(this.av1Service);
 					ServiceList.push(this.av1Service);
+					break;
+				case "av2":
+					this.av2Service = this.getInputService("av2");
+					TelevisionService.addLinkedService(this.av2Service);
+					ServiceList.push(this.av2Service);
+					break;
+				case "av3":
+					this.av3Service = this.getInputService("av3");
+					TelevisionService.addLinkedService(this.av3Service);
+					ServiceList.push(this.av3Service);
+					break;
+				case "av4":
+					this.av4Service = this.getInputService("av4");
+					TelevisionService.addLinkedService(this.av4Service);
+					ServiceList.push(this.av4Service);
+					break;
+				case "av5":
+					this.av5Service = this.getInputService("av5");
+					TelevisionService.addLinkedService(this.av5Service);
+					ServiceList.push(this.av5Service);
+					break;
+				case "av6":
+					this.av6Service = this.getInputService("av6");
+					TelevisionService.addLinkedService(this.av6Service);
+					ServiceList.push(this.av6Service);
+					break;
+				case "av7":
+					this.av7Service = this.getInputService("av7");
+					TelevisionService.addLinkedService(this.av7Service);
+					ServiceList.push(this.av7Service);
 					break;
 				case "cd":
 					this.cdService = this.getInputService("cd");
