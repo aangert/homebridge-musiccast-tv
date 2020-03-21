@@ -83,13 +83,16 @@ Currently supported inputs:
 | aux | yes |
 | aux1 | yes |
 | aux2 | yes |
+| v_aux | no |
 | av[1-7] | yes |
 | cd | yes |
 | tv | yes |
 | analog | yes |
 | multi_ch | yes |
-| audio[1-4] | no |
-|  |  |
+| audio | no |
+| audio[1-4] | yes |
+| audio_cd | no |
+|  | no |
 | mc_link | yes |
 | main_sync | no |
 | **tuner** |
