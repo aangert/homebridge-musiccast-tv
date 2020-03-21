@@ -96,6 +96,11 @@ function MusicCastTV(log, config) {
 		"tv": {"Identifier": 38, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "tv"}, 
 		"analog": {"Identifier": 39, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "analog"}, 
 		"multi_ch": {"Identifier": 40, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "multi_ch"}, 
+		"audio1": {"Identifier": 41, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "audio1"}, 
+		"audio2": {"Identifier": 42, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "audio2"}, 
+		"audio3": {"Identifier": 43, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "audio3"}, 
+		"audio4": {"Identifier": 44, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "audio4"}, 
+		//"": {"Identifier": 45, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"mc_link": {"Identifier": 46, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "mc_link"}, 
 		"main_sync": {"Identifier": 47, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"spotify": {"Identifier": 48, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "spotify"}, 
@@ -248,6 +253,14 @@ MusicCastTV.prototype = {
 			case "multi_ch":
 			case "MultiCh":
 				return "multi_ch";
+			case "audio1":
+				return "audio1";
+			case "audio2":
+				return "audio2";
+			case "audio3":
+				return "audio3";
+			case "audio4":
+				return "audio4";
 			case "mc_link":
 				return "mc_link";
 			case "main_sync":
@@ -883,6 +896,26 @@ MusicCastTV.prototype = {
 					this.multi_chService = this.getInputService("multi_ch");
 					TelevisionService.addLinkedService(this.multi_chService);
 					ServiceList.push(this.multi_chService);
+					break;
+				case "audio1":
+					this.audio1Service = this.getInputService("audio1");
+					TelevisionService.addLinkedService(this.audio1Service);
+					ServiceList.push(this.audio1Service);
+					break;
+				case "audio2":
+					this.audio2Service = this.getInputService("audio2");
+					TelevisionService.addLinkedService(this.audio2Service);
+					ServiceList.push(this.audio2Service);
+					break;
+				case "audio3":
+					this.audio3Service = this.getInputService("audio3");
+					TelevisionService.addLinkedService(this.audio3Service);
+					ServiceList.push(this.audio3Service);
+					break;
+				case "audio4":
+					this.audio4Service = this.getInputService("audio4");
+					TelevisionService.addLinkedService(this.audio4Service);
+					ServiceList.push(this.audio4Service);
 					break;
 				case "mc_link":
 					this.mc_linkService = this.getInputService("mc_link");
