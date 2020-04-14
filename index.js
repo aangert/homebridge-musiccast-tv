@@ -64,16 +64,16 @@ function MusicCastTV(log, config) {
 		"server": {"Identifier": 6, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "server"}, 
 		"phono": {"Identifier": 7, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "phono"}, 
 		"usb": {"Identifier": 8, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "usb"}, 
-		"usb_dac": {"Identifier": 9, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"usb_dac": {"Identifier": 9, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "usb_dac"}, 
 		"bluetooth": {"Identifier": 10, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "bluetooth"}, 
 		"net_radio": {"Identifier": 11, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "net_radio"}, 
 		"line1": {"Identifier": 12, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "line1"}, 
 		"line2": {"Identifier": 13, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "line2"}, 
 		"line3": {"Identifier": 14, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "line3"}, 
-		"optical": {"Identifier": 15, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"optical": {"Identifier": 15, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "optical"}, 
 		"optical1": {"Identifier": 16, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "optical1"}, 
 		"optical2": {"Identifier": 17, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "optical2"}, 
-		"coaxial": {"Identifier": 18, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"coaxial": {"Identifier": 18, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "coaxial"}, 
 		"coaxial1": {"Identifier": 19, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "coaxial1"}, 
 		"coaxial2": {"Identifier": 20, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "coaxial2"}, 
 		"hdmi": {"Identifier": 21, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi"}, 
@@ -88,7 +88,7 @@ function MusicCastTV(log, config) {
 		"aux": {"Identifier": 30, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "aux"}, 
 		"aux1": {"Identifier": 31, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "aux1"}, 
 		"aux2": {"Identifier": 32, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "aux2"}, 
-		"v_aux": {"Identifier": 33, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"v_aux": {"Identifier": 33, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "v_aux"}, 
 		"av1": {"Identifier": 34, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "av1"}, 
 		"av2": {"Identifier": 35, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "av2"}, 
 		"av3": {"Identifier": 36, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "av3"}, 
@@ -100,11 +100,12 @@ function MusicCastTV(log, config) {
 		"tv": {"Identifier": 42, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "tv"}, 
 		"analog": {"Identifier": 43, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "analog"}, 
 		"multi_ch": {"Identifier": 44, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "multi_ch"}, 
-		"audio": {"Identifier": 45, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"audio": {"Identifier": 45, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "audio"}, 
 		"audio1": {"Identifier": 46, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "audio1"}, 
 		"audio2": {"Identifier": 47, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "audio2"}, 
 		"audio3": {"Identifier": 48, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "audio3"}, 
 		"audio4": {"Identifier": 49, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "audio4"}, 
+		"audio_cd": {"Identifier": 50, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		//"": {"Identifier": 50, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"mc_link": {"Identifier": 56, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "mc_link"}, 
 		"main_sync": {"Identifier": 57, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
@@ -281,6 +282,9 @@ MusicCastTV.prototype = {
 				return "audio3";
 			case "audio4":
 				return "audio4";
+			case "audio_cd":
+			case "audiocd":
+				return "audio_cd";
 			case "mc_link":
 				return "mc_link";
 			case "main_sync":
