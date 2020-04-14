@@ -70,12 +70,15 @@ Currently supported inputs:
 | line2 | yes |
 | line3 | yes |
 | usb | yes |
+| usb_dac | no |
 | airplay | yes |
 | bluetooth | yes |
 | net_radio | yes |
 | server | yes |
+| optical | no |
 | optical1 | yes |
 | optical2 | yes |
+| coaxial | no |
 | coaxial1 | yes |
 | coaxial2 | yes |
 | hdmi | yes |
