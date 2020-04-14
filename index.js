@@ -271,6 +271,8 @@ MusicCastTV.prototype = {
 			case "multi_ch":
 			case "MultiCh":
 				return "multi_ch";
+			case "audio":
+				return "audio";
 			case "audio1":
 				return "audio1";
 			case "audio2":
@@ -780,6 +782,16 @@ MusicCastTV.prototype = {
 					TelevisionService.addLinkedService(this.usbService);
 					ServiceList.push(this.usbService);
 					break;
+				case "usb_dac":
+					this.usb_dacService = this.getInputService("usb_dac");
+					TelevisionService.addLinkedService(this.usb_dacService);
+					ServiceList.push(this.usb_dacService);
+					break;
+				case "optical":
+					this.opticalService = this.getInputService("optical");
+					TelevisionService.addLinkedService(this.opticalService);
+					ServiceList.push(this.opticalService);
+					break;
 				case "optical1":
 					this.optical1Service = this.getInputService("optical1");
 					TelevisionService.addLinkedService(this.optical1Service);
@@ -789,6 +801,11 @@ MusicCastTV.prototype = {
 					this.optical2Service = this.getInputService("optical2");
 					TelevisionService.addLinkedService(this.optical2Service);
 					ServiceList.push(this.optical2Service);
+					break;
+				case "coaxial":
+					this.coaxialService = this.getInputService("coaxial");
+					TelevisionService.addLinkedService(this.coaxialService);
+					ServiceList.push(this.coaxialService);
 					break;
 				case "coaxial1":
 					this.coaxial1Service = this.getInputService("coaxial1");
@@ -860,6 +877,11 @@ MusicCastTV.prototype = {
 					TelevisionService.addLinkedService(this.aux2Service);
 					ServiceList.push(this.aux2Service);
 					break;
+				case "v_aux":
+					this.v_auxService = this.getInputService("v_aux");
+					TelevisionService.addLinkedService(this.v_auxService);
+					ServiceList.push(this.v_auxService);
+					break;
 				case "av1":
 					this.av1Service = this.getInputService("av1");
 					TelevisionService.addLinkedService(this.av1Service);
@@ -914,6 +936,11 @@ MusicCastTV.prototype = {
 					this.multi_chService = this.getInputService("multi_ch");
 					TelevisionService.addLinkedService(this.multi_chService);
 					ServiceList.push(this.multi_chService);
+					break;
+				case "audio":
+					this.audioService = this.getInputService("audio");
+					TelevisionService.addLinkedService(this.audioService);
+					ServiceList.push(this.audioService);
 					break;
 				case "audio1":
 					this.audio1Service = this.getInputService("audio1");

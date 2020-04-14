@@ -70,15 +70,15 @@ Currently supported inputs:
 | line2 | yes |
 | line3 | yes |
 | usb | yes |
-| usb_dac | no |
+| usb_dac | yes |
 | airplay | yes |
 | bluetooth | yes |
 | net_radio | yes |
 | server | yes |
-| optical | no |
+| optical | yes |
 | optical1 | yes |
 | optical2 | yes |
-| coaxial | no |
+| coaxial | yes |
 | coaxial1 | yes |
 | coaxial2 | yes |
 | hdmi | yes |
@@ -86,13 +86,13 @@ Currently supported inputs:
 | aux | yes |
 | aux1 | yes |
 | aux2 | yes |
-| v_aux | no |
+| v_aux | yes |
 | av[1-7] | yes |
 | cd | yes |
 | tv | yes |
 | analog | yes |
 | multi_ch | yes |
-| audio | no |
+| audio | yes |
 | audio[1-4] | yes |
 | audio_cd | no |
 |  | no |
