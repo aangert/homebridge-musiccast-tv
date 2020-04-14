@@ -64,44 +64,48 @@ function MusicCastTV(log, config) {
 		"server": {"Identifier": 6, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "server"}, 
 		"phono": {"Identifier": 7, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "phono"}, 
 		"usb": {"Identifier": 8, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "usb"}, 
-		"bluetooth": {"Identifier": 9, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "bluetooth"}, 
-		"net_radio": {"Identifier": 10, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "net_radio"}, 
-		"line1": {"Identifier": 11, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "line1"}, 
-		"line2": {"Identifier": 12, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "line2"}, 
-		"line3": {"Identifier": 13, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "line3"}, 
-		"optical1": {"Identifier": 14, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "optical1"}, 
-		"optical2": {"Identifier": 15, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "optical2"}, 
-		"coaxial1": {"Identifier": 16, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "coaxial1"}, 
-		"coaxial2": {"Identifier": 17, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "coaxial2"}, 
-		"hdmi": {"Identifier": 18, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi"}, 
-		"hdmi1": {"Identifier": 19, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi1"}, 
-		"hdmi2": {"Identifier": 20, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi2"}, 
-		"hdmi3": {"Identifier": 21, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi3"}, 
-		"hdmi4": {"Identifier": 22, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi4"}, 
-		"hdmi5": {"Identifier": 23, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi5"}, 
-		"hdmi6": {"Identifier": 24, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi6"}, 
-		"hdmi7": {"Identifier": 25, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi7"}, 
-		"hdmi8": {"Identifier": 26, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi8"}, 
-		"aux": {"Identifier": 27, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "aux"}, 
-		"aux1": {"Identifier": 28, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "aux1"}, 
-		"aux2": {"Identifier": 29, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "aux2"}, 
-		"v_aux": {"Identifier": 30, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		"av1": {"Identifier": 31, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "av1"}, 
-		"av2": {"Identifier": 32, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "av2"}, 
-		"av3": {"Identifier": 33, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "av3"}, 
-		"av4": {"Identifier": 34, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "av4"}, 
-		"av5": {"Identifier": 35, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "av5"}, 
-		"av6": {"Identifier": 36, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "av6"}, 
-		"av7": {"Identifier": 37, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "av7"}, 
-		"cd": {"Identifier": 38, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "cd"}, 
-		"tv": {"Identifier": 39, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "tv"}, 
-		"analog": {"Identifier": 40, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "analog"}, 
-		"multi_ch": {"Identifier": 41, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "multi_ch"}, 
-		"audio1": {"Identifier": 42, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "audio1"}, 
-		"audio2": {"Identifier": 43, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "audio2"}, 
-		"audio3": {"Identifier": 44, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "audio3"}, 
-		"audio4": {"Identifier": 45, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "audio4"}, 
-		//"": {"Identifier": 46, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"usb_dac": {"Identifier": 9, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"bluetooth": {"Identifier": 10, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "bluetooth"}, 
+		"net_radio": {"Identifier": 11, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "net_radio"}, 
+		"line1": {"Identifier": 12, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "line1"}, 
+		"line2": {"Identifier": 13, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "line2"}, 
+		"line3": {"Identifier": 14, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "line3"}, 
+		"optical": {"Identifier": 15, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"optical1": {"Identifier": 16, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "optical1"}, 
+		"optical2": {"Identifier": 17, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "optical2"}, 
+		"coaxial": {"Identifier": 18, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"coaxial1": {"Identifier": 19, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "coaxial1"}, 
+		"coaxial2": {"Identifier": 20, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "coaxial2"}, 
+		"hdmi": {"Identifier": 21, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi"}, 
+		"hdmi1": {"Identifier": 22, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi1"}, 
+		"hdmi2": {"Identifier": 23, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi2"}, 
+		"hdmi3": {"Identifier": 24, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi3"}, 
+		"hdmi4": {"Identifier": 25, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi4"}, 
+		"hdmi5": {"Identifier": 26, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi5"}, 
+		"hdmi6": {"Identifier": 27, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi6"}, 
+		"hdmi7": {"Identifier": 28, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi7"}, 
+		"hdmi8": {"Identifier": 29, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "hdmi8"}, 
+		"aux": {"Identifier": 30, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "aux"}, 
+		"aux1": {"Identifier": 31, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "aux1"}, 
+		"aux2": {"Identifier": 32, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "aux2"}, 
+		"v_aux": {"Identifier": 33, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"av1": {"Identifier": 34, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "av1"}, 
+		"av2": {"Identifier": 35, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "av2"}, 
+		"av3": {"Identifier": 36, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "av3"}, 
+		"av4": {"Identifier": 37, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "av4"}, 
+		"av5": {"Identifier": 38, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "av5"}, 
+		"av6": {"Identifier": 39, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "av6"}, 
+		"av7": {"Identifier": 40, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "av7"}, 
+		"cd": {"Identifier": 41, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "cd"}, 
+		"tv": {"Identifier": 42, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "tv"}, 
+		"analog": {"Identifier": 43, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "analog"}, 
+		"multi_ch": {"Identifier": 44, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "multi_ch"}, 
+		"audio": {"Identifier": 45, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"audio1": {"Identifier": 46, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "audio1"}, 
+		"audio2": {"Identifier": 47, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "audio2"}, 
+		"audio3": {"Identifier": 48, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "audio3"}, 
+		"audio4": {"Identifier": 49, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "audio4"}, 
+		//"": {"Identifier": 50, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"mc_link": {"Identifier": 56, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "mc_link"}, 
 		"main_sync": {"Identifier": 57, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"spotify": {"Identifier": 58, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "spotify"}, 
@@ -173,12 +177,22 @@ MusicCastTV.prototype = {
 			case "usb":
 			case "USB":
 				return "usb";
+			case "usb_dac":
+			case "USB_DAC":
+			case "USBDAC":
+				return "usb_dac";
+			case "optical":
+			case "Optical":
+				return "optical";
 			case "optical1":
 			case "Optical1":
 				return "optical1";
 			case "optical2":
 			case "Optical2":
 				return "optical2";
+			case "coaxial":
+			case "Coaxial":
+				return "coaxial";
 			case "coaxial1":
 			case "Coaxial1":
 				return "coaxial1";
@@ -221,6 +235,9 @@ MusicCastTV.prototype = {
 			case "aux2":
 			case "AUX2":
 				return "aux2";
+			case "v_aux":
+			case "V_AUX":
+				return "v_aux";
 			case "av1":
 			case "AV1":
 				return "av1";
