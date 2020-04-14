@@ -1,0 +1,19 @@
+{
+  "pluginAlias": "MusicCastTV",
+  "pluginType": "accessory",
+  "headerDisplay": "Homebridge plugin for MusicCast devices",
+  "schema": {
+    "name": {
+      "title": "Name",
+      "type": "string",
+      "description": "Name pf your device",
+      "required": true
+    },
+    "ip": {
+      "title": "IP",
+      "type": "hostname",
+      "description": "IP-Address",
+      "required": true
+    }
+  }
+}
