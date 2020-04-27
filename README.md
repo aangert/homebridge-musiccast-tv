@@ -98,7 +98,7 @@ Currently supported inputs:
 | digital | yes |
 | digital1 | yes |
 | digital2 | yes |
-|  |  |
+| bd_dvd | no |
 | mc_link | yes |
 | main_sync | no |
 | **tuner** |

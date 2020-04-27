@@ -109,7 +109,8 @@ function MusicCastTV(log, config) {
 		"digital": {"Identifier": 51, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "digital"}, 
 		"digital1": {"Identifier": 52, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "digital1"}, 
 		"digital2": {"Identifier": 53, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "digital2"}, 
-		//"": {"Identifier": 54, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"bd_dvd": {"Identifier": 54, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		//"": {"Identifier": 55, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"mc_link": {"Identifier": 56, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "mc_link"}, 
 		"main_sync": {"Identifier": 57, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"spotify": {"Identifier": 58, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "spotify"}, 
@@ -294,6 +295,8 @@ MusicCastTV.prototype = {
 				return "digital1";
 			case "digital2":
 				return "digital2";
+			case "bd_dvd":
+				return "bd_dvd";
 			case "mc_link":
 				return "mc_link";
 			case "main_sync":
