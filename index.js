@@ -105,8 +105,11 @@ function MusicCastTV(log, config) {
 		"audio2": {"Identifier": 47, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "audio2"}, 
 		"audio3": {"Identifier": 48, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "audio3"}, 
 		"audio4": {"Identifier": 49, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "audio4"}, 
-		"audio_cd": {"Identifier": 50, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
-		//"": {"Identifier": 50, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"audio_cd": {"Identifier": 50, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "audio_cd"}, 
+		"digital": {"Identifier": 51, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "digital"}, 
+		"digital1": {"Identifier": 52, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "digital1"}, 
+		"digital2": {"Identifier": 53, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "digital2"}, 
+		//"": {"Identifier": 54, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"mc_link": {"Identifier": 56, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "mc_link"}, 
 		"main_sync": {"Identifier": 57, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"spotify": {"Identifier": 58, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "spotify"}, 
@@ -285,6 +288,12 @@ MusicCastTV.prototype = {
 			case "audio_cd":
 			case "audiocd":
 				return "audio_cd";
+			case "digital":
+				return "digital";
+			case "digital1":
+				return "digital1";
+			case "digital2":
+				return "digital2";
 			case "mc_link":
 				return "mc_link";
 			case "main_sync":
@@ -965,6 +974,26 @@ MusicCastTV.prototype = {
 					this.audio4Service = this.getInputService("audio4");
 					TelevisionService.addLinkedService(this.audio4Service);
 					ServiceList.push(this.audio4Service);
+					break;
+				case "audio_cd":
+					this.audio_cdService = this.getInputService("audio_cd");
+					TelevisionService.addLinkedService(this.audio_cdService);
+					ServiceList.push(this.audio_cdService);
+					break;
+				case "digital":
+					this.digitalService = this.getInputService("digital");
+					TelevisionService.addLinkedService(this.digitalService);
+					ServiceList.push(this.digitalService);
+					break;
+				case "digital1":
+					this.digital1Service = this.getInputService("digital1");
+					TelevisionService.addLinkedService(this.digital1Service);
+					ServiceList.push(this.digital1Service);
+					break;
+				case "digital2":
+					this.digital2Service = this.getInputService("digital2");
+					TelevisionService.addLinkedService(this.digital2Service);
+					ServiceList.push(this.digital2Service);
 					break;
 				case "mc_link":
 					this.mc_linkService = this.getInputService("mc_link");

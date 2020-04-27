@@ -94,8 +94,11 @@ Currently supported inputs:
 | multi_ch | yes |
 | audio | yes |
 | audio[1-4] | yes |
-| audio_cd | no |
-|  | no |
+| audio_cd | yes |
+| digital | yes |
+| digital1 | yes |
+| digital2 | yes |
+|  |  |
 | mc_link | yes |
 | main_sync | no |
 | **tuner** |
