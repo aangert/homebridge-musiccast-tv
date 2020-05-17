@@ -478,14 +478,21 @@ MusicCastTV.prototype = {
 		})
 		this.log("Active to " + value);
 		if(value&&(this.powerOnInput||this.powerOnVolume)) { // missing: filter for state change
-			if(this.powerOnInput&&value) {
+			if(this.powerOnInput&&this.powerOnVolume) {
+				tmpInput = this.getInputFromString(this.powerOnInput);
+				this.log("powerOnInput: " + tmpInput + "; powerOnVolume: " + this.powerOnVolume);
+				this.setActiveIdentifier(this.info[tmpInput]["Identifier"], function() {}); //turn on powerOnInput
+				that.TelevisionService.getCharacteristic(Characteristic.ActiveIdentifier)
+					.updateValue(this.info[tmpInput]["Identifier"]);
+				this.setVolume(this.powerOnVolume, callback);
+				//turn on both, one callback
+			}else if(this.powerOnInput) {
 				tmpInput = this.getInputFromString(this.powerOnInput);
 				this.log("powerOnInput: " + tmpInput);
 				this.setActiveIdentifier(this.info[tmpInput]["Identifier"], callback); //turn on powerOnInput
 				that.TelevisionService.getCharacteristic(Characteristic.ActiveIdentifier)
 					.updateValue(this.info[tmpInput]["Identifier"]);
-			}
-			if(this.powerOnVolume&&value) {
+			}else if(this.powerOnVolume) {
 				this.log("powerOnVolume: " + this.powerOnVolume);
 				this.setVolume(this.powerOnVolume, callback);
 			}
