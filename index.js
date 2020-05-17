@@ -405,18 +405,18 @@ MusicCastTV.prototype = {
 				that.tmp = "error";
 				return error;
 			} else if(body) {
-				that.log.debug("HttpInput body: " + body)
+				//that.log.debug("HttpInput body: " + body)
 				att = JSON.parse(body);
 				that.active = (att.power=='on');
 				that.volume = att.volume;
 				that.maxVol = att.max_volume;
-				that.log.debug("volume: " + that.volume + " maxVol: " + that.maxVol);
+				//that.log.debug("volume: " + that.volume + " maxVol: " + that.maxVol);
 				tmpInput = that.getInputFromString(att.input);
 				if(tmpInput != "") {
 					if(tmpInput=="tuner") {
 						that.getBand();
 					} else{
-						that.log.debug("Input: " + tmpInput);
+						//that.log.debug("Input: " + tmpInput);
 						that.ActiveIdentifier = that.info[tmpInput]["Identifier"];
 						that.TelevisionService.getCharacteristic(Characteristic.Active)
 							.updateValue(that.active);
