@@ -50,6 +50,7 @@ config arguments:
 | zone | "zone2" | MusicCast zone from getFeatures.json, default: "main" | no |
 | inputs | {"fm": "radio", "line_cd": "CD", "airplay": "AirPlay"} | one key:value pair for each input you want to use. You can hide inputs by removing the checkbox in your HomeKit app or by removing it here. | yes |
 | model | "Yamaha R-N602" | device model shown in homebridge | no |
+| serialNo | "123-456-789" | serial number shown in homebridge | no |
 | powerOnInput | "line_cd" | input automatically switched to at powerOn | no |
 | powerOnVolume | 60 | Volume your device is set to at powerOn | no |
 | updateInterval | 1000 | time between updates im ms | no |
