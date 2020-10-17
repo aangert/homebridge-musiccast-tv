@@ -17,6 +17,7 @@ function MusicCastTV(log, config) {
 	this.volume = config["volume"];
 	this.maxVol = config["maxVol"];
 	this.ActiveIdentifier = config["identifier"] || 1;
+	this.serial = config["serialNo"] || "123-456-789";
 	that = this;
 	request({
 		method: 'GET',
@@ -647,7 +648,7 @@ MusicCastTV.prototype = {
 		informationService
 			.setCharacteristic(Characteristic.Manufacturer, "homebridge-musiccast-tv")
 			.setCharacteristic(Characteristic.Model, this.model)
-			.setCharacteristic(Characteristic.SerialNumber, "123-456-789")
+			.setCharacteristic(Characteristic.SerialNumber, this.serial)
 			.setCharacteristic(Characteristic.FirmwareRevision, this.version);
 		this.informationService = informationService;
 		
