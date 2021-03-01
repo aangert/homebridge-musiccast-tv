@@ -14,6 +14,7 @@ function MusicCastTV(log, config) {
 	this.ip = config["ip"];
 	this.zone = config["zone"] || "main";
 	this.volumeFan = config["volumeFan"] || 0 ;
+	this.volumeName = config["volumeName"] || "speaker" ;
 	this.model = config["model"] || config["modell"] || "MusicCast TV";
 	this.volume = config["volume"];
 	this.maxVol = config["maxVol"];
@@ -112,7 +113,7 @@ function MusicCastTV(log, config) {
 		"digital": {"Identifier": 51, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "digital"}, 
 		"digital1": {"Identifier": 52, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "digital1"}, 
 		"digital2": {"Identifier": 53, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "digital2"}, 
-		"bd_dvd": {"Identifier": 54, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
+		"bd_dvd": {"Identifier": 54, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "bd_dvd"}, 
 		//"": {"Identifier": 55, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
 		"mc_link": {"Identifier": 56, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "mc_link"}, 
 		"main_sync": {"Identifier": 57, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": ""}, 
@@ -299,6 +300,7 @@ MusicCastTV.prototype = {
 			case "digital2":
 				return "digital2";
 			case "bd_dvd":
+			case "bddvd":
 				return "bd_dvd";
 			case "mc_link":
 				return "mc_link";
@@ -1010,6 +1012,11 @@ MusicCastTV.prototype = {
 					this.digital2Service = this.getInputService("digital2");
 					TelevisionService.addLinkedService(this.digital2Service);
 					ServiceList.push(this.digital2Service);
+					break;
+				case "bd_dvd":
+					this.bd_dvdService = this.getInputService("bd_dvd");
+					TelevisionService.addLinkedService(this.bd_dvdService);
+					ServiceList.push(this.bd_dvdService);
 					break;
 				case "mc_link":
 					this.mc_linkService = this.getInputService("mc_link");
