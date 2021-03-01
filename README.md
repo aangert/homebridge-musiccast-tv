@@ -144,7 +144,6 @@ To fix these Issues make sure there is just one TV per Homebridge instance. You 
 
 
 ## TODO
- - [ ] prepare one InputService for each remaining input
- - [x] automatically detect volume, maxVolume and input
- - [x] turn on optional input from config.json after power on
- - [x] add an option to set the Volume to a fixed level after turning on the device via HomeKit
+ - [ ] add fan service for volume control
+ - [ ] fix symbol
+ - [ ] create plattform accesory
