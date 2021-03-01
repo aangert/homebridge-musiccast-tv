@@ -13,11 +13,13 @@ function MusicCastTV(log, config) {
 	this.name = config["name"];
 	this.ip = config["ip"];
 	this.zone = config["zone"] || "main";
+	this.volumeFan = config["volumeFan"] || 0 ;
 	this.model = config["model"] || config["modell"] || "MusicCast TV";
 	this.volume = config["volume"];
 	this.maxVol = config["maxVol"];
 	this.ActiveIdentifier = config["identifier"] || 1;
 	this.serial = config["serialNo"] || "123-456-789";
+	this.category = 34;
 	that = this;
 	request({
 		method: 'GET',
@@ -685,7 +687,7 @@ MusicCastTV.prototype = {
 			.getCharacteristic(Characteristic.Active)
 				.on('get', this.getActive.bind(this))
 				.on('set', this.setActive.bind(this));
-		 TelevisionService
+		TelevisionService
 			.getCharacteristic(Characteristic.ActiveIdentifier)
 				.on('get', this.getActiveIdentifier.bind(this))
 				.on('set', this.setActiveIdentifier.bind(this));
@@ -713,6 +715,7 @@ MusicCastTV.prototype = {
 			TelevisionService.getCharacteristic(Characteristic.CurrentMediaState)
 				.updateValue(this.CurrentMediaState);
 		}, this.updateInterval);*/
+		//TelevisionService.category=this.category;
 		this.TelevisionService = TelevisionService;
 		ServiceList.push(TelevisionService);
 		
@@ -735,6 +738,8 @@ MusicCastTV.prototype = {
 		TelevisionService.addLinkedService(TelevisionSpeakerService);
 		this.TelevisionSpeakerService = TelevisionSpeakerService;
 		ServiceList.push(TelevisionSpeakerService);
+		
+		//TelevisionFanService = new Service.
 		
 		for(var key in this.inputs) {
 			this.log.debug("processing input " + key);
