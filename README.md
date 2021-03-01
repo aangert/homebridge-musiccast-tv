@@ -51,6 +51,8 @@ config arguments:
 | inputs | {"fm": "radio", "line_cd": "CD", "airplay": "AirPlay"} | one key:value pair for each input you want to use. You can hide inputs by removing the checkbox in your HomeKit app or by removing it here. | yes |
 | model | "Yamaha R-N602" | device model shown in homebridge | no |
 | serialNo | "123-456-789" | serial number shown in homebridge | no |
+| volumeFan | 1 | show additional fan service for volume control | no |
+| volumeName | "TV speaker" | the name of the additional fan service | no |
 | powerOnInput | "line_cd" | input automatically switched to at powerOn | no |
 | powerOnVolume | 60 | Volume your device is set to at powerOn | no |
 | updateInterval | 1000 | time between updates im ms | no |
@@ -99,7 +101,7 @@ Currently supported inputs:
 | digital | yes |
 | digital1 | yes |
 | digital2 | yes |
-| bd_dvd | no |
+| bd_dvd | yes |
 | mc_link | yes |
 | main_sync | no |
 | **tuner** |
