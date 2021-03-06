@@ -6,6 +6,7 @@
 
 This plugin publishes MusicCast devices as HomeKit compatible TVs. 
 It supports any number of inputs and volume control via the Apple TV Remote widget in the iOS Control Center. 
+You can enable an additional fan service for volume control by adding `volumeFan = 1` and `volumeName` to your config.json.
 
 ## Configuration
 
@@ -146,6 +147,6 @@ To fix these Issues make sure there is just one TV per Homebridge instance. You 
 
 
 ## TODO
- - [ ] add fan service for volume control
+ - [x] add fan service for volume control
  - [ ] fix symbol
  - [ ] create plattform accesory

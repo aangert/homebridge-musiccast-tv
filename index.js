@@ -14,7 +14,7 @@ function MusicCastTV(log, config) {
 	this.ip = config["ip"];
 	this.zone = config["zone"] || "main";
 	this.volumeFan = config["volumeFan"] || 0 ;
-	this.volumeName = config["volumeName"] || "speaker" ;
+	this.volumeName = config["volumeName"] || this.name + " speaker" ;
 	this.model = config["model"] || config["modell"] || "MusicCast TV";
 	this.volume = config["volume"];
 	this.maxVol = config["maxVol"];
@@ -741,7 +741,19 @@ MusicCastTV.prototype = {
 		this.TelevisionSpeakerService = TelevisionSpeakerService;
 		ServiceList.push(TelevisionSpeakerService);
 		
-		//TelevisionFanService = new Service.
+		if(this.volumeFan) {
+			TelevisionFanService = new Service.Fan(this.volumeName);
+			TelevisionFanService
+				.getCharacteristic(Characteristic.On)
+					.on('get', this.getActive.bind(this));
+			TelevisionFanService
+				.getCharacteristic(Characteristic.RotationSpeed)
+					.on('get', this.getVolume.bind(this))
+					.on('set', this.setVolume.bind(this));
+			TelevisionService.addLinkedService(TelevisionFanService);
+			this.TelevisionFanService = TelevisionFanService;
+			ServiceList.push(TelevisionFanService);
+		}
 		
 		for(var key in this.inputs) {
 			this.log.debug("processing input " + key);
