@@ -608,6 +608,15 @@ MusicCastTV.prototype = {
 				return callback();
 		}
 	},
+	getFakeVolume: function(callback) {
+		tmp = this.getHttpInput();
+		volume = this.volume //turns a range between 0 and maxVolume into 0-100
+		this.log.debug("get FakeVolume: " + volume);
+		callback(null, volume);
+	},
+	setFakeVolume: function(value, callback) {
+		//TODO: turn value between 0 and 100 into value between 0 and maxVolume
+	},
 	getVolume: function(callback) {
 		tmp = this.getHttpInput();
 		this.log.debug("get Volume: " + this.volume);
@@ -748,8 +757,8 @@ MusicCastTV.prototype = {
 					.on('get', this.getActive.bind(this));
 			TelevisionFanService
 				.getCharacteristic(Characteristic.RotationSpeed)
-					.on('get', this.getVolume.bind(this))
-					.on('set', this.setVolume.bind(this));
+					.on('get', this.getFakeVolume.bind(this))
+					.on('set', this.setFakeVolume.bind(this));
 			TelevisionService.addLinkedService(TelevisionFanService);
 			this.TelevisionFanService = TelevisionFanService;
 			ServiceList.push(TelevisionFanService);
