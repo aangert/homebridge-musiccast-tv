@@ -557,7 +557,7 @@ MusicCastTV.prototype = {
 		callback();
 	},
 	getMute: function(callback) {
-		this.log.debug("get Mute of " + this.name + ": " + this.mute);
+		this.log.debug("get Mute: " + this.mute);
 		callback(null, this.mute);
 	},
 	setMute: function(value, callback) {
@@ -610,12 +610,14 @@ MusicCastTV.prototype = {
 	},
 	getFakeVolume: function(callback) {
 		tmp = this.getHttpInput();
-		volume = this.volume //turns a range between 0 and maxVolume into 0-100
-		this.log.debug("get FakeVolume: " + volume);
+		volume = ((this.volume*100)/this.maxVol); //turns a range between 0 and maxVolume into 0-100
+		this.log.debug("get FakeVolume: " + volume + " real: " + this.volume);
 		callback(null, volume);
 	},
 	setFakeVolume: function(value, callback) {
-		//TODO: turn value between 0 and 100 into value between 0 and maxVolume
+		volume = ((value*this.maxVol)/100); //turns value between 0 and 100 into value between 0 and maxVolume
+		this.log.debug("set FakeVolume: " + value + " real: " + volume);
+		this.setVolume(volume, callback);
 	},
 	getVolume: function(callback) {
 		tmp = this.getHttpInput();
@@ -624,8 +626,9 @@ MusicCastTV.prototype = {
 	},
 	setVolume: function(value, callback) {
 		const that = this;
+		value = Math.trunc(value); //cast to integer
 		if (value<0 || this.maxVol<value) {
-			this.log("Volume must be between 0 and " + this.maxVol);
+			this.log("Volume must be between 0 and " + this.maxVol + " requested: " + value);
 			callback();
 			return;
 		}
@@ -642,7 +645,12 @@ MusicCastTV.prototype = {
 			}
 		})
 		this.volume = value;
-		this.log("Volume to " + value);
+		this.log("set Volume: " + value);
+		if (value == 0) {
+			this.mute = 1;
+		} else {
+			this.mute = 0;
+		}
 		callback();
 	},
 	setVolumeSelector: function(value, callback) {
@@ -744,8 +752,8 @@ MusicCastTV.prototype = {
 				.on('set', this.setMute.bind(this));
 		TelevisionSpeakerService
 			.getCharacteristic(Characteristic.Volume) //not triggered via home app
-				.on('get', this.getVolume.bind(this))
-				.on('set', this.setVolume.bind(this));
+				.on('get', this.getFakeVolume.bind(this))
+				.on('set', this.setFakeVolume.bind(this));
 		TelevisionService.addLinkedService(TelevisionSpeakerService);
 		this.TelevisionSpeakerService = TelevisionSpeakerService;
 		ServiceList.push(TelevisionSpeakerService);
