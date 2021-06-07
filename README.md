@@ -105,11 +105,11 @@ Currently supported inputs:
 | bd_dvd | yes |
 | mc_link | yes |
 | main_sync | no |
-| **tuner** |
+| **tuner types: ** |
 | fm | yes |
 | am | yes |
 | dab | yes |
-| **streaming services** |
+| **streaming services: ** |
 | spotify | yes |
 | amazon_music | yes |
 | deezer | yes |
