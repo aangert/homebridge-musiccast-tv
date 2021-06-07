@@ -16,7 +16,7 @@ function MusicCastTV(log, config) {
 	this.volumeFan = config["volumeFan"] || 0 ;
 	this.volumeName = config["volumeName"] || this.name + " speaker" ;
 	this.model = config["model"] || config["modell"] || "MusicCast TV";
-	this.volume = config["volume"];
+	this.volume = config["volume"] || 0;
 	this.maxVol = config["maxVol"];
 	this.ActiveIdentifier = config["identifier"] || 1;
 	this.serial = config["serialNo"] || "123-456-789";
@@ -132,7 +132,11 @@ function MusicCastTV(log, config) {
 		this.log.debug("updating name for " + key);
 		tmpInput = this.getInputFromString(key);
 		if(tmpInput != "") {
-			this.info[tmpInput]["ConfiguredName"]=this.inputs[key];
+			if(tmpInput == "tuner") {
+				this.log.error("tuner is not a valid Input, please select \"am\", \"fm\" or \"dab\" for valid tuner types");
+			} else{
+				this.info[tmpInput]["ConfiguredName"] = this.inputs[key];
+			}
 		}
 	}
 	this.log("Initialized '" + this.name + "'");
@@ -146,7 +150,7 @@ MusicCastTV.prototype = {
 	getInputFromString: function(name) {
 		switch(name) {
 			case "tuner":
-				return "tuner"
+				return "tuner";
 			case "airplay":
 			case "AirPlay":
 				return "airplay";
@@ -376,8 +380,7 @@ MusicCastTV.prototype = {
 		}, 
 		function (error, response, body) {
 			if (error) {
-				that.log.debug('getBand get error');
-				that.log.debug(error.message);
+				that.log.debug('getBand error: ' + error.message);
 				return error;
 			} else if(body) {
 				that.log.debug("getBand body: " + body)
@@ -405,8 +408,7 @@ MusicCastTV.prototype = {
 		}, 
 		function (error, response, body) {
 			if (error) {
-				that.log.debug('getHttpInput get error');
-				that.log.debug(error.message);
+				that.log.debug('getHttpInput error: ' + error.message);
 				that.tmp = "error";
 				return error;
 			} else if(body) {
@@ -449,8 +451,7 @@ MusicCastTV.prototype = {
 		}, 
 		function (error, response, body) {
 			if (error) {
-				that.log.debug('getActive error');
-				that.log.error(error.message);
+				that.log.error('getActive error: ' + error.message);
 				that.tmp = "error";
 				return callback(error);
 			} else{
@@ -477,7 +478,7 @@ MusicCastTV.prototype = {
 		function (error, response) {
 			if (error) {
 				that.log.debug('http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/setPower?power=' + (value ? 'on' : 'standby'));
-				that.log.error(error.message);
+				that.log.error('setActive error: ' + error.message);
 				return error;
 			}
 		})
@@ -611,6 +612,9 @@ MusicCastTV.prototype = {
 	getFakeVolume: function(callback) {
 		tmp = this.getHttpInput();
 		volume = ((this.volume*100)/this.maxVol); //turns a range between 0 and maxVolume into 0-100
+		if(isNaN(volume)) {
+			volume = 0;//filter NaN
+		}
 		this.log.debug("get FakeVolume: " + volume + " real: " + this.volume);
 		callback(null, volume);
 	},
@@ -640,7 +644,7 @@ MusicCastTV.prototype = {
 		function (error, response) {
 			if (error) {
 				that.log.debug('http://' + this.ip + '/YamahaExtendedControl/v1/' + this.zone + '/setVolume?volume=' + value);
-				that.log.error(error.message);
+				that.log.error('setVolume error: ' + error.message);
 				return error;
 			}
 		})
@@ -687,8 +691,7 @@ MusicCastTV.prototype = {
 		},
 		function (error, response, body) {
 			if (error) {
-        			that.log.debug('getServices HTTP error');
-        			that.log.error(error.message);
+        			that.log.error('getServices error: ' + error.message);
 			} else {
 				that.features=JSON.parse(body);
 				that.log.debug("func_list: " + JSON.stringify(that.features.system.func_list) + 
