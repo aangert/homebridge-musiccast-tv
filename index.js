@@ -490,7 +490,7 @@ MusicCastTV.prototype = {
 				that.log.error('setActive error: ' + error.message);
 				return error;
 			}
-		})
+		});
 		this.log("Active to " + value);
 		if(value&&(this.powerOnInput||this.powerOnVolume)) { // missing: filter for state change
 			if(this.powerOnInput&&this.powerOnVolume) {
@@ -551,7 +551,7 @@ MusicCastTV.prototype = {
 				that.log.error(error.message);
 				return callback(error);
 			}
-		})
+		});
 		if (tmpInput=="am" || tmpInput=="fm" || tmpInput=="dab") {
 			request({
 				url: 'http://' + this.ip + '/YamahaExtendedControl/v1/tuner/setBand?band=' + tmpInput,
@@ -564,9 +564,31 @@ MusicCastTV.prototype = {
 					that.log.error(error.message);
 					return callback(error);
 				}
-			})
+			});
 		}
 		this.ActiveIdentifier = value;
+		callback();
+	},
+	getButton: function(callback) {
+		this.log.debug("get Button: always 0");
+		callback(null, 0);
+	},
+	setButton: function(value, callback) {
+		this.log("Button: band " + this.buttonBand + " to " + this.buttonNumber);
+		request({
+			url: 'http://' + this.ip + '/YamahaExtendedControl/v1/tuner/recallPreset?zone=' + this.zone + '&band=' + this.buttonBand + '&num=' + this.buttonNumber,
+			method: 'GET',
+			body: ""
+		},
+		function (error, response) {
+			if (error) {
+				that.log.debug('http://' + that.ip + '/YamahaExtendedControl/v1/tuner/recallPreset');
+				that.log.error(error.message);
+		//		return callback(error);
+			} else{
+				that.log.debug('button activated');
+			}
+		});
 		callback();
 	},
 	getMute: function(callback) {
@@ -787,8 +809,8 @@ MusicCastTV.prototype = {
 			ServiceList.push(TelevisionFanService);
 		}
 		
-		if(this.bandNumber) {
-		/*	TelevisionButtonService = new Service.Switch(this.buttonName);
+		if(this.buttonNumber) {
+			TelevisionButtonService = new Service.Switch(this.buttonName);
 			TelevisionButtonService
 				.getCharacteristic(Characteristic.On)
 					.on('get', this.getButton.bind(this))
@@ -796,7 +818,6 @@ MusicCastTV.prototype = {
 			TelevisionService.addLinkedService(TelevisionButtonService);
 			this.TelevisionButtonService = TelevisionButtonService;
 			ServiceList.push(TelevisionButtonService);
-		*/
 		}
 		
 		for(var key in this.inputs) {
