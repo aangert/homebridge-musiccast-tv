@@ -54,6 +54,9 @@ config arguments:
 | serialNo | "123-456-789" | serial number shown in homebridge | no |
 | volumeFan | 1 | show additional fan service for volume control | no |
 | volumeName | "TV speaker" | the name of the additional fan service | no |
+| buttonNumber | 11 | show additional switch for setting the radio to favourite station no ... | no |
+| buttonName | "radio station 11" | the name of the additional switch | no |
+| buttonBand | "fm" | the tuner band for the additional switch | no |
 | powerOnInput | "line_cd" | input automatically switched to at powerOn | no |
 | powerOnVolume | 60 | Volume your device is set to at powerOn | no |
 | updateInterval | 1000 | time between updates im ms | no |
