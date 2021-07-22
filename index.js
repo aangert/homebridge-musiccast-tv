@@ -14,7 +14,10 @@ function MusicCastTV(log, config) {
 	this.ip = config["ip"];
 	this.zone = config["zone"] || "main";
 	this.volumeFan = config["volumeFan"] || 0 ;
-	this.volumeName = config["volumeName"] || this.name + " speaker" ;
+	this.volumeName = config["volumeName"] || this.name + " speaker";
+	this.buttonBand = config["buttonBand"] || "fm";
+	this.buttonNumber = config["buttonNumber"];
+	this.buttonName = config["buttonName"] || this.name + " button";
 	this.model = config["model"] || config["modell"] || "MusicCast TV";
 	this.volume = config["volume"] || 0;
 	this.maxVol = config["maxVol"];
@@ -453,7 +456,11 @@ MusicCastTV.prototype = {
 			if (error) {
 				that.log.error('getActive error: ' + error.message);
 				that.tmp = "error";
-				return callback(error);
+				//return callback(error);
+				that.active=0;
+				that.TelevisionService
+					.getCharacteristic(Characteristic.Active)
+					.updateValue(0);
 			} else{
 				att=JSON.parse(body);
 				that.log.debug('HTTP getStatus result: ' + att.power);
@@ -461,11 +468,13 @@ MusicCastTV.prototype = {
 				that.TelevisionService.getCharacteristic(Characteristic.Active)
 					.updateValue((att.power=='on'));
 				that.tmp = "success";
-				that.TelevisionService.getCharacteristic(Characteristic.Active)
+				that.TelevisionService
+					.getCharacteristic(Characteristic.Active)
 					.updateValue(that.active);
-				return callback(null, (att.power=='on'));
+				//return callback(null, (att.power=='on'));
 			}
 		});
+		callback(null, this.active);
 	},
 	setActive: function(value, callback) {
 		const that = this;
@@ -488,7 +497,8 @@ MusicCastTV.prototype = {
 				tmpInput = this.getInputFromString(this.powerOnInput);
 				this.log("powerOnInput: " + tmpInput + "; powerOnVolume: " + this.powerOnVolume);
 				this.setActiveIdentifier(this.info[tmpInput]["Identifier"], function() {}); //turn on powerOnInput
-				that.TelevisionService.getCharacteristic(Characteristic.ActiveIdentifier)
+				that.TelevisionService
+					.getCharacteristic(Characteristic.ActiveIdentifier)
 					.updateValue(this.info[tmpInput]["Identifier"]);
 				this.setVolume(this.powerOnVolume, callback);
 				//turn on both, one callback
@@ -496,7 +506,8 @@ MusicCastTV.prototype = {
 				tmpInput = this.getInputFromString(this.powerOnInput);
 				this.log("powerOnInput: " + tmpInput);
 				this.setActiveIdentifier(this.info[tmpInput]["Identifier"], callback); //turn on powerOnInput
-				that.TelevisionService.getCharacteristic(Characteristic.ActiveIdentifier)
+				that.TelevisionService
+					.getCharacteristic(Characteristic.ActiveIdentifier)
 					.updateValue(this.info[tmpInput]["Identifier"]);
 			}else if(this.powerOnVolume) {
 				this.log("powerOnVolume: " + this.powerOnVolume);
@@ -509,7 +520,8 @@ MusicCastTV.prototype = {
 	getActiveIdentifier: function(callback) {
 		this.getHttpInput();
 		setTimeout(() => {
-			this.TelevisionService.getCharacteristic(Characteristic.ActiveIdentifier)
+			this.TelevisionService
+				.getCharacteristic(Characteristic.ActiveIdentifier)
 				.updateValue(this.ActiveIdentifier);
 		}, this.updateInterval);
 		this.log("get Active Identifier: " + this.ActiveIdentifier);
@@ -773,6 +785,18 @@ MusicCastTV.prototype = {
 			TelevisionService.addLinkedService(TelevisionFanService);
 			this.TelevisionFanService = TelevisionFanService;
 			ServiceList.push(TelevisionFanService);
+		}
+		
+		if(this.bandNumber) {
+		/*	TelevisionButtonService = new Service.Switch(this.buttonName);
+			TelevisionButtonService
+				.getCharacteristic(Characteristic.On)
+					.on('get', this.getButton.bind(this))
+					.on('set', this.setButton.bind(this));
+			TelevisionService.addLinkedService(TelevisionButtonService);
+			this.TelevisionButtonService = TelevisionButtonService;
+			ServiceList.push(TelevisionButtonService);
+		*/
 		}
 		
 		for(var key in this.inputs) {
