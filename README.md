@@ -123,6 +123,7 @@ Currently supported inputs:
 | pandora | yes |
 | siriusxm | yes |
 | radiko | yes |
+| alexa | yes |
 
 If your MusicCast device supports additional inputs, please file an issue. 
 

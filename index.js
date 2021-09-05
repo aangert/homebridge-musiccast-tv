@@ -580,7 +580,7 @@ MusicCastTV.prototype = {
 	setButton: function(value, callback) {
 		this.log("Button: band " + this.buttonBand + " to " + this.buttonNumber);
 		request({
-			url: 'http://' + this.ip + '/YamahaExtendedControl/v1/tuner/recallPreset?zone=' + this.zone + '&band=' + this.buttonBand + '&num=' + this.buttonNumber,
+			url: 'http://' + this.ip + '/YamahaExtendedControl/v1/netusb/recallPreset?zone=' + this.zone + '&band=' + this.buttonBand + '&num=' + this.buttonNumber,
 			method: 'GET',
 			body: ""
 		},
