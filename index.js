@@ -129,7 +129,8 @@ function MusicCastTV(log, config) {
 		"tidal": {"Identifier": 64, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "tidal"}, 
 		"pandora": {"Identifier": 65, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "pandora"}, 
 		"siriusxm": {"Identifier": 66, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "siriusxm"}, 
-		"radiko": {"Identifier": 67, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "radiko"}};
+		"radiko": {"Identifier": 67, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "radiko"}, 
+		"alexa": {"Identifier": 68, "CurrentVisibilityState": 0, "TargetVisibilityState": 0, "Command": "alexa"}};
 	this.log.debug(config);
 	for(var key in this.inputs) {
 		this.log.debug("updating name for " + key);
@@ -344,6 +345,9 @@ MusicCastTV.prototype = {
 				return "siriusxm";
 			case "radiko":
 				return "radiko";
+			case "alexa":
+			case "Alexa":
+				return "alexa";
 			default:
 				this.log("input " + name + " not found");
 				return "";
@@ -1154,6 +1158,11 @@ MusicCastTV.prototype = {
 					this.radikoService = this.getInputService("radiko");
 					TelevisionService.addLinkedService(this.radikoService);
 					ServiceList.push(this.radikoService);
+					break;
+				case "alexa":
+					this.alexaService = this.getInputService("alexa");
+					TelevisionService.addLinkedService(this.alexaService);
+					ServiceList.push(this.alexaService);
 					break;
 				default:
 					this.log.error("input " + key + " not found");
