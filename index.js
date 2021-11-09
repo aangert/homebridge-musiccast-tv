@@ -37,13 +37,13 @@ function MusicCastTV(log, config) {
 		if (error) {
 			that.log.error(error.message);
 		}
-		that.log.debug("body: " + body)
+		that.log.debug("body: " + body);
 		if(body) {
-			att=JSON.parse(body);
+			var att=JSON.parse(body);
 			that.volume = config["volume"] || att.volume;
 			that.maxVol = config["maxVol"] || att.max_volume;
 			that.log("volume: " + that.volume + " maxVol: " + that.maxVol);
-			tmpInput = that.getInputFromString(att.input);
+			var tmpInput = that.getInputFromString(att.input);
 			that.log("Input: " + tmpInput);
 			if(tmpInput != "") {
 				if(tmpInput=="tuner") {
@@ -134,7 +134,7 @@ function MusicCastTV(log, config) {
 	this.log.debug(config);
 	for(var key in this.inputs) {
 		this.log.debug("updating name for " + key);
-		tmpInput = this.getInputFromString(key);
+		var tmpInput = this.getInputFromString(key);
 		if(tmpInput != "") {
 			if(tmpInput == "tuner") {
 				this.log.error("tuner is not a valid Input, please select \"am\", \"fm\" or \"dab\" for valid tuner types");
@@ -391,8 +391,8 @@ MusicCastTV.prototype = {
 				return error;
 			} else if(body) {
 				that.log.debug("getBand body: " + body)
-				att = JSON.parse(body);
-				tmpInput = that.getInputFromString(att.band);
+				var att = JSON.parse(body);
+				var tmpInput = that.getInputFromString(att.band);
 				that.log.debug("Input: " + tmpInput);
 				if(tmpInput != "") {
 					that.ActiveIdentifier = that.info[tmpInput]["Identifier"];
@@ -420,12 +420,12 @@ MusicCastTV.prototype = {
 				return error;
 			} else if(body) {
 				//that.log.debug("HttpInput body: " + body)
-				att = JSON.parse(body);
+				var att = JSON.parse(body);
 				that.active = (att.power=='on');
 				that.volume = att.volume;
 				that.maxVol = att.max_volume;
 				//that.log.debug("volume: " + that.volume + " maxVol: " + that.maxVol);
-				tmpInput = that.getInputFromString(att.input);
+				var tmpInput = that.getInputFromString(att.input);
 				if(tmpInput != "") {
 					if(tmpInput=="tuner") {
 						that.getBand();
@@ -440,7 +440,7 @@ MusicCastTV.prototype = {
 				}
 				that.tmp = "updated";
 			} else{
-				that.log(error + "; body: " + body)
+				that.log(error + "; body: " + body);
 			}
 		});
 	},
@@ -466,7 +466,7 @@ MusicCastTV.prototype = {
 					.getCharacteristic(Characteristic.Active)
 					.updateValue(0);
 			} else{
-				att=JSON.parse(body);
+				var att=JSON.parse(body);
 				that.log.debug('HTTP getStatus result: ' + att.power);
 				that.active = (att.power=='on');
 				that.TelevisionService.getCharacteristic(Characteristic.Active)
@@ -498,16 +498,16 @@ MusicCastTV.prototype = {
 		this.log("Active to " + value);
 		if(value&&(this.powerOnInput||this.powerOnVolume)) { // missing: filter for state change
 			if(this.powerOnInput&&this.powerOnVolume) {
-				tmpInput = this.getInputFromString(this.powerOnInput);
+				var tmpInput = this.getInputFromString(this.powerOnInput);
 				this.log("powerOnInput: " + tmpInput + "; powerOnVolume: " + this.powerOnVolume);
-				this.setActiveIdentifier(this.info[tmpInput]["Identifier"], function() {}); //turn on powerOnInput
+				this.setActiveIdentifier(this.info[tmpInput]["Identifier"], function() {}); //turn on powerOnInput with fake callback
 				that.TelevisionService
 					.getCharacteristic(Characteristic.ActiveIdentifier)
 					.updateValue(this.info[tmpInput]["Identifier"]);
 				this.setVolume(this.powerOnVolume, callback);
 				//turn on both, one callback
 			}else if(this.powerOnInput) {
-				tmpInput = this.getInputFromString(this.powerOnInput);
+				var tmpInput = this.getInputFromString(this.powerOnInput);
 				this.log("powerOnInput: " + tmpInput);
 				this.setActiveIdentifier(this.info[tmpInput]["Identifier"], callback); //turn on powerOnInput
 				that.TelevisionService
@@ -649,7 +649,7 @@ MusicCastTV.prototype = {
 	},
 	getFakeVolume: function(callback) {
 		tmp = this.getHttpInput();
-		volume = ((this.volume*100)/this.maxVol); //turns a range between 0 and maxVolume into 0-100
+		var volume = ((this.volume*100)/this.maxVol); //turns a range between 0 and maxVolume into 0-100
 		if(isNaN(volume)) {
 			volume = 0;//filter NaN
 		}
@@ -657,7 +657,7 @@ MusicCastTV.prototype = {
 		callback(null, volume);
 	},
 	setFakeVolume: function(value, callback) {
-		volume = ((value*this.maxVol)/100); //turns value between 0 and 100 into value between 0 and maxVolume
+		var volume = ((value*this.maxVol)/100); //turns value between 0 and 100 into value between 0 and maxVolume
 		this.log.debug("set FakeVolume: " + value + " real: " + volume);
 		this.setVolume(volume, callback);
 	},
@@ -685,7 +685,7 @@ MusicCastTV.prototype = {
 				that.log.error('setVolume error: ' + error.message);
 				return error;
 			}
-		})
+		});
 		this.volume = value;
 		this.log("set Volume: " + value);
 		if (value == 0) {
@@ -715,7 +715,7 @@ MusicCastTV.prototype = {
 			.setCharacteristic(Characteristic.FirmwareRevision, this.version);
 		this.informationService = informationService;
 		
-		ServiceList = [];
+		var ServiceList = [];
 		ServiceList.push(informationService);
 		
 		const that = this;
@@ -800,7 +800,7 @@ MusicCastTV.prototype = {
 		ServiceList.push(TelevisionSpeakerService);
 		
 		if(this.volumeFan) {
-			TelevisionFanService = new Service.Fan(this.volumeName);
+			let TelevisionFanService = new Service.Fan(this.volumeName);
 			TelevisionFanService
 				.getCharacteristic(Characteristic.On)
 					.on('get', this.getActive.bind(this));
@@ -814,7 +814,7 @@ MusicCastTV.prototype = {
 		}
 		
 		if(this.buttonNumber) {
-			TelevisionButtonService = new Service.Switch(this.buttonName);
+			let TelevisionButtonService = new Service.Switch(this.buttonName);
 			TelevisionButtonService
 				.getCharacteristic(Characteristic.On)
 					.on('get', this.getButton.bind(this))
@@ -826,7 +826,7 @@ MusicCastTV.prototype = {
 		
 		for(var key in this.inputs) {
 			this.log.debug("processing input " + key);
-			tmpInput = this.getInputFromString(key);
+			var tmpInput = this.getInputFromString(key);
 			
 			switch (tmpInput) {
 				case "airplay":
