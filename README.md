@@ -1,6 +1,7 @@
 # homebridge-musiccast-tv
 
 [![npm](https://img.shields.io/npm/v/homebridge-musiccast-tv)](https://npmjs.com/package/homebridge-musiccast-tv)
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/aangert/homebridge-musiccast-tv.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/aangert/homebridge-musiccast-tv/context:javascript)
 
 ## Features
 
